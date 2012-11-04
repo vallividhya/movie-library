@@ -22,7 +22,7 @@ FOREIGN KEY(C_Id) REFERENCES Catagory(CatagoryId),
 PRIMARY KEY (MovieId)
 );
 
-CREATE TABLE VideoLibrary.Person(
+CREATE TABLE VideoLibrary.User(
 MembershipId INT NOT NULL AUTO_INCREMENT,
 UserId VARCHAR(50),
 Password VARCHAR(50),
@@ -45,7 +45,7 @@ UNIQUE(TransactionId),
 PurchaseDate DATE,
 TotalDueAmount DOUBLE NOT NULL,
 Mem_Id INT NOT NULL,
-FOREIGN KEY(Mem_Id) REFERENCES Person(MembershipId),
+FOREIGN KEY(Mem_Id) REFERENCES User(MembershipId),
 PRIMARY KEY (TransactionId)
 );
 
@@ -65,7 +65,7 @@ M_Id INTEGER NOT NULL,
 U_Id INTEGER NOT NULL,
 
 FOREIGN KEY(M_Id) REFERENCES Movie(MovieId),
-FOREIGN KEY(U_Id) REFERENCES Person(MembershipId)
+FOREIGN KEY(U_Id) REFERENCES User(MembershipId)
 );
 
 CREATE TABLE VideoLibrary.Admin
@@ -83,7 +83,7 @@ StatementId INT NOT NULL AUTO_INCREMENT,
 StartDate TIMESTAMP ,
 EndDate TIMESTAMP ,
 U_Id INT NOT NULL,
-FOREIGN KEY(U_Id) REFERENCES Person(MembershipId),
+FOREIGN KEY(U_Id) REFERENCES User(MembershipId),
 PRIMARY KEY (StatementId)
 );
 
