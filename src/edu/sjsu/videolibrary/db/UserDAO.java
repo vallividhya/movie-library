@@ -1,14 +1,13 @@
 package edu.sjsu.videolibrary.db;
 
- 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class DataAccess extends VideoLibraryDAO 
+public class UserDAO extends VideoLibraryDAO 
 {
-	public DataAccess()
+	public UserDAO()
 	{ }
 	
 	public String signUp (String userId, String password, String firstName, String lastName, String address, String city, String state, String zipCode, boolean membership) throws SQLException 
@@ -51,5 +50,4 @@ public class DataAccess extends VideoLibraryDAO
 		return "";
 	}
 }
-
 
