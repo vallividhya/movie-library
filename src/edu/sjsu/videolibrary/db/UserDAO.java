@@ -5,22 +5,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import edu.sjsu.videolibrary.util.Utils;
+
 public class UserDAO extends VideoLibraryDAO 
 {
 	public UserDAO()
 	{ }
-	
-	public String signUp (String userId, String password, String firstName, String lastName, String address, String city, String state, String zipCode, boolean membership) throws SQLException 
+	 
+	public String signUpUser (String userId, String password, String memType, java.sql.Date startDate,
+			String firstName, String lastName, String address, String city, 
+			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
 	{
-		// last parameter membership is not in DB
-		//
-		String sql = "insert into person (UserId,Password,StartDate,FirstName,LastName,Address,City,State,Zip) values (?,?,?,?,?,?,?,?,?)";
+		
+		String sql = "insert into user (UserId,password,membershipType,startDate,firstName,lastName," +
+				"address,city,state,zip,creditCardNumber,latestPaymentDate) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-		pst.setString(1, userId); pst.setString(2, password);
-		pst.setDate(3, new java.sql.Date(System.currentTimeMillis()));
-		pst.setString(4, firstName);pst.setString(5, lastName);
-		pst.setString(6, address);pst.setString(7, city);
-		pst.setString(8, state);pst.setString(9, zipCode);
+		pst.setString(1, userId); pst.setString(2, Utils.encryptPassword(password));
+		pst.setString(3,memType); pst.setDate(4, startDate);
+		pst.setString(5, firstName);pst.setString(6, lastName);
+		pst.setString(7, address);pst.setString(8, city);
+		pst.setString(9, state);pst.setString(10, zipCode);
+		pst.setString(11, ccNumber);pst.setDate(12, latestPaymentDate);
 		pst.execute();
 		ResultSet rs = pst.getGeneratedKeys();
 		if (rs.next())
@@ -30,18 +35,36 @@ public class UserDAO extends VideoLibraryDAO
 		}     
 		return "";
 	}
-	public boolean signUp (String userId, String password, String firstName, String lastName) throws SQLException 
+	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException 
 	{
-		// mismatch API
-		//
-		signUp(userId,password,firstName,lastName,"", "", "", "", false);
-		return false;
+		String sql = "insert into admin (UserId,password,firstName,lastName) values (?,?,?,?)";
+		PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+		pst.setString(1, userId); pst.setString(2, Utils.encryptPassword(password));
+		pst.setString(3, firstName);pst.setString(4, lastName);
+		pst.execute();
+		ResultSet rs = pst.getGeneratedKeys();
+		if (rs.next())
+		{
+			Integer memID = rs.getInt(1);
+			return memID.toString();
+		}     
+		return "";
 	}
-	public String signIn (String UserId, String password) throws SQLException
+	public String signInUser(String userId, String password) throws SQLException
 	{
-		// Changed membership id  to user id.
-		//
-		String sql = "select UserId, Password from  person where UserID = '" + UserId + "'" + " and Password = '" + password + "'";
+		String sql = "select userId, password from  users where userId = '" + userId + "'" + " and password = '" + Utils.encryptPassword(password) + "'";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs.next())
+		{
+			return rs.getString(1);
+		}
+		return "";
+	}
+	public String signInAdmin(String userId, String password) throws SQLException
+	{
+		String sql = "select userId, password from admin where userId = '" + userId + "'" + " and password = '" + Utils.encryptPassword(password) + "'";
+		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if(rs.next())
 		{
