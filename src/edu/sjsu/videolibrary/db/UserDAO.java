@@ -70,7 +70,7 @@ public class UserDAO extends VideoLibraryDAO
 		{
 			return rs.getString(1);
 		}
-		return "";
+		return "";     
 	}
 }
 
