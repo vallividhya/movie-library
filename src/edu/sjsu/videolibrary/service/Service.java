@@ -1,17 +1,23 @@
 package edu.sjsu.videolibrary.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.jws.WebService;
 
 import edu.sjsu.videolibrary.model.ItemOnCart;
+import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.db.CartDAO;
+import edu.sjsu.videolibrary.db.MovieDAO;
+import edu.sjsu.videolibrary.db.UserDAO;
 @WebService
 
 public class Service {
 	
 	// Add movies to shopping cart.
 	CartDAO cartDAO = new CartDAO();
+	UserDAO userDAO = new UserDAO(); 
+	MovieDAO movieDAO = new MovieDAO(); 
 	
 	public boolean addItemsToCart(int membershipId, int movieId){
 		boolean isAddedToCart = false;
@@ -46,4 +52,63 @@ public class Service {
 		}
 		return cartItems;
 	}
+	
+	
+	//List members
+	public User [] viewMembers (String type){		
+		List <User> memberList = userDAO.listMembers(type);
+		User [] members = (User[]) memberList.toArray();
+		return members;
+		
+	}
+	
+	//Delete an user and admin account
+	public String deleteUserAccount (String userId) {
+		String isDeleted = "false"; 
+		try {
+			isDeleted = userDAO.deleteUser(userId);
+		} catch (Exception e) { 
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+		}
+		return isDeleted; 
+	}
+	
+	public String deleteAdminAccount (String userId) {
+		String isDeleted = "false"; 
+		try {
+			isDeleted = userDAO.deleteAdmin(userId);
+		} catch (Exception e) { 
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+		}
+		return isDeleted; 
+	}	
+	
+	
+	//Create and delete movie
+	
+	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
+		String isCreated = "false";
+		try {
+			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
+		} catch (Exception e) { 
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+		}		
+		return isCreated;
+	}
+	
+	public String deleteMovie (String movieId) {
+		String isDeleted = "false"; 
+		try {
+			isDeleted = movieDAO.deleteMovie(movieId);
+		} catch (Exception e) { 
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+		}
+		return isDeleted; 
+	}
+	
+	
 }
