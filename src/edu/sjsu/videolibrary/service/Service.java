@@ -59,14 +59,14 @@ public class Service {
 		}
 		return cartItems;
 	}
-	public String signUpUser (String userId, String password, String memType, java.sql.Date startDate,
-			String firstName, String lastName, String address, String city, 
-			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
-	{
-		
-		return new UserDAO().signUpUser(userId, password, memType, startDate, firstName, lastName, 
-				address, city, state, zipCode, ccNumber, latestPaymentDate);
-	}
+//	public String signUpUser (String userId, String password, String memType, String startDate,
+//			String firstName, String lastName, String address, String city, 
+//			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
+//	{
+//		
+//		return new UserDAO().signUpUser(userId, password, memType, startDate, firstName, lastName, 
+//				address, city, state, zipCode, ccNumber, latestPaymentDate);
+//	}
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
 		return new UserDAO().signUpAdmin(userId, password, firstName, lastName);
@@ -115,16 +115,16 @@ public class Service {
 	
 	//Create and delete movie
 	
-	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
-		String isCreated = "false";
-		try {
-			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
-		} catch (Exception e) { 
-			System.out.println(e.getMessage());
-			e.printStackTrace();			
-		}		
-		return isCreated;
-	}
+//	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
+//		String isCreated = "false";
+//		try {
+//			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
+//		} catch (Exception e) { 
+//			System.out.println(e.getMessage());
+//			e.printStackTrace();			
+//		}		
+//		return isCreated;
+//	}
 	
 	public String deleteMovie (String movieId) {
 		String isDeleted = "false"; 

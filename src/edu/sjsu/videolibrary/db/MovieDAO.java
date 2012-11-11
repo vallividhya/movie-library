@@ -8,7 +8,7 @@ public class MovieDAO extends VideoLibraryDAO {
 	
 	public MovieDAO () { } 
 	
-	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
+	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,RentAmount,AvailableCopies,C_Id)" + 
 						 "VALUES (?,?,?,?,?,?,?)";
@@ -16,7 +16,7 @@ public class MovieDAO extends VideoLibraryDAO {
 			
 			pst.setString(1, movieName); 
 			pst.setString(2, movieBanner);
-			pst.setDate(3,releaseDate); 
+//			pst.setDate(3,releaseDate).; 
 			pst.setInt(4, availableCopies);
 			pst.setDouble(5, rentAmount);
 			pst.setInt(6, categoryId);
