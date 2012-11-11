@@ -2,7 +2,10 @@ package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import edu.sjsu.videolibrary.model.Transaction;
 
 import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.model.User;
@@ -147,6 +150,144 @@ public class UserDAO extends VideoLibraryDAO
 		}
 		return members;
 	}
+
+
+public LinkedList<Transaction> viewAccountTransactions(String membershipId){
+	LinkedList<Transaction> ac = new LinkedList<Transaction>();
+	try{
+		String query1 = "select Movie.MovieName,pymnt.RentDate,rnt.ReturnDate,User.MembershipType from "+ 
+				" VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt, "+
+				" VideoLibrary.Movie,VideoLibrary.User  where User.MembershipId = "+membershipId+" and pymnt.TransactionId = rnt.TransactionId "+
+				" and rnt.MovieId = Movie.MovieId and pymnt.MembershipId = User.MembershipId";
+
+		ResultSet result1 = stmt.executeQuery(query1);
+
+		while(result1.next()){
+			Transaction trans = new Transaction();
+			trans.setMovieName(result1.getString("MovieName"));
+			String membershipType = result1.getString("MembershipType");
+			if(membershipType.equalsIgnoreCase("Simple")){
+				trans.setPerMovieAmount(1.5);
+			}
+			else{
+				trans.setPerMovieAmount(0.0);
+			}
+			trans.setPurchaseDate((result1.getDate("RentDate").toString()));
+			Date returnDate = result1.getDate("ReturnDate");
+			if(returnDate != null){
+				trans.setReturnDate((returnDate).toString());
+			}
+			else{
+				trans.setReturnDate(null);					
+			}
+
+			ac.add(trans);
+		}
+	}
+	catch(SQLException e){
+		e.getMessage();
+		return null;
+	}
+	catch(Exception e){
+		e.getMessage();
+		return null;
+	}
+	return ac;
+}
+
+public String makeMonthlyPayment(String membershipId){
+	String result = null;
+	try{
+
+		String query1 = "update VideoLibrary.User set latestPaymentDate = NOW() "+
+				"where User.membershipId = "+membershipId;
+
+		int rowcount = stmt.executeUpdate(query1);
+		if(rowcount>0){
+			result = "true";
+			System.out.println("Payment Successful");
+		}
+		else{
+			System.out.println("Payment could not be proceeded.");
+			result = "false";
+		}
+
+	}
+	catch(SQLException e){
+		e.getMessage();
+		return null;
+	}
+	catch(Exception e){
+		e.getMessage();
+		return null;
+	}
+	return result;
+}
+
+
+public String updateUserInfo(String membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
+
+	String result = null;
+	try{
+
+		String query1 = "update VideoLibrary.User set userId = '"+userId+"' ,membershipType = '"+membershipType+" ',firstName = '"+firstName+
+				"' ,lastName = '"+lastName+"',address = '"+address+"',city = '"+city+"',state = '"+state+"',zip = '"+98567+
+				"' ,creditCardNumber = '"+creditCardNumber+" ' where membershipId = "+ membershipId;
+
+		int rowcount = stmt.executeUpdate(query1);
+
+		if(rowcount>0){
+			result = "true";
+			System.out.println("Update Successful");
+		}
+		else{
+			System.out.println("Update unsuccessful.");
+			result = "false";
+		}
+
+	}
+	catch(SQLException e){
+		e.getMessage();
+		result = "false";
+	}
+	catch(Exception e){
+		e.getMessage();
+		result = null;
+	}
+	return result;
+
+}
+
+public String updatePassword(String membershipId,String oldPassword,String newPassword){
+	String result =null;
+
+	try{
+		String query1 = "update VideoLibrary.User set password = '"+newPassword+
+				"' where membershipId = "+membershipId+" and password = '"+oldPassword+" ' ";
+
+		int rowcount = stmt.executeUpdate(query1);
+
+		if(rowcount>0){
+			result = "true";
+			System.out.println("Update Successful");
+		}
+		else{
+			System.out.println("Update unsuccessful.");
+			result = "invalidOldPassword";
+		}
+	}
+	catch(SQLException e){
+		e.getMessage();
+		result = "false";
+	}
+	catch(Exception e){
+		e.getMessage();
+		result = null;
+	}
+	return result;		
+}
+
+	
 
 	
 }

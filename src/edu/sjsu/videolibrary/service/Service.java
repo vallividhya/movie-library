@@ -6,17 +6,19 @@ import java.sql.SQLException;
 
 import java.sql.Date;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jws.WebService;
 
-import edu.sjsu.videolibrary.model.ItemOnCart;
+import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
+import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.db.CartDAO;
-
 import edu.sjsu.videolibrary.db.MovieDAO;
-
 import edu.sjsu.videolibrary.db.UserDAO;
+import edu.sjsu.videolibrary.db.AdminDAO;
 @WebService
 
 public class Service {
@@ -25,6 +27,7 @@ public class Service {
 	CartDAO cartDAO = new CartDAO();
 	UserDAO userDAO = new UserDAO(); 
 	MovieDAO movieDAO = new MovieDAO(); 
+	AdminDAO adminDAO  =new AdminDAO();
 	
 	public boolean addItemsToCart(int membershipId, int movieId){
 		boolean isAddedToCart = false;
@@ -136,6 +139,43 @@ public class Service {
 		}
 		return isDeleted; 
 	}
+	
+	public User displayUserInformation (String membershipId){
+		User user = adminDAO.displayUserInformation(membershipId);
+		return user;
+	}
+
+	public Movie displayMovieInformation (String movieId){
+		Movie movie = adminDAO.displayMovieInformation(movieId);
+		return movie;
+	}
+
+	public Transaction[] viewAccountTransactions(String membershipId){
+		LinkedList<Transaction> ac = userDAO.viewAccountTransactions(membershipId);
+		Transaction[] trans = ac.toArray(new Transaction[0]);
+		return trans;
+	}
+
+	public String makeMonthlyPayment(String membershipId){
+		String result = userDAO.makeMonthlyPayment(membershipId);
+		return result;
+	}
+	
+	public String updateUserInfo(String membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
+	String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+	return result;
+	}
+	
+	public String updatePassword(String membershipId,String oldPassword,String newPassword){
+		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
+		return result;
+	}
+	
+	public String updateMovieInfo(String movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
+		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
+		return result;
+	}
+	
 	
 	
 }
