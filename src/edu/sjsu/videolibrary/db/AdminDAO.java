@@ -2,9 +2,12 @@ package edu.sjsu.videolibrary.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedList;
 
 import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 
 public class AdminDAO extends VideoLibraryDAO {
@@ -135,7 +138,33 @@ public class AdminDAO extends VideoLibraryDAO {
 		}
 		return rentAmount;
 	}
-	
+
+	public double getMonthlyFeesForPremiumMember(){
+
+		double monthlyFees = 0;
+		try{
+
+			String query1 = "select amount from VideoLibrary.AmountDetails where membershipType = 'premium' "+
+					"order by feesUpdateDate desc limit 1";
+
+					ResultSet result1 = stmt.executeQuery(query1);
+
+			while(result1.next()){
+				monthlyFees = result1.getDouble("amount");
+			}
+		}
+		catch(SQLException e){
+			e.getMessage();
+			monthlyFees = -1;
+		}
+
+		catch(Exception e){
+			e.getMessage();
+			monthlyFees = -1;
+		}
+		return monthlyFees;
+	}
+
 	public String updateMovieInfo(String movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
 		String result = null;
 		try{
@@ -164,4 +193,51 @@ public class AdminDAO extends VideoLibraryDAO {
 		return result;
 	}
 
+	public String generateMonthlyStatement(String membershipId,int month,int year){
+		String result = null;
+		int statementId = 0;
+		try{
+			String query1 = "select pymnt.transactionId from VideoLibrary.PaymentTransaction pymnt "+
+					" where extract(month from pymnt.rentDate) = "+month+" and extract(year from pymnt.rentDate) = "+year+
+					" and pymnt.membershipId = "+membershipId;
+
+			ResultSet result1 = stmt.executeQuery(query1);
+			LinkedList<Integer> listOfTransId = new LinkedList<Integer>();
+			while(result1.next()){
+				listOfTransId.add(result1.getInt("transactionId"));
+			}
+			String query2 = "insert into VideoLibrary.Statement(month,year,membershipId) "+
+					" value("+month+","+year+","+membershipId+")";
+			int rowCount = stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
+			if(rowCount>0){
+				ResultSet result2 = stmt.getGeneratedKeys();
+				statementId = result2.getInt("statementId");
+			}
+			else{
+				result = null;
+				return result;
+			}
+			for(Integer lst: listOfTransId){
+				String query = "insert into VideoLibrary.StatementTransactions(statementId,TransactionId)"+
+						" value("+statementId+","+lst+")";
+				int rowcount = stmt.executeUpdate(query);
+				if(rowcount<0){
+					result = "false";
+					return result;
+				}
+			}
+			result = "true";
+		}
+		catch(SQLException e){
+			e.getMessage();
+			result = "false";
+		}
+		catch(Exception e){
+			e.getMessage();
+			result = null;
+		}
+		return result;
+	}
+
+	
 }

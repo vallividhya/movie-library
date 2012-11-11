@@ -22,13 +22,13 @@ import edu.sjsu.videolibrary.db.AdminDAO;
 @WebService
 
 public class Service {
-	
+
 	// Add movies to shopping cart.
 	CartDAO cartDAO = new CartDAO();
 	UserDAO userDAO = new UserDAO(); 
 	MovieDAO movieDAO = new MovieDAO(); 
 	AdminDAO adminDAO  =new AdminDAO();
-	
+
 	public boolean addItemsToCart(int membershipId, int movieId){
 		boolean isAddedToCart = false;
 		try {
@@ -40,7 +40,7 @@ public class Service {
 		}  
 		return isAddedToCart;
 	}
-	
+
 	public boolean deleteMovieFromCart (int movieId, int membershipId) {
 		boolean isDeletedFromCart = false;
 		try {
@@ -52,7 +52,7 @@ public class Service {
 		}  
 		return isDeletedFromCart;
 	}
-	
+
 	public ItemOnCart[] viewCart(int membershipId){
 		List<ItemOnCart> cartItemsList = cartDAO.listCartItems(membershipId);
 		ItemOnCart[] cartItems = new ItemOnCart[cartItemsList.size()];
@@ -62,14 +62,14 @@ public class Service {
 		}
 		return cartItems;
 	}
-//	public String signUpUser (String userId, String password, String memType, String startDate,
-//			String firstName, String lastName, String address, String city, 
-//			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
-//	{
-//		
-//		return new UserDAO().signUpUser(userId, password, memType, startDate, firstName, lastName, 
-//				address, city, state, zipCode, ccNumber, latestPaymentDate);
-//	}
+	//	public String signUpUser (String userId, String password, String memType, String startDate,
+	//			String firstName, String lastName, String address, String city, 
+	//			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
+	//	{
+	//		
+	//		return new UserDAO().signUpUser(userId, password, memType, startDate, firstName, lastName, 
+	//				address, city, state, zipCode, ccNumber, latestPaymentDate);
+	//	}
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
 		return new UserDAO().signUpAdmin(userId, password, firstName, lastName);
@@ -82,16 +82,16 @@ public class Service {
 	{
 		return new UserDAO().signInAdmin(userId, password);
 	}
-	
-	
+
+
 	//List members
 	public User [] viewMembers (String type){		
 		List <User> memberList = userDAO.listMembers(type);
 		User [] members = (User[]) memberList.toArray();
 		return members;
-		
+
 	}
-	
+
 	//Delete an user and admin account
 	public String deleteUserAccount (String userId) {
 		String isDeleted = "false"; 
@@ -103,7 +103,7 @@ public class Service {
 		}
 		return isDeleted; 
 	}
-	
+
 	public String deleteAdminAccount (String userId) {
 		String isDeleted = "false"; 
 		try {
@@ -114,21 +114,21 @@ public class Service {
 		}
 		return isDeleted; 
 	}	
-	
-	
+
+
 	//Create and delete movie
-	
-//	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
-//		String isCreated = "false";
-//		try {
-//			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
-//		} catch (Exception e) { 
-//			System.out.println(e.getMessage());
-//			e.printStackTrace();			
-//		}		
-//		return isCreated;
-//	}
-	
+
+	//	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
+	//		String isCreated = "false";
+	//		try {
+	//			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
+	//		} catch (Exception e) { 
+	//			System.out.println(e.getMessage());
+	//			e.printStackTrace();			
+	//		}		
+	//		return isCreated;
+	//	}
+
 	public String deleteMovie (String movieId) {
 		String isDeleted = "false"; 
 		try {
@@ -139,7 +139,7 @@ public class Service {
 		}
 		return isDeleted; 
 	}
-	
+
 	public User displayUserInformation (String membershipId){
 		User user = adminDAO.displayUserInformation(membershipId);
 		return user;
@@ -160,22 +160,22 @@ public class Service {
 		String result = userDAO.makeMonthlyPayment(membershipId);
 		return result;
 	}
-	
+
 	public String updateUserInfo(String membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
-	String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
-	return result;
+		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+		return result;
 	}
-	
+
 	public String updatePassword(String membershipId,String oldPassword,String newPassword){
 		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
 		return result;
 	}
-	
+
 	public String updateMovieInfo(String movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		return result;
 	}
+
 	
-	
-	
+
 }
