@@ -1,10 +1,10 @@
 package edu.sjsu.videolibrary.model;
 
 public class ItemOnCart {
-	int movieId;
-	String movieName;
-	String category;
-	double rentAmount;
+	private int movieId;
+	private String movieName;
+	private String category;
+	private double rentAmount;
 	
 	public int getMovieId() {
 		return movieId;

@@ -1,15 +1,16 @@
 package edu.sjsu.videolibrary.model;
 
-import java.util.Date;
-
 public class Movie {
-	int movieId;
-	String movieName;
-	String movieBanner;
-	Date releaseDate;
-	double rentAmount;
-	int availableCopies;
-	int categoryId;
+	
+	private int movieId;
+	private String movieName;
+	private String movieBanner;
+	private String releaseDate;
+	private double rentAmount;
+	private int availableCopies;
+	private int categoryId;
+	private String catagory;
+	private String buyerList[];
 	
 	public int getMovieId() {
 		return movieId;
@@ -29,10 +30,10 @@ public class Movie {
 	public void setMovieBanner(String movieBanner) {
 		this.movieBanner = movieBanner;
 	}
-	public Date getReleaseDate() {
+	public String getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(Date releaseDate) {
+	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 	public double getRentAmount() {
@@ -53,7 +54,21 @@ public class Movie {
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
+	public String getCatagory() {
+		return catagory;
+	}
+	public void setCatagory(String catagory) {
+		this.catagory = catagory;
+	}
+	public String[] getBuyerList() {
+		return buyerList;
+	}
+	public void setBuyerList(String[] buyerList) {
+		this.buyerList = buyerList;
+	}
+
 	
+
 	
 
 }

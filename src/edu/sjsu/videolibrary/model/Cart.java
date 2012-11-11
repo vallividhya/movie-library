@@ -1,8 +1,8 @@
 package edu.sjsu.videolibrary.model;
 
 public class Cart {
-	int movieId;
-	int memebershipId;
+	private int movieId;
+	private int memebershipId;
 	
 	public int getMovieId() {
 		return movieId;

@@ -1,0 +1,38 @@
+package edu.sjsu.videolibrary.model;
+
+public class Transaction {
+	
+	private String purchaseDate;
+	private double perMovieAmount;
+	private String movieName;
+	private String returnDate;
+	
+public String getPurchaseDate() {
+		return purchaseDate;
+	}
+	public void setPurchaseDate(String purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+	public double getPerMovieAmount() {
+		return perMovieAmount;
+	}
+	public void setPerMovieAmount(double perMovieAmount) {
+		this.perMovieAmount = perMovieAmount;
+	}
+	public String getMovieName() {
+		return movieName;
+	}
+	public void setMovieName(String movieName) {
+		this.movieName = movieName;
+	}
+	public String getReturnDate() {
+		return returnDate;
+	}
+	public void setReturnDate(String returnDate) {
+		this.returnDate = returnDate;
+	}
+	
+	
+
+}
+
