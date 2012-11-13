@@ -12,6 +12,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
@@ -176,6 +177,24 @@ public class Service {
 		return result;
 	}
 
+	public String generateMonthlyStatement(String membershipId,int month,int year){
+		String result = adminDAO.generateMonthlyStatement(membershipId, month, year);
+		return result;
+	}
+
+	public StatementInfo[] viewStatement(String membershipId,int month,int year){
+		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
+		return stmnt;
+	}
 	
+	public double getRentAmountforMovie(){
+		double movieRentAmount = adminDAO.getRentAmountforMovie();
+		return movieRentAmount;
+	}
+	
+	public double getMonthlyFeesForPremiumMember(){
+		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
+		return monthlyFees;
+	}
 
 }
