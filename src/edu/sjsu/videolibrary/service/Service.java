@@ -63,25 +63,24 @@ public class Service {
 		}
 		return cartItems;
 	}
-	//	public String signUpUser (String userId, String password, String memType, String startDate,
-	//			String firstName, String lastName, String address, String city, 
-	//			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
-	//	{
-	//		
-	//		return new UserDAO().signUpUser(userId, password, memType, startDate, firstName, lastName, 
-	//				address, city, state, zipCode, ccNumber, latestPaymentDate);
-	//	}
+	public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
+			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
+	{
+		return userDAO.signUpUser(userId, password, memType,new java.sql.Date(System.currentTimeMillis()), 
+				firstName, lastName, address, city, state, zipCode, ccNumber, 
+				new java.sql.Date(System.currentTimeMillis()));
+	}
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
-		return new UserDAO().signUpAdmin(userId, password, firstName, lastName);
+		return userDAO.signUpAdmin(userId, password, firstName, lastName);
 	}
 	public String signInUser(String userId, String password) throws SQLException
 	{
-		return new UserDAO().signInUser(userId, password);
+		return userDAO.signInUser(userId, password);
 	}
 	public String signInAdmin(String userId, String password) throws SQLException
 	{
-		return new UserDAO().signInAdmin(userId, password);
+		return userDAO.signInAdmin(userId, password);
 	}
 
 
