@@ -118,16 +118,16 @@ public class Service {
 
 	//Create and delete movie
 
-	//	public String createNewMovie (String movieName, String movieBanner, Date releaseDate, int availableCopies, double rentAmount, int categoryId)  { 
-	//		String isCreated = "false";
-	//		try {
-	//			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, rentAmount, categoryId);
-	//		} catch (Exception e) { 
-	//			System.out.println(e.getMessage());
-	//			e.printStackTrace();			
-	//		}		
-	//		return isCreated;
-	//	}
+	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
+			String isCreated = "false";
+			try {
+				isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
+			} catch (Exception e) { 
+				System.out.println(e.getMessage());
+				e.printStackTrace();			
+			}		
+			return isCreated;
+		}
 
 	public String deleteMovie (String movieId) {
 		String isDeleted = "false"; 
