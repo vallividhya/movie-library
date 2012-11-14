@@ -1,90 +1,109 @@
 CREATE SCHEMA VideoLibrary;
 
-CREATE TABLE VideoLibrary.Catagory
+CREATE TABLE VideoLibrary.Category
 (
-CatagoryName VARCHAR(100),
-CatagoryId INTEGER NOT NULL AUTO_INCREMENT,
-PRIMARY KEY (CatagoryId)
+categoryName VARCHAR(50),
+categoryId INTEGER NOT NULL AUTO_INCREMENT,
+PRIMARY KEY (categoryId)
 );
 
 CREATE TABLE VideoLibrary.Movie
 (
-MovieId INT NOT NULL AUTO_INCREMENT,
-UNIQUE(MovieId),
-MovieName VARCHAR(100),
-MovieBanner VARCHAR(100),
-ReleaseDate DATE,
-RentAmount DOUBLE NOT NULL,
-AvailableCopies INT NOT NULL,
-C_Id INTEGER NOT NULL,
-FOREIGN KEY(C_Id) REFERENCES Catagory(CatagoryId),
+movieId INT NOT NULL AUTO_INCREMENT,
+UNIQUE(movieId),
+movieName VARCHAR(100),
+UNIQUE (movieName),
+movieBanner VARCHAR(100),
+releaseDate DATE,
 
-PRIMARY KEY (MovieId)
+availableCopies INT NOT NULL,
+categoryId INTEGER NOT NULL,
+FOREIGN KEY(categoryId) REFERENCES Category(categoryId),
+
+PRIMARY KEY (movieId)
 );
 
 CREATE TABLE VideoLibrary.User(
-MembershipId INT NOT NULL AUTO_INCREMENT,
-UserId VARCHAR(50),
-Password VARCHAR(50),
-MembershipType VARCHAR(10),
-StartDate DATE,
-FirstName VARCHAR(50),
-LastName VARCHAR(50),
-Address VARCHAR(50),
-City VARCHAR(20),
-State VARCHAR(10),
-Zip VARCHAR(20),
-CreditcardNumber VARCHAR(40),
-PRIMARY KEY (MembershipId)
+membershipId INT NOT NULL AUTO_INCREMENT,
+userId VARCHAR(50),
+UNIQUE (userId),
+password VARCHAR(32),
+membershipType VARCHAR(10),
+startDate DATE,
+firstName VARCHAR(50),
+lastName VARCHAR(50),
+address VARCHAR(50),
+city VARCHAR(20),
+state CHAR(2),
+zip CHAR(5),
+creditCardNumber CHAR(16),
+latestPaymentDate DATE,
+PRIMARY KEY (membershipId)
 );
 
 CREATE TABLE VideoLibrary.PaymentTransaction
 (
-TransactionId INT NOT NULL AUTO_INCREMENT,
-UNIQUE(TransactionId),
-PurchaseDate DATE,
-TotalDueAmount DOUBLE NOT NULL,
-Mem_Id INT NOT NULL,
-FOREIGN KEY(Mem_Id) REFERENCES User(MembershipId),
-PRIMARY KEY (TransactionId)
+transactionId INT NOT NULL AUTO_INCREMENT,
+UNIQUE(transactionId),
+rentDate DATE,
+totalDueAmount DOUBLE NOT NULL,
+membershipId INT NOT NULL,
+FOREIGN KEY(membershipId) REFERENCES User(membershipId),
+PRIMARY KEY (transactionId)
 );
 
 CREATE TABLE VideoLibrary.RentMovieTransaction
 (
-M_Id INTEGER NOT NULL,
-T_Id INTEGER NOT NULL,
-ReturnDate DATE,
-FOREIGN KEY(M_Id) REFERENCES Movie(MovieID),
-FOREIGN KEY(T_Id) REFERENCES PaymentTransaction(TransactionId),
-PRIMARY KEY (T_Id,M_Id)
+movieId INTEGER NOT NULL,
+transactionId INTEGER NOT NULL,
+returnDate DATE,
+FOREIGN KEY(movieId) REFERENCES Movie(movieId),
+FOREIGN KEY(transactionId) REFERENCES PaymentTransaction(transactionId),
+PRIMARY KEY (transactionId,movieId)
 );
 
 CREATE TABLE VideoLibrary.MovieCart
 (
-M_Id INTEGER NOT NULL,
-U_Id INTEGER NOT NULL,
+movieId INTEGER NOT NULL,
+membershipId INTEGER NOT NULL,
 
-FOREIGN KEY(M_Id) REFERENCES Movie(MovieId),
-FOREIGN KEY(U_Id) REFERENCES User(MembershipId)
+FOREIGN KEY(movieId) REFERENCES Movie(movieId),
+FOREIGN KEY(membershipId) REFERENCES User(membershipId)
 );
 
 CREATE TABLE VideoLibrary.Admin
 (
-UserId VARCHAR(20),
-Password VARCHAR(20),
-FirstName VARCHAR(20),
-LastName VARCHAR(20),
-PRIMARY KEY (UserId)
+userId VARCHAR(20),
+password VARCHAR(32),
+firstName VARCHAR(20),
+lastName VARCHAR(20),
+PRIMARY KEY (userId)
 );
 
 CREATE TABLE VideoLibrary.Statement
 (
-StatementId INT NOT NULL AUTO_INCREMENT,
-StartDate TIMESTAMP ,
-EndDate TIMESTAMP ,
-U_Id INT NOT NULL,
-FOREIGN KEY(U_Id) REFERENCES User(MembershipId),
-PRIMARY KEY (StatementId)
+statementId INT NOT NULL AUTO_INCREMENT,
+month INT NOT NULL,
+year INT NOT NULL,
+membershipId INT NOT NULL,
+FOREIGN KEY(membershipId) REFERENCES User(membershipId),
+PRIMARY KEY (statementId)
 );
+
+CREATE TABLE VideoLibrary.StatementTransactions
+(
+statementId INT NOT NULL,
+transactionId INT NOT NULL,
+FOREIGN KEY(statementId) REFERENCES Statement(statementId),
+FOREIGN KEY(transactionId) REFERENCES PaymentTransaction(transactionId)
+);
+
+CREATE TABLE VideoLibrary.AmountDetails
+(
+membershipType VARCHAR(8),
+feesUpdateDate DATE,
+amount DOUBLE NOT NULL
+);
+
 
 
