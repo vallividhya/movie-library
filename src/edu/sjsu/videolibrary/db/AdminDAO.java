@@ -36,7 +36,13 @@ public class AdminDAO extends VideoLibraryDAO {
 				user.setState(result1.getString("State"));
 				user.setZip(result1.getString("Zip"));
 				user.setCreditCardNumber(result1.getString("CreditCardNumber"));
+				Date latestPaymentDate = result1.getDate("latestPaymentDate");
+				if(latestPaymentDate !=null){
 				user.setLatestPaymentDate(result1.getDate("latestPaymentDate").toString());
+				}
+				else{
+					user.setLatestPaymentDate(null);
+				}
 			}
 
 			String query2 = "select Movie.MovieName from VideoLibrary.RentMovieTransaction rm,VideoLibrary.Movie, VideoLibrary.PaymentTransaction pymnt "+
@@ -169,7 +175,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		String result = null;
 		try{
 			String query1 = "update VideoLibrary.Movie set movieName = '"+movieName+"',movieBanner = '"+movieBanner+"',releaseDate = '"+releaseDate+
-					"availableCopies = "+availableCopies+",categoryId = "+categoryId+ "where movieId = "+movieId;
+					"', availableCopies = "+availableCopies+",categoryId = "+categoryId+ " where movieId = "+movieId;
 
 			int rowcount = stmt.executeUpdate(query1);
 
