@@ -1,10 +1,13 @@
 package edu.sjsu.videolibrary.db;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -73,9 +76,9 @@ public class AdminDAO extends VideoLibraryDAO {
 
 		try{
 			double rentAmount = getRentAmountforMovie();
-			String query1 = "select Movie.MovieId,Movie.MovieName,Movie.MovieBanner,Movie.ReleaseDate, "+
-					" Movie.AvailableCopies,Category.CategoryName from VideoLibrary.Movie,VideoLibrary.Category" + 
-					" where Movie.MovieId = "+movieId+" and Movie.CategoryId = Category.CategoryId";
+			String query1 = "SELECT Movie.MovieId,Movie.MovieName,Movie.MovieBanner,Movie.ReleaseDate, "+
+					" Movie.AvailableCopies,Category.CategoryName FROM VideoLibrary.Movie,VideoLibrary.Category" + 
+					" WHERE Movie.MovieId = "+movieId+" AND Movie.CategoryId = Category.CategoryId";
 
 			ResultSet result1 = stmt.executeQuery(query1);
 			Movie movie = new Movie();
@@ -243,6 +246,80 @@ public class AdminDAO extends VideoLibraryDAO {
 			result = null;
 		}
 		return result;
+	}
+	
+	//Moved from UserDAO 
+	public String deleteUser (String userId) {
+		try {
+			String sql = "DELETE from user WHERE membershipId  = ?";
+
+			PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			pst.setString(1, userId); 
+			pst.execute();
+			ResultSet rs = pst.getGeneratedKeys();
+			if (rs.next())
+			{
+				Integer memID = rs.getInt(1);
+				return memID.toString();
+			}    
+		} catch (SQLException e) { e.printStackTrace(); } 
+		return "";		
+	}
+
+	public String deleteAdmin (String userId) {
+
+		//SuperAdmin should not be removed from the Database
+		if (!userId.equals("Admin")) {
+		//if (Integer.parseInt(userId) != 1) {	
+			try {
+				String sql = "DELETE FROM admin WHERE userId = " + userId;
+				System.out.println(sql);
+				//PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+				//pst.setString(1, userId); 
+				//pst.execute();
+				//ResultSet rs = pst.getGeneratedKeys();
+				int rowcount = stmt.executeUpdate(sql);
+				if (rowcount > 0) {
+					Integer memID = rs.getInt(1);
+					return memID.toString();
+				}    
+			} catch (SQLException e) { e.printStackTrace(); } 
+		} else { 
+
+		}
+		return "false";		
+	}
+	
+	
+	public List <User> listMembers (String type){		
+		//PreparedStatement preparedStmt = null;
+		List <User> members = new ArrayList<User>();
+		String query = ""; 
+
+		if (type.equals("all")) {
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user";
+		} else { 
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "'"; 
+		}
+		
+		try {
+			//preparedStmt = con.prepareStatement(query);
+			//System.out.println(preparedStmt.toString());
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				User member = new User();
+				member.setMembershipId(rs.getInt("membershipId"));
+				member.setUserId(rs.getString("userId"));
+				member.setFirstName(rs.getString("firstName"));
+				member.setLastName(rs.getString("lastName"));
+				members.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//User test = (User) members.toArray()[0];
+		//System.out.println(test.getFirstName());
+		return members;
 	}
 
 	
