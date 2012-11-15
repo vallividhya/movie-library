@@ -1,0 +1,5 @@
+# These files are not pulled by git #
+#####################################
+.classpath
+.project
+.settings
