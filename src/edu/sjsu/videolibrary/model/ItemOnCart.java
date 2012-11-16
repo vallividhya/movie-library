@@ -5,7 +5,14 @@ public class ItemOnCart {
 	private String movieName;
 	private String category;
 	private double rentAmount;
+	private String movieBanner;
 	
+	public String getMovieBanner() {
+		return movieBanner;
+	}
+	public void setMovieBanner(String movieBanner) {
+		this.movieBanner = movieBanner;
+	}
 	public int getMovieId() {
 		return movieId;
 	}

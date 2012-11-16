@@ -273,25 +273,25 @@ public class AdminDAO extends VideoLibraryDAO {
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
 		PaymentForPremiumMemInfo pymnt = new PaymentForPremiumMemInfo();
 		try{
-			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.transactionid "+
-					" not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
-
-			ResultSet result = stmt.executeQuery(query1);
-
-			if(result.next()){
-				Date paymentDate = result.getDate("rentDate");
-				if(paymentDate == null){
-					pymnt.setPaymentDate("None");				
-				}
-				else{
-					pymnt.setPaymentDate(paymentDate.toString());
-				}
-				pymnt.setMonthlyPaymentAmount(result.getDouble("totalDueAmount"));
-				pymnt.setPaymentStatus("Payment Received");
+			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.membershipId = '"+
+		membershipId+"' AND pymnt.transactionId not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
+		
+		ResultSet result = stmt.executeQuery(query1);
+		
+		if(result.next()){
+			Date paymentDate = result.getDate("rentDate");
+			if(paymentDate == null){
+				pymnt.setPaymentDate("None");				
 			}
 			else{
-				pymnt.setPaymentStatus("Payment not received");
+				pymnt.setPaymentDate(paymentDate.toString());
 			}
+			pymnt.setMonthlyPaymentAmount(result.getDouble("totalDueAmount"));
+			pymnt.setPaymentStatus("Payment Received");
+		}
+		else{
+			pymnt.setPaymentStatus("Payment not received");
+		}
 		}
 		catch(SQLException e){
 			e.getMessage();

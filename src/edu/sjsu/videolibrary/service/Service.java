@@ -31,11 +31,13 @@ public class Service {
 	MovieDAO movieDAO = new MovieDAO(); 
 	AdminDAO adminDAO  =new AdminDAO();
 
-	public boolean addItemsToCart(int membershipId, int movieId){
-		boolean isAddedToCart = false;
+	// Add movies to shopping cart	
+
+	public String addItemsToCart(int membershipId, int movieId){
+		String isAddedToCart = "false";
 		try {
 			cartDAO.addToCart(movieId, membershipId);
-			isAddedToCart = true;
+			isAddedToCart = "true";
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -43,11 +45,11 @@ public class Service {
 		return isAddedToCart;
 	}
 
-	public boolean deleteMovieFromCart (int movieId, int membershipId) {
-		boolean isDeletedFromCart = false;
+	public String deleteMovieFromCart (int movieId, int membershipId) {
+		String isDeletedFromCart = "false";
 		try {
 			cartDAO.deleteFromCart(movieId, membershipId);
-			isDeletedFromCart = true;
+			isDeletedFromCart = "true";
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -64,13 +66,14 @@ public class Service {
 		}
 		return cartItems;
 	}
+
 	public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
-	{
+			{
 		return userDAO.signUpUser(userId, password, memType,new java.sql.Date(System.currentTimeMillis()), 
 				firstName, lastName, address, city, state, zipCode, ccNumber, 
 				new java.sql.Date(System.currentTimeMillis()));
-	}
+			}
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
 		return userDAO.signUpAdmin(userId, password, firstName, lastName);
@@ -119,15 +122,15 @@ public class Service {
 	//Create and delete movie
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
-			String isCreated = "false";
-			try {
-				isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
-			} catch (Exception e) { 
-				System.out.println(e.getMessage());
-				e.printStackTrace();			
-			}		
-			return isCreated;
-		}
+		String isCreated = "false";
+		try {
+			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
+		} catch (Exception e) { 
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+		}		
+		return isCreated;
+	}
 
 	public String deleteMovie (String movieId) {
 		String isDeleted = "false"; 
@@ -191,17 +194,17 @@ public class Service {
 		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
 		return stmnt;
 	}
-	
+
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
 		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
 		return pymnt;
 	}
-	
+
 	public double getRentAmountforMovie(){
 		double movieRentAmount = adminDAO.getRentAmountforMovie();
 		return movieRentAmount;
 	}
-	
+
 	public double getMonthlyFeesForPremiumMember(){
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 		return monthlyFees;
