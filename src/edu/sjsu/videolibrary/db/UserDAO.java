@@ -111,7 +111,7 @@ public class UserDAO extends VideoLibraryDAO
 					trans.setReturnDate((returnDate).toString());
 				}
 				else{
-					trans.setReturnDate(null);					
+					trans.setReturnDate("Not Returned");					
 				}
 
 				ac.add(trans);
@@ -247,12 +247,13 @@ public class UserDAO extends VideoLibraryDAO
 
 
 			String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"+
-					"FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"+
-					"VideoLibrary.StatementTransactions,VideoLibrary.Statement WHERE StatementTransactions.transactionId = "+
-					"pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "+
-					"AND Statement.statementId = StatementTransactions.statementId AND month = "+month+"AND year = "+year;
+					" FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"+
+					" VideoLibrary.StatementTransactions,VideoLibrary.Statement WHERE StatementTransactions.transactionId = "+
+					" pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "+
+					" AND Statement.statementId = StatementTransactions.statementId AND month = "+month+" AND year = "+year+
+					" and Statement.membershipId = '"+membershipId+"'";
 			
-			System.out.println(query2); 
+		//	System.out.println(query2); 
 				
 
 			ResultSet result2 = stmt.executeQuery(query2);
@@ -264,13 +265,13 @@ public class UserDAO extends VideoLibraryDAO
 				stmnt.setRentDate(result2.getDate("rentDate").toString());
 				Date returnDate = result2.getDate("returnDate");
 				if (returnDate == null){
-					stmnt.setReturnDate(null);
+					stmnt.setReturnDate("Not returned");
 				}
 				else{
 					stmnt.setReturnDate(returnDate.toString());
 				}	
 				statementRows.add(stmnt);
-			}			
+			}
 		}
 		catch(SQLException e){
 			statementRows = null;
@@ -282,13 +283,5 @@ public class UserDAO extends VideoLibraryDAO
 		}
 		return statementRows;
 	}
-
-	public static void main (String [] args) {
-
-	}
-
-
-
-
 }
 

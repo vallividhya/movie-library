@@ -7,7 +7,7 @@ public class StatementInfo {
 	private String rentDate;
 	private String returnDate;
 	private String totalDueAmount;
-	private String monthlyPayment;
+	
 
 	public String getMovieId() {
 		return movieId;
@@ -36,15 +36,10 @@ public class StatementInfo {
 	public String getTotalDueAmount() {
 		return totalDueAmount;
 	}
-	public void setTotalDueAmount(String rentAmount) {
+	public void setTotalDueAmount(String totalDueAmount) {
 		this.totalDueAmount = totalDueAmount;
 	}
-	public String getMonthlyPayment() {
-		return monthlyPayment;
-	}
-	public void setMonthlyPayment(String monthlyPayment) {
-		this.monthlyPayment = monthlyPayment;
-	}
+
 
 
 }

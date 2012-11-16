@@ -34,83 +34,107 @@
   <ns1:operation name="viewCart" qname="ns3:viewCart" returnQName="ns3:viewCartReturn" returnType="ns4:ItemOnCart" soapAction="" xmlns:ns3="http://service.videolibrary.sjsu.edu" xmlns:ns4="http://model.videolibrary.sjsu.edu">
    <ns1:parameter qname="ns3:membershipId" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="signUpAdmin" qname="ns5:signUpAdmin" returnQName="ns5:signUpAdminReturn" returnType="xsd:string" soapAction="" xmlns:ns5="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="signUpUser" qname="ns5:signUpUser" returnQName="ns5:signUpUserReturn" returnType="xsd:string" soapAction="" xmlns:ns5="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns5:userId" type="xsd:string"/>
    <ns1:parameter qname="ns5:password" type="xsd:string"/>
+   <ns1:parameter qname="ns5:memType" type="xsd:string"/>
    <ns1:parameter qname="ns5:firstName" type="xsd:string"/>
    <ns1:parameter qname="ns5:lastName" type="xsd:string"/>
+   <ns1:parameter qname="ns5:address" type="xsd:string"/>
+   <ns1:parameter qname="ns5:city" type="xsd:string"/>
+   <ns1:parameter qname="ns5:state" type="xsd:string"/>
+   <ns1:parameter qname="ns5:zipCode" type="xsd:string"/>
+   <ns1:parameter qname="ns5:ccNumber" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="signInUser" qname="ns6:signInUser" returnQName="ns6:signInUserReturn" returnType="xsd:string" soapAction="" xmlns:ns6="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="signUpAdmin" qname="ns6:signUpAdmin" returnQName="ns6:signUpAdminReturn" returnType="xsd:string" soapAction="" xmlns:ns6="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns6:userId" type="xsd:string"/>
    <ns1:parameter qname="ns6:password" type="xsd:string"/>
+   <ns1:parameter qname="ns6:firstName" type="xsd:string"/>
+   <ns1:parameter qname="ns6:lastName" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="signInAdmin" qname="ns7:signInAdmin" returnQName="ns7:signInAdminReturn" returnType="xsd:string" soapAction="" xmlns:ns7="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="signInUser" qname="ns7:signInUser" returnQName="ns7:signInUserReturn" returnType="xsd:string" soapAction="" xmlns:ns7="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns7:userId" type="xsd:string"/>
    <ns1:parameter qname="ns7:password" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="viewMembers" qname="ns8:viewMembers" returnQName="ns8:viewMembersReturn" returnType="ns9:User" soapAction="" xmlns:ns8="http://service.videolibrary.sjsu.edu" xmlns:ns9="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns8:type" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="signInAdmin" qname="ns8:signInAdmin" returnQName="ns8:signInAdminReturn" returnType="xsd:string" soapAction="" xmlns:ns8="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns8:userId" type="xsd:string"/>
+   <ns1:parameter qname="ns8:password" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="deleteUserAccount" qname="ns10:deleteUserAccount" returnQName="ns10:deleteUserAccountReturn" returnType="xsd:string" soapAction="" xmlns:ns10="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns10:userId" type="xsd:string"/>
+  <ns1:operation name="viewMembers" qname="ns9:viewMembers" returnQName="ns9:viewMembersReturn" returnType="ns10:User" soapAction="" xmlns:ns10="http://model.videolibrary.sjsu.edu" xmlns:ns9="http://service.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns9:type" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="deleteAdminAccount" qname="ns11:deleteAdminAccount" returnQName="ns11:deleteAdminAccountReturn" returnType="xsd:string" soapAction="" xmlns:ns11="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="deleteUserAccount" qname="ns11:deleteUserAccount" returnQName="ns11:deleteUserAccountReturn" returnType="xsd:string" soapAction="" xmlns:ns11="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns11:userId" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="deleteMovie" qname="ns12:deleteMovie" returnQName="ns12:deleteMovieReturn" returnType="xsd:string" soapAction="" xmlns:ns12="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns12:movieId" type="xsd:string"/>
+  <ns1:operation name="deleteAdminAccount" qname="ns12:deleteAdminAccount" returnQName="ns12:deleteAdminAccountReturn" returnType="xsd:string" soapAction="" xmlns:ns12="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns12:userId" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="displayUserInformation" qname="ns13:displayUserInformation" returnQName="ns13:displayUserInformationReturn" returnType="ns14:User" soapAction="" xmlns:ns13="http://service.videolibrary.sjsu.edu" xmlns:ns14="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns13:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="createNewMovie" qname="ns13:createNewMovie" returnQName="ns13:createNewMovieReturn" returnType="xsd:string" soapAction="" xmlns:ns13="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns13:movieName" type="xsd:string"/>
+   <ns1:parameter qname="ns13:movieBanner" type="xsd:string"/>
+   <ns1:parameter qname="ns13:releaseDate" type="xsd:string"/>
+   <ns1:parameter qname="ns13:availableCopies" type="xsd:int"/>
+   <ns1:parameter qname="ns13:categoryId" type="xsd:int"/>
   </ns1:operation>
-  <ns1:operation name="displayMovieInformation" qname="ns15:displayMovieInformation" returnQName="ns15:displayMovieInformationReturn" returnType="ns16:Movie" soapAction="" xmlns:ns15="http://service.videolibrary.sjsu.edu" xmlns:ns16="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns15:movieId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="deleteMovie" qname="ns14:deleteMovie" returnQName="ns14:deleteMovieReturn" returnType="xsd:string" soapAction="" xmlns:ns14="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns14:movieId" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="viewAccountTransactions" qname="ns17:viewAccountTransactions" returnQName="ns17:viewAccountTransactionsReturn" returnType="ns18:Transaction" soapAction="" xmlns:ns17="http://service.videolibrary.sjsu.edu" xmlns:ns18="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns17:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="displayUserInformation" qname="ns15:displayUserInformation" returnQName="ns15:displayUserInformationReturn" returnType="ns16:User" soapAction="" xmlns:ns15="http://service.videolibrary.sjsu.edu" xmlns:ns16="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns15:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="makeMonthlyPayment" qname="ns19:makeMonthlyPayment" returnQName="ns19:makeMonthlyPaymentReturn" returnType="xsd:string" soapAction="" xmlns:ns19="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns19:membershipId" type="xsd:string"/>
+  <ns1:operation name="displayMovieInformation" qname="ns17:displayMovieInformation" returnQName="ns17:displayMovieInformationReturn" returnType="ns18:Movie" soapAction="" xmlns:ns17="http://service.videolibrary.sjsu.edu" xmlns:ns18="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns17:movieId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="updateUserInfo" qname="ns20:updateUserInfo" returnQName="ns20:updateUserInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns20="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns20:membershipId" type="xsd:string"/>
-   <ns1:parameter qname="ns20:userId" type="xsd:string"/>
-   <ns1:parameter qname="ns20:firstName" type="xsd:string"/>
-   <ns1:parameter qname="ns20:lastName" type="xsd:string"/>
-   <ns1:parameter qname="ns20:address" type="xsd:string"/>
-   <ns1:parameter qname="ns20:city" type="xsd:string"/>
-   <ns1:parameter qname="ns20:state" type="xsd:string"/>
-   <ns1:parameter qname="ns20:zipCode" type="xsd:string"/>
-   <ns1:parameter qname="ns20:membershipType" type="xsd:string"/>
-   <ns1:parameter qname="ns20:creditCardNumber" type="xsd:string"/>
+  <ns1:operation name="viewAccountTransactions" qname="ns19:viewAccountTransactions" returnQName="ns19:viewAccountTransactionsReturn" returnType="ns20:Transaction" soapAction="" xmlns:ns19="http://service.videolibrary.sjsu.edu" xmlns:ns20="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns19:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="updatePassword" qname="ns21:updatePassword" returnQName="ns21:updatePasswordReturn" returnType="xsd:string" soapAction="" xmlns:ns21="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="makeMonthlyPayment" qname="ns21:makeMonthlyPayment" returnQName="ns21:makeMonthlyPaymentReturn" returnType="xsd:string" soapAction="" xmlns:ns21="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns21:membershipId" type="xsd:string"/>
-   <ns1:parameter qname="ns21:oldPassword" type="xsd:string"/>
-   <ns1:parameter qname="ns21:newPassword" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="updateMovieInfo" qname="ns22:updateMovieInfo" returnQName="ns22:updateMovieInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns22="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns22:movieId" type="xsd:string"/>
-   <ns1:parameter qname="ns22:movieName" type="xsd:string"/>
-   <ns1:parameter qname="ns22:movieBanner" type="xsd:string"/>
-   <ns1:parameter qname="ns22:releaseDate" type="xsd:string"/>
-   <ns1:parameter qname="ns22:availableCopies" type="xsd:int"/>
-   <ns1:parameter qname="ns22:rentAmount" type="xsd:double"/>
-   <ns1:parameter qname="ns22:categoryId" type="xsd:int"/>
+  <ns1:operation name="updateUserInfo" qname="ns22:updateUserInfo" returnQName="ns22:updateUserInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns22="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns22:membershipId" type="xsd:string"/>
+   <ns1:parameter qname="ns22:userId" type="xsd:string"/>
+   <ns1:parameter qname="ns22:firstName" type="xsd:string"/>
+   <ns1:parameter qname="ns22:lastName" type="xsd:string"/>
+   <ns1:parameter qname="ns22:address" type="xsd:string"/>
+   <ns1:parameter qname="ns22:city" type="xsd:string"/>
+   <ns1:parameter qname="ns22:state" type="xsd:string"/>
+   <ns1:parameter qname="ns22:zipCode" type="xsd:string"/>
+   <ns1:parameter qname="ns22:membershipType" type="xsd:string"/>
+   <ns1:parameter qname="ns22:creditCardNumber" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="generateMonthlyStatement" qname="ns23:generateMonthlyStatement" returnQName="ns23:generateMonthlyStatementReturn" returnType="xsd:string" soapAction="" xmlns:ns23="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ns1:operation name="updatePassword" qname="ns23:updatePassword" returnQName="ns23:updatePasswordReturn" returnType="xsd:string" soapAction="" xmlns:ns23="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns23:membershipId" type="xsd:string"/>
-   <ns1:parameter qname="ns23:month" type="xsd:int"/>
-   <ns1:parameter qname="ns23:year" type="xsd:int"/>
+   <ns1:parameter qname="ns23:oldPassword" type="xsd:string"/>
+   <ns1:parameter qname="ns23:newPassword" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="viewStatement" qname="ns24:viewStatement" returnQName="ns24:viewStatementReturn" returnType="ns25:StatementInfo" soapAction="" xmlns:ns24="http://service.videolibrary.sjsu.edu" xmlns:ns25="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns24:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns24:month" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns24:year" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="updateMovieInfo" qname="ns24:updateMovieInfo" returnQName="ns24:updateMovieInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns24="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns24:movieId" type="xsd:string"/>
+   <ns1:parameter qname="ns24:movieName" type="xsd:string"/>
+   <ns1:parameter qname="ns24:movieBanner" type="xsd:string"/>
+   <ns1:parameter qname="ns24:releaseDate" type="xsd:string"/>
+   <ns1:parameter qname="ns24:availableCopies" type="xsd:int"/>
+   <ns1:parameter qname="ns24:rentAmount" type="xsd:double"/>
+   <ns1:parameter qname="ns24:categoryId" type="xsd:int"/>
   </ns1:operation>
-  <ns1:operation name="getRentAmountforMovie" qname="ns26:getRentAmountforMovie" returnQName="ns26:getRentAmountforMovieReturn" returnType="xsd:double" soapAction="" xmlns:ns26="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-  <ns1:operation name="getMonthlyFeesForPremiumMember" qname="ns27:getMonthlyFeesForPremiumMember" returnQName="ns27:getMonthlyFeesForPremiumMemberReturn" returnType="xsd:double" soapAction="" xmlns:ns27="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-  <ns1:parameter name="allowedMethods" value="addItemsToCart getMonthlyFeesForPremiumMember updateMovieInfo signInUser getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation generateMonthlyStatement viewStatement viewAccountTransactions signInAdmin updatePassword displayMovieInformation viewMembers deleteUserAccount viewCart updateUserInfo deleteMovie"/>
+  <ns1:operation name="generateMonthlyStatement" qname="ns25:generateMonthlyStatement" returnQName="ns25:generateMonthlyStatementReturn" returnType="xsd:string" soapAction="" xmlns:ns25="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns25:membershipId" type="xsd:string"/>
+   <ns1:parameter qname="ns25:month" type="xsd:int"/>
+   <ns1:parameter qname="ns25:year" type="xsd:int"/>
+  </ns1:operation>
+  <ns1:operation name="viewStatement" qname="ns26:viewStatement" returnQName="ns26:viewStatementReturn" returnType="ns27:StatementInfo" soapAction="" xmlns:ns26="http://service.videolibrary.sjsu.edu" xmlns:ns27="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns26:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns26:month" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns26:year" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  </ns1:operation>
+  <ns1:operation name="generateMonthlyBillForPremiumMember" qname="ns28:generateMonthlyBillForPremiumMember" returnQName="ns28:generateMonthlyBillForPremiumMemberReturn" returnType="ns29:PaymentForPremiumMemInfo" soapAction="" xmlns:ns28="http://service.videolibrary.sjsu.edu" xmlns:ns29="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns28:membershipId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns28:month" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns28:year" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  </ns1:operation>
+  <ns1:operation name="getRentAmountforMovie" qname="ns30:getRentAmountforMovie" returnQName="ns30:getRentAmountforMovieReturn" returnType="xsd:double" soapAction="" xmlns:ns30="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="getMonthlyFeesForPremiumMember" qname="ns31:getMonthlyFeesForPremiumMember" returnQName="ns31:getMonthlyFeesForPremiumMemberReturn" returnType="xsd:double" soapAction="" xmlns:ns31="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:parameter name="allowedMethods" value="addItemsToCart getMonthlyFeesForPremiumMember updateMovieInfo signInUser generateMonthlyBillForPremiumMember getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpUser signUpAdmin deleteAdminAccount displayUserInformation createNewMovie generateMonthlyStatement viewStatement viewAccountTransactions signInAdmin updatePassword displayMovieInformation viewMembers deleteUserAccount viewCart updateUserInfo deleteMovie"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="wsdlPortType" value="Service"/>
   <ns1:parameter name="className" value="edu.sjsu.videolibrary.service.Service"/>
@@ -118,12 +142,13 @@
   <ns1:parameter name="schemaQualified" value="http://model.videolibrary.sjsu.edu,http://service.videolibrary.sjsu.edu"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://service.videolibrary.sjsu.edu"/>
   <ns1:parameter name="wsdlServiceElement" value="ServiceService"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns28:User" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.User" xmlns:ns28="http://model.videolibrary.sjsu.edu"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns29:ItemOnCart" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.ItemOnCart" xmlns:ns29="http://model.videolibrary.sjsu.edu"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns30:StatementInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.StatementInfo" xmlns:ns30="http://model.videolibrary.sjsu.edu"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns31:Transaction" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.Transaction" xmlns:ns31="http://model.videolibrary.sjsu.edu"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns32:Movie" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.Movie" xmlns:ns32="http://model.videolibrary.sjsu.edu"/>
-  <ns1:arrayMapping innerType="xsd:string" languageSpecificType="java:java.lang.String[]" qname="ns33:ArrayOf_xsd_string" xmlns:ns33="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns32:User" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.User" xmlns:ns32="http://model.videolibrary.sjsu.edu"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns33:ItemOnCart" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.ItemOnCart" xmlns:ns33="http://model.videolibrary.sjsu.edu"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns34:StatementInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.StatementInfo" xmlns:ns34="http://model.videolibrary.sjsu.edu"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns35:Transaction" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.Transaction" xmlns:ns35="http://model.videolibrary.sjsu.edu"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns36:Movie" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.Movie" xmlns:ns36="http://model.videolibrary.sjsu.edu"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns37:PaymentForPremiumMemInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo" xmlns:ns37="http://model.videolibrary.sjsu.edu"/>
+  <ns1:arrayMapping innerType="xsd:string" languageSpecificType="java:java.lang.String[]" qname="ns38:ArrayOf_xsd_string" xmlns:ns38="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
  </ns1:service>
  <ns1:service name="AdminService" provider="java:MSG">
   <ns1:parameter name="allowedMethods" value="AdminService"/>

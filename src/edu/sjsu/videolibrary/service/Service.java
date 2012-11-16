@@ -12,6 +12,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
@@ -83,10 +84,9 @@ public class Service {
 		return userDAO.signInAdmin(userId, password);
 	}
 
-
 	//List members
 	public User [] viewMembers (String type){		
-		List <User> memberList = userDAO.listMembers(type);
+		List <User> memberList = adminDAO.listMembers(type);
 		User [] members = (User[]) memberList.toArray();
 		return members;
 
@@ -96,7 +96,7 @@ public class Service {
 	public String deleteUserAccount (String userId) {
 		String isDeleted = "false"; 
 		try {
-			isDeleted = userDAO.deleteUser(userId);
+			isDeleted = adminDAO.deleteUser(userId);
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
@@ -107,7 +107,7 @@ public class Service {
 	public String deleteAdminAccount (String userId) {
 		String isDeleted = "false"; 
 		try {
-			isDeleted = userDAO.deleteAdmin(userId);
+			isDeleted = adminDAO.deleteAdmin(userId);
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
@@ -177,13 +177,24 @@ public class Service {
 	}
 
 	public String generateMonthlyStatement(String membershipId,int month,int year){
-		String result = adminDAO.generateMonthlyStatement(membershipId, month, year);
+		String result = null;
+		try {
+			result = adminDAO.generateMonthlyStatement(membershipId, month, year);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 
 	public StatementInfo[] viewStatement(String membershipId,int month,int year){
 		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
 		return stmnt;
+	}
+	
+	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
+		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
+		return pymnt;
 	}
 	
 	public double getRentAmountforMovie(){

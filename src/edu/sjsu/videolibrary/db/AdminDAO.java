@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 
@@ -41,7 +42,7 @@ public class AdminDAO extends VideoLibraryDAO {
 				user.setCreditCardNumber(result1.getString("CreditCardNumber"));
 				Date latestPaymentDate = result1.getDate("latestPaymentDate");
 				if(latestPaymentDate !=null){
-				user.setLatestPaymentDate(result1.getDate("latestPaymentDate").toString());
+					user.setLatestPaymentDate(result1.getDate("latestPaymentDate").toString());
 				}
 				else{
 					user.setLatestPaymentDate(null);
@@ -156,7 +157,7 @@ public class AdminDAO extends VideoLibraryDAO {
 			String query1 = "select amount from VideoLibrary.AmountDetails where membershipType = 'premium' "+
 					"order by feesUpdateDate desc limit 1";
 
-					ResultSet result1 = stmt.executeQuery(query1);
+			ResultSet result1 = stmt.executeQuery(query1);
 
 			while(result1.next()){
 				monthlyFees = result1.getDouble("amount");
@@ -202,13 +203,15 @@ public class AdminDAO extends VideoLibraryDAO {
 		return result;
 	}
 
-	public String generateMonthlyStatement(String membershipId,int month,int year){
+	public String generateMonthlyStatement(String membershipId,int month,int year) throws SQLException{
 		String result = null;
 		int statementId = 0;
-		try{
+		boolean processComplete = false;
+		try {
+			con.setAutoCommit(false);
 			String query1 = "select pymnt.transactionId from VideoLibrary.PaymentTransaction pymnt "+
 					" where extract(month from pymnt.rentDate) = "+month+" and extract(year from pymnt.rentDate) = "+year+
-					" and pymnt.membershipId = "+membershipId;
+					" and pymnt.membershipId = '"+membershipId+"'";
 
 			ResultSet result1 = stmt.executeQuery(query1);
 			LinkedList<Integer> listOfTransId = new LinkedList<Integer>();
@@ -220,7 +223,8 @@ public class AdminDAO extends VideoLibraryDAO {
 			int rowCount = stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
 			if(rowCount>0){
 				ResultSet result2 = stmt.getGeneratedKeys();
-				statementId = result2.getInt("statementId");
+				result2.next();
+				statementId = result2.getInt(1);
 			}
 			else{
 				result = null;
@@ -235,19 +239,19 @@ public class AdminDAO extends VideoLibraryDAO {
 					return result;
 				}
 			}
-			result = "true";
+			processComplete = true;
+		} finally {
+			if ( processComplete ) {
+				con.commit();
+			} else {
+				con.rollback();
+			}
+			con.setAutoCommit(true);
 		}
-		catch(SQLException e){
-			e.getMessage();
-			result = "false";
-		}
-		catch(Exception e){
-			e.getMessage();
-			result = null;
-		}
+		result = "true";
 		return result;
 	}
-	
+
 	//Moved from UserDAO 
 	public String deleteUser (String userId) {
 		try {
@@ -266,11 +270,45 @@ public class AdminDAO extends VideoLibraryDAO {
 		return "";		
 	}
 
+	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
+		PaymentForPremiumMemInfo pymnt = new PaymentForPremiumMemInfo();
+		try{
+			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.transactionid "+
+					" not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
+
+			ResultSet result = stmt.executeQuery(query1);
+
+			if(result.next()){
+				Date paymentDate = result.getDate("rentDate");
+				if(paymentDate == null){
+					pymnt.setPaymentDate("None");				
+				}
+				else{
+					pymnt.setPaymentDate(paymentDate.toString());
+				}
+				pymnt.setMonthlyPaymentAmount(result.getDouble("totalDueAmount"));
+				pymnt.setPaymentStatus("Payment Received");
+			}
+			else{
+				pymnt.setPaymentStatus("Payment not received");
+			}
+		}
+		catch(SQLException e){
+			e.getMessage();
+			pymnt = null;
+		}
+		catch(Exception e){
+			e.getMessage();
+			pymnt = null;
+		}
+		return pymnt;
+	}
+
 	public String deleteAdmin (String userId) {
 
 		//SuperAdmin should not be removed from the Database
 		if (!userId.equals("Admin")) {
-		//if (Integer.parseInt(userId) != 1) {	
+			//if (Integer.parseInt(userId) != 1) {	
 			try {
 				String sql = "DELETE FROM admin WHERE userId = " + userId;
 				System.out.println(sql);
@@ -289,8 +327,8 @@ public class AdminDAO extends VideoLibraryDAO {
 		}
 		return "false";		
 	}
-	
-	
+
+
 	public List <User> listMembers (String type){		
 		//PreparedStatement preparedStmt = null;
 		List <User> members = new ArrayList<User>();
@@ -301,7 +339,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		} else { 
 			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "'"; 
 		}
-		
+
 		try {
 			//preparedStmt = con.prepareStatement(query);
 			//System.out.println(preparedStmt.toString());
@@ -322,5 +360,5 @@ public class AdminDAO extends VideoLibraryDAO {
 		return members;
 	}
 
-	
+
 }
