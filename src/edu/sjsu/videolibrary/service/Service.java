@@ -86,6 +86,11 @@ public class Service {
 	{
 		return userDAO.signInAdmin(userId, password);
 	}
+	
+	public String [] getStates () { 
+		States states = new States();
+		return states.getStates();
+	}
 
 	//List members
 	public User [] viewMembers (String type){		
@@ -94,7 +99,20 @@ public class Service {
 		return members;
 
 	}
+	
+	//List movies
+	public Movie [] viewMovies (String category){		
+		List <Movie> movielist = userDAO.listMovies(category);
+		Movie [] movies = movielist.toArray(new Movie[0]);
+		return movies;
+	}	
 
+	public Admin [] viewAdmins () {		
+		List <Admin> memberList = adminDAO.listAdmins();
+		Admin [] admins = memberList.toArray(new Admin[0]);
+		return admins;
+	}
+	
 	//Delete an user and admin account
 	public String deleteUserAccount (String userId) {
 		String isDeleted = "false"; 
@@ -142,7 +160,7 @@ public class Service {
 		}
 		return isDeleted; 
 	}
-
+	
 	public User displayUserInformation (String membershipId){
 		User user = adminDAO.displayUserInformation(membershipId);
 		return user;
@@ -169,6 +187,11 @@ public class Service {
 		return result;
 	}
 
+	public String updateUserPassword (String membershipId, String newPassword) {
+		String result = adminDAO.updateUserPassword(membershipId, newPassword);
+		return result;		
+	}
+	
 	public String updatePassword(String membershipId,String oldPassword,String newPassword){
 		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
 		return result;
