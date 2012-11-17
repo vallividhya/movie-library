@@ -85,7 +85,7 @@ public class UserDAO extends VideoLibraryDAO
 		return "d";     
 	}
 
-	public LinkedList<Transaction> viewAccountTransactions(String membershipId){
+	public LinkedList<Transaction> viewAccountTransactions(int membershipId){
 		LinkedList<Transaction> ac = new LinkedList<Transaction>();
 		try{
 			String query1 = "select Movie.MovieName,pymnt.RentDate,rnt.ReturnDate,User.MembershipType from "+ 
@@ -128,7 +128,7 @@ public class UserDAO extends VideoLibraryDAO
 		return ac;
 	}
 
-	public String makeMonthlyPayment(String membershipId){
+	public String makeMonthlyPayment(int membershipId){
 		String result = null;
 		try{
 			String query1 = "UPDATE VideoLibrary.User SET latestPaymentDate = NOW() "+
@@ -168,7 +168,7 @@ public class UserDAO extends VideoLibraryDAO
 	}
 
 
-	public String updateUserInfo(String membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
+	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
 
 		String result = null;
 		try{
@@ -201,7 +201,7 @@ public class UserDAO extends VideoLibraryDAO
 
 	}
 
-	public String updatePassword(String membershipId,String oldPassword,String newPassword){
+	public String updatePassword(int membershipId,String oldPassword,String newPassword){
 		String result =null;
 
 		try{
@@ -230,7 +230,7 @@ public class UserDAO extends VideoLibraryDAO
 		return result;		
 	}
 
-	public LinkedList<StatementInfo> viewStatement (String membershipId,int month,int year){
+	public LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year){
 		LinkedList<StatementInfo> statementRows = new LinkedList<StatementInfo>();
 
 		try{    
@@ -251,7 +251,7 @@ public class UserDAO extends VideoLibraryDAO
 					" VideoLibrary.StatementTransactions,VideoLibrary.Statement WHERE StatementTransactions.transactionId = "+
 					" pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "+
 					" AND Statement.statementId = StatementTransactions.statementId AND month = "+month+" AND year = "+year+
-					" and Statement.membershipId = '"+membershipId+"'";
+					" and Statement.membershipId = "+membershipId;
 			
 		//	System.out.println(query2); 
 				

@@ -16,7 +16,7 @@ import edu.sjsu.videolibrary.model.User;
 
 public class AdminDAO extends VideoLibraryDAO {
 
-	public User displayUserInformation (String membershipId){
+	public User displayUserInformation (int membershipId){
 
 		try{
 
@@ -73,7 +73,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		}
 	}
 
-	public Movie displayMovieInformation (String movieId){
+	public Movie displayMovieInformation (int movieId){
 
 		try{
 			double rentAmount = getRentAmountforMovie();
@@ -175,7 +175,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		return monthlyFees;
 	}
 
-	public String updateMovieInfo(String movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
+	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
 		String result = null;
 		try{
 			String query1 = "update VideoLibrary.Movie set movieName = '"+movieName+"',movieBanner = '"+movieBanner+"',releaseDate = '"+releaseDate+
@@ -203,7 +203,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		return result;
 	}
 
-	public String generateMonthlyStatement(String membershipId,int month,int year) throws SQLException{
+	public String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException{
 		String result = null;
 		int statementId = 0;
 		boolean processComplete = false;
@@ -211,7 +211,7 @@ public class AdminDAO extends VideoLibraryDAO {
 			con.setAutoCommit(false);
 			String query1 = "select pymnt.transactionId from VideoLibrary.PaymentTransaction pymnt "+
 					" where extract(month from pymnt.rentDate) = "+month+" and extract(year from pymnt.rentDate) = "+year+
-					" and pymnt.membershipId = '"+membershipId+"'";
+					" and pymnt.membershipId = "+membershipId;
 
 			ResultSet result1 = stmt.executeQuery(query1);
 			LinkedList<Integer> listOfTransId = new LinkedList<Integer>();
@@ -270,11 +270,11 @@ public class AdminDAO extends VideoLibraryDAO {
 		return "";		
 	}
 
-	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
+	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
 		PaymentForPremiumMemInfo pymnt = new PaymentForPremiumMemInfo();
 		try{
-			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.membershipId = '"+
-		membershipId+"' AND pymnt.transactionId not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
+			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.membershipId = "+
+		membershipId+" AND pymnt.transactionId not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
 		
 		ResultSet result = stmt.executeQuery(query1);
 		

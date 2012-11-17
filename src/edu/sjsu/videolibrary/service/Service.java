@@ -143,43 +143,43 @@ public class Service {
 		return isDeleted; 
 	}
 
-	public User displayUserInformation (String membershipId){
+	public User displayUserInformation (int membershipId){
 		User user = adminDAO.displayUserInformation(membershipId);
 		return user;
 	}
 
-	public Movie displayMovieInformation (String movieId){
+	public Movie displayMovieInformation (int movieId){
 		Movie movie = adminDAO.displayMovieInformation(movieId);
 		return movie;
 	}
 
-	public Transaction[] viewAccountTransactions(String membershipId){
+	public Transaction[] viewAccountTransactions(int membershipId){
 		LinkedList<Transaction> ac = userDAO.viewAccountTransactions(membershipId);
 		Transaction[] trans = ac.toArray(new Transaction[0]);
 		return trans;
 	}
 
-	public String makeMonthlyPayment(String membershipId){
+	public String makeMonthlyPayment(int membershipId){
 		String result = userDAO.makeMonthlyPayment(membershipId);
 		return result;
 	}
 
-	public String updateUserInfo(String membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
+	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
 		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
 		return result;
 	}
 
-	public String updatePassword(String membershipId,String oldPassword,String newPassword){
+	public String updatePassword(int membershipId,String oldPassword,String newPassword){
 		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
 		return result;
 	}
 
-	public String updateMovieInfo(String movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
+	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		return result;
 	}
 
-	public String generateMonthlyStatement(String membershipId,int month,int year){
+	public String generateMonthlyStatement(int membershipId,int month,int year){
 		String result = null;
 		try {
 			result = adminDAO.generateMonthlyStatement(membershipId, month, year);
@@ -190,12 +190,12 @@ public class Service {
 		return result;
 	}
 
-	public StatementInfo[] viewStatement(String membershipId,int month,int year){
+	public StatementInfo[] viewStatement(int membershipId,int month,int year){
 		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
 		return stmnt;
 	}
 
-	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(String membershipId,int month,int year){
+	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
 		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
 		return pymnt;
 	}

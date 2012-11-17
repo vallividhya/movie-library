@@ -60,7 +60,7 @@ public class Test {
 //			e.printStackTrace();
 //		}
 		
-		LinkedList<StatementInfo> st = userDAO.viewStatement("2",11,2012);
+		LinkedList<StatementInfo> st = userDAO.viewStatement(2,11,2012);
 		if(st != null && st.size() !=0){
 			for(StatementInfo s:st){
 				System.out.print(s.getMovieName()+"		");
