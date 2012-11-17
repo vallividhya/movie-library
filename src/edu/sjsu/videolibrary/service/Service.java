@@ -209,5 +209,77 @@ public class Service {
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 		return monthlyFees;
 	}
+	
+	//List categories on home page
+		public String[] listCategories(){
+			String[] categoryName = movieDAO.listCategories();
+			return categoryName;
+		}
+		
+		//List movies by chosen category
+		public Movie[] listMoviesByCategory(String categoryName){
+			Movie[] array = movieDAO.listMoviesByCategory(categoryName);
+			return array;
+		}
+		
+		//Display all Movies
+		public Movie[] listAllMovies(){
+			Movie[] array = movieDAO.listAllMovies();
+			return array;
+		}
+		
+		//search movies by name
+		public Movie[] searchByName(String userInput){
+			Movie[] array=movieDAO.searchByName(userInput);
+			return array;
+		}
+		
+		//search movies by banner
+		public Movie[] searchByMovieBanner(String userInput){
+			Movie[] array=movieDAO.searchByMovieBanner(userInput);
+			return array;
+		}
+		
+		//search movies by release date
+		public Movie[] searchByReleaseDate(String userInput){
+			Movie[] array=movieDAO.searchByReleaseDate(userInput);
+			return array;
+		}
+		
+		//search user by first name
+		public User[] searchUserByFirstName(String adminInput){
+			User[] array=adminDAO.searchUserByFirstName(adminInput);
+			return array;
+		}
+		
+		//search user by last name
+		public User[] searchUserByLastName(String adminInput){
+			User[] array=adminDAO.searchUserByLastName(adminInput);
+			return array;
+		}
+		
+		//search user by city
+		public User[] searchUserByCity(String adminInput){
+			User[] array = adminDAO.searchUserByCity(adminInput);
+			return array;
+		}
+		
+		//search user by state
+		public User[] searchUserByState(String adminInput){
+			User[] array = adminDAO.searchUserByState(adminInput);
+			return array;
+		}
+		
+		//search user by membership type
+		public User[] searchUserByMemberShipType(String adminInput){
+			User[] array = adminDAO.searchUserByMemberShipType(adminInput);
+			return array;
+		}
+		
+		//search user by member id
+		public User[] searchUserByMembershipId(int adminInput){
+			User[] array = adminDAO.searchUserByMembershipId(adminInput);
+			return array;
+		}
 
 }
