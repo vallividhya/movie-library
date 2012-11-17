@@ -61,4 +61,43 @@ public class CartDAO extends VideoLibraryDAO {
 		}
 		return cartItems;
 	}
+	
+	public void recordPaymentTransaction (double totalAmount, int membershipId) {
+		PreparedStatement preparedStmt = null;
+		String query = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), ?, ?)";
+		try {
+			preparedStmt = con.prepareStatement(query);
+			preparedStmt.setDouble(1, totalAmount);
+			preparedStmt.setInt(2, membershipId);
+			preparedStmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void recordMovieTransaction(int movieId, int transactionId) {
+		PreparedStatement preparedStmt = null;
+		String query = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES (?, ?)";
+		try {
+			preparedStmt = con.prepareStatement(query);
+			preparedStmt.setInt(1, movieId);
+			preparedStmt.setInt(2, transactionId);
+			preparedStmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateReturnDate(int movieId, int transactionId) {
+		PreparedStatement preparedStmt = null;
+		String query = "UPDATE videolibrary.rentmovietransaction SET returnDate = NOW() WHERE movieId = ? AND transactionId = ?";
+		try {
+			preparedStmt = con.prepareStatement(query);
+			preparedStmt.setInt(1, movieId);
+			preparedStmt.setInt(2, transactionId);
+			preparedStmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
