@@ -74,18 +74,22 @@ public class Service {
 				firstName, lastName, address, city, state, zipCode, ccNumber, 
 				new java.sql.Date(System.currentTimeMillis()));
 			}
+
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
-		return userDAO.signUpAdmin(userId, password, firstName, lastName);
+		return adminDAO.signUpAdmin(userId, password, firstName, lastName);
 	}
 	public String signInUser(String userId, String password) throws SQLException
 	{
 		return userDAO.signInUser(userId, password);
 	}
-	public String signInAdmin(String userId, String password) throws SQLException
+	
+	public Admin signInAdmin(String userId, String password) throws SQLException
 	{
-		return userDAO.signInAdmin(userId, password);
+		System.out.println("Service called " + userId + ", " + password);
+		return adminDAO.signInAdminB(userId, password);
 	}
+	
 	
 	public String [] getStates () { 
 		States states = new States();
