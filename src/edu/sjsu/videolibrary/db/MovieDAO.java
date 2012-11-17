@@ -1,7 +1,9 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
+import java.util.ArrayList;
 
+import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.util.Utils;
 
 public class MovieDAO extends VideoLibraryDAO {
@@ -72,6 +74,154 @@ public class MovieDAO extends VideoLibraryDAO {
 		m.deleteMovie("10");
 	}
 	*/
+	//List categories on home page
+		public String[] listCategories(){
+			ArrayList<String> list= new ArrayList<String>();
+			try{
+				String query = "Select CategoryName from Category";
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					list.add(rs.getString(1));
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			String[] categoryName = list.toArray(new String[list.size()]);
+			return categoryName;
+		}
+		
+		//List movies by chosen category
+		public Movie[] listMoviesByCategory(String categoryName){
+			ArrayList<Movie> list = new ArrayList<Movie>();
+			try{
+				String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName='"+categoryName+"')";
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					Movie movie = new Movie();
+					movie.setMovieId(rs.getInt(1));
+					movie.setMovieName(rs.getString(2));
+					movie.setMovieBanner(rs.getString(3));
+					movie.setReleaseDate(rs.getString(4));
+					movie.setAvailableCopies(rs.getInt(5));
+					list.add(movie);
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			Movie[] array= list.toArray(new Movie[list.size()]);
+			return array;		
+		}
+		
+		//Display all Movies
+		public Movie[] listAllMovies(){
+			ArrayList<Movie> list = new ArrayList<Movie>();		
+			try{
+				String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId";
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					Movie movie = new Movie();
+					movie.setMovieId(rs.getInt(1));
+					movie.setMovieName(rs.getString(2));
+					movie.setMovieBanner(rs.getString(3));
+					movie.setReleaseDate(rs.getString(4));				
+					movie.setAvailableCopies(rs.getInt(5));
+					movie.setCategoryName(rs.getString(6));
+					list.add(movie);
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			Movie[] array= list.toArray(new Movie[list.size()]);
+			return array;
+		}
+		
+		public Movie[] searchByName(String userInput){
+			ArrayList<Movie> list = new ArrayList<Movie>();		
+			String str = "%"+userInput.replace(' ','%')+"%";
+			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieName like '"+str+"'";
+			try{
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					Movie movie = new Movie();
+					movie.setMovieId(rs.getInt(1));
+					movie.setMovieName(rs.getString(2));
+					movie.setMovieBanner(rs.getString(3));
+					movie.setReleaseDate(rs.getString(4));				
+					movie.setAvailableCopies(rs.getInt(5));
+					movie.setCategoryName(rs.getString(6));
+					list.add(movie);
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			Movie[] array= list.toArray(new Movie[list.size()]);
+			return array;
+		}
+		
+		public Movie[] searchByMovieBanner(String userInput){
+			ArrayList<Movie> list = new ArrayList<Movie>();		
+			String str = "%"+userInput.replace(' ','%')+"%";
+			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieBanner like '"+str+"'"; 
+			try{
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					Movie movie = new Movie();
+					movie.setMovieId(rs.getInt(1));
+					movie.setMovieName(rs.getString(2));
+					movie.setMovieBanner(rs.getString(3));
+					movie.setReleaseDate(rs.getString(4));				
+					movie.setAvailableCopies(rs.getInt(5));
+					movie.setCategoryName(rs.getString(6));
+					list.add(movie);
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			Movie[] array= list.toArray(new Movie[list.size()]);
+			return array;
+		}
+		
+		public Movie[] searchByReleaseDate(String userInput){
+			ArrayList<Movie> list = new ArrayList<Movie>();		
+			String str = "%"+userInput.replace(' ','%')+"%";
+			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.releaseDate like '"+str+"'";
+			try{
+				stmt.executeQuery(query);
+				rs=stmt.getResultSet();
+				while(rs.next()){
+					Movie movie = new Movie();
+					movie.setMovieId(rs.getInt(1));
+					movie.setMovieName(rs.getString(2));
+					movie.setMovieBanner(rs.getString(3));
+					movie.setReleaseDate(rs.getString(4));				
+					movie.setAvailableCopies(rs.getInt(5));
+					movie.setCategoryName(rs.getString(6));
+					list.add(movie);
+				}
+				rs.close();
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			Movie[] array= list.toArray(new Movie[list.size()]);
+			return array;
+		}
+		
 
 }
 

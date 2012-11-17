@@ -11,6 +11,7 @@ public class Movie {
 	private int categoryId;
 	private String catagory;
 	private String buyerList[];
+	private String categoryName;
 	
 	public int getMovieId() {
 		return movieId;
@@ -65,6 +66,12 @@ public class Movie {
 	}
 	public void setBuyerList(String[] buyerList) {
 		this.buyerList = buyerList;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	
