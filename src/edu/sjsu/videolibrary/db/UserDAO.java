@@ -233,6 +233,7 @@ public class UserDAO extends VideoLibraryDAO
 	public LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year){
 		LinkedList<StatementInfo> statementRows = new LinkedList<StatementInfo>();
 
+		// TODO: Need to check the month is not earlier than user join date
 		try{    
 			String query1 = "SELECT statementId FROM VideoLibrary.Statement WHERE statement.month = "+month+
 					" AND statement.year = "+year+" AND statement.membershipId = "+membershipId;

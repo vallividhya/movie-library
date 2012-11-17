@@ -207,6 +207,7 @@ public class AdminDAO extends VideoLibraryDAO {
 		String result = null;
 		int statementId = 0;
 		boolean processComplete = false;
+		// TODO: Need to check the month is not earlier than user join date
 		try {
 			con.setAutoCommit(false);
 			String query1 = "select pymnt.transactionId from VideoLibrary.PaymentTransaction pymnt "+
