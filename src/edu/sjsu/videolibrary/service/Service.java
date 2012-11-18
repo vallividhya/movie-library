@@ -67,6 +67,10 @@ public class Service {
 		return cartItems;
 	}
 
+	public void checkOutMovieCart(int membershipId, String creditCardNumber) {
+		
+	}
+	
 	public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
 			{

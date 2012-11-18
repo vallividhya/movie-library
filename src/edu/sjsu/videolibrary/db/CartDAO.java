@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import edu.sjsu.videolibrary.model.ItemOnCart;
+import edu.sjsu.videolibrary.model.Transaction;
 
 public class CartDAO extends VideoLibraryDAO {
 	// Add items to cart
@@ -62,11 +64,45 @@ public class CartDAO extends VideoLibraryDAO {
 		return cartItems;
 	}
 	
+	public void checkOutCart(int membershipId, double totalAmount, int movieId) {
+		PreparedStatement updatePayment = null;
+		PreparedStatement updateMovieDetails = null; 
+		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), ?, ?)";
+		String movieTransactionQuery = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES (?, ?)";
+		
+		try {
+			con.setAutoCommit(false);
+			updatePayment = con.prepareStatement(paymentQuery);
+			updatePayment.setDouble(1, totalAmount);
+			updatePayment.setInt(2, membershipId);
+			updatePayment.executeUpdate();
+			String getTransactionIdQuery = "SELECT transactionId FROM videolibrary.paymenttransaction WHERE membershipId = " + membershipId + " AND totalDueAmount = " + totalAmount + " AND rentDate = NOW()";
+			ResultSet rs = stmt.executeQuery(getTransactionIdQuery);
+			Transaction transaction = new Transaction();
+			if (!rs.isBeforeFirst()){
+				System.out.println("No transactionId retrieved"); 
+			} 
+			while (rs.next()) {
+				transaction.setTransactionId(rs.getInt("transactionId"));
+				updateMovieDetails = con.prepareStatement(movieTransactionQuery);
+				updateMovieDetails.setInt(1, movieId);
+				updateMovieDetails.setInt(2, transaction.getTransactionId());
+				updateMovieDetails.executeUpdate();
+				con.commit();
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void recordPaymentTransaction (double totalAmount, int membershipId) {
 		PreparedStatement preparedStmt = null;
-		String query = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), ?, ?)";
+		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), ?, ?)";
 		try {
-			preparedStmt = con.prepareStatement(query);
+			preparedStmt = con.prepareStatement(paymentQuery);
 			preparedStmt.setDouble(1, totalAmount);
 			preparedStmt.setInt(2, membershipId);
 			preparedStmt.executeUpdate();
@@ -77,9 +113,9 @@ public class CartDAO extends VideoLibraryDAO {
 	
 	public void recordMovieTransaction(int movieId, int transactionId) {
 		PreparedStatement preparedStmt = null;
-		String query = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES (?, ?)";
+		String movieTransactionQuery = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES (?, ?)";
 		try {
-			preparedStmt = con.prepareStatement(query);
+			preparedStmt = con.prepareStatement(movieTransactionQuery);
 			preparedStmt.setInt(1, movieId);
 			preparedStmt.setInt(2, transactionId);
 			preparedStmt.executeUpdate();

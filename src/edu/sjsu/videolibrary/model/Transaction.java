@@ -6,8 +6,9 @@ public class Transaction {
 	private double perMovieAmount;
 	private String movieName;
 	private String returnDate;
+	private int transactionId;
 	
-public String getPurchaseDate() {
+	public String getPurchaseDate() {
 		return purchaseDate;
 	}
 	public void setPurchaseDate(String purchaseDate) {
@@ -31,7 +32,12 @@ public String getPurchaseDate() {
 	public void setReturnDate(String returnDate) {
 		this.returnDate = returnDate;
 	}
-	
+	public int getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
 	
 
 }
