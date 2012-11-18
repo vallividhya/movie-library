@@ -21,6 +21,7 @@ import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
 import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 @WebService
 
 public class Service {
@@ -221,8 +222,11 @@ public class Service {
 		}
 		
 		//List movies by chosen category
-		public Movie[] listMoviesByCategory(String categoryName){
+		public Movie[] listMoviesByCategory(String categoryName) throws NoCategoryFoundException{
 			Movie[] array = movieDAO.listMoviesByCategory(categoryName);
+			if(array.length==0){
+				throw new NoCategoryFoundException();
+			}
 			return array;
 		}
 		
