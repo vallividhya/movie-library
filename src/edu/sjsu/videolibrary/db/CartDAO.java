@@ -88,13 +88,27 @@ public class CartDAO extends VideoLibraryDAO {
 				updateMovieDetails.setInt(1, movieId);
 				updateMovieDetails.setInt(2, transaction.getTransactionId());
 				updateMovieDetails.executeUpdate();
-				con.commit();
+				
 			}
+			String deleteQuery = "DELETE FROM videolibrary.moviecart WHERE membershipId = " + membershipId;
+			try {
+				int rowCount = stmt.executeUpdate(deleteQuery);
+				if (rowCount > 0) {
+					System.out.println("cart delete successful");
+				} 
 			
-			
-		} catch (SQLException e) {
+			} finally {
+				if (updatePayment != null) {
+					updatePayment.close();
+				}
+				if (updateMovieDetails != null) {
+					updateMovieDetails.close();
+				}
+			}
+		}catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
+		
 		
 	}
 	
