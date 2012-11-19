@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -361,13 +362,15 @@ public class AdminDAO extends VideoLibraryDAO {
 		return members;
 	}
 	
-	public User[] searchUserByFirstName(String adminInput){
+	public User[] searchUserByFirstName(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String str = "%"+adminInput.replace(' ','%')+"%";
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where firstName like '"+str+"'";
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found with the entered first name.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -385,19 +388,21 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred.");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
 	
-	public User[] searchUserByLastName(String adminInput){
+	public User[] searchUserByLastName(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String str = "%"+adminInput.replace(' ','%')+"%";
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where lastName like '"+str+"'";
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found with the entered last name.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -415,19 +420,21 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
 	
-	public User[] searchUserByCity(String adminInput){
+	public User[] searchUserByCity(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String str = "%"+adminInput.replace(' ','%')+"%";
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where city like '"+str+"'";
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found for the entered city.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -445,19 +452,21 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred.");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
 	
-	public User[] searchUserByState(String adminInput){
+	public User[] searchUserByState(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String str = "%"+adminInput.replace(' ','%')+"%";
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where state like '"+str+"'";
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found for the entered state.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -475,18 +484,20 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred.");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
 	
-	public User[] searchUserByMemberShipType(String adminInput){
+	public User[] searchUserByMemberShipType(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipType='"+adminInput+"'";
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found for the entered membership type.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -504,18 +515,20 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred.");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
 	
-	public User[]  searchUserByMembershipId(int adminInput){
+	public User[]  searchUserByMembershipId(int adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list = new ArrayList<User>();
 		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipId="+adminInput;
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
+			if(!rs.isBeforeFirst())
+				throw new NoUserFoundException("No user found for the entered membership id.");
 			while(rs.next()){
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
@@ -533,7 +546,7 @@ public class AdminDAO extends VideoLibraryDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new InternalServerException("Internal error has occurred.");
 		}
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
