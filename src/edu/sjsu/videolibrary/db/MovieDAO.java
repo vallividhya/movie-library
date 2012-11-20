@@ -2,7 +2,7 @@ package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
 import java.util.ArrayList;
-
+import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.util.Utils;
 
@@ -75,31 +75,35 @@ public class MovieDAO extends VideoLibraryDAO {
 	}
 	*/
 	//List categories on home page
-		public String[] listCategories(){
+		public String[] listCategories() throws NoCategoryFoundException, InternalServerException{
 			ArrayList<String> list= new ArrayList<String>();
 			try{
 				String query = "Select CategoryName from Category";
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst())
+					throw new NoCategoryFoundException("There are no categories to be displayed");
 				while(rs.next()){
 					list.add(rs.getString(1));
 				}
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal error has occurred.");
 			}
 			String[] categoryName = list.toArray(new String[list.size()]);
 			return categoryName;
 		}
 		
 		//List movies by chosen category
-		public Movie[] listMoviesByCategory(String categoryName){
+		public Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException{
 			ArrayList<Movie> list = new ArrayList<Movie>();
 			try{
 				String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName='"+categoryName+"')";
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst())
+					throw new NoMovieInCategoryException("There are no movies in this category");
 				while(rs.next()){
 					Movie movie = new Movie();
 					movie.setMovieId(rs.getInt(1));
@@ -112,19 +116,22 @@ public class MovieDAO extends VideoLibraryDAO {
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal erro has occurred.");
 			}
 			Movie[] array= list.toArray(new Movie[list.size()]);
 			return array;		
 		}
 		
 		//Display all Movies
-		public Movie[] listAllMovies(){
+		public Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException{
 			ArrayList<Movie> list = new ArrayList<Movie>();		
 			try{
 				String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId";
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst()){
+					throw new NoMovieFoundException("There are no movies to display.");
+				}
 				while(rs.next()){
 					Movie movie = new Movie();
 					movie.setMovieId(rs.getInt(1));
@@ -138,19 +145,21 @@ public class MovieDAO extends VideoLibraryDAO {
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal error has occurred.");
 			}
 			Movie[] array= list.toArray(new Movie[list.size()]);
 			return array;
 		}
 		
-		public Movie[] searchByName(String userInput){
+		public Movie[] searchByName(String userInput) throws NoMovieFoundException, InternalServerException{
 			ArrayList<Movie> list = new ArrayList<Movie>();		
 			String str = "%"+userInput.replace(' ','%')+"%";
 			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieName like '"+str+"'";
 			try{
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst())
+					throw new NoMovieFoundException("No movie found with the entered name.");
 				while(rs.next()){
 					Movie movie = new Movie();
 					movie.setMovieId(rs.getInt(1));
@@ -164,19 +173,21 @@ public class MovieDAO extends VideoLibraryDAO {
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal Error has occurred.");
 			}
 			Movie[] array= list.toArray(new Movie[list.size()]);
 			return array;
 		}
 		
-		public Movie[] searchByMovieBanner(String userInput){
+		public Movie[] searchByMovieBanner(String userInput) throws NoMovieFoundException, InternalServerException{
 			ArrayList<Movie> list = new ArrayList<Movie>();		
 			String str = "%"+userInput.replace(' ','%')+"%";
 			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieBanner like '"+str+"'"; 
 			try{
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst())
+					throw new NoMovieFoundException("No movie found for the entered banner.");
 				while(rs.next()){
 					Movie movie = new Movie();
 					movie.setMovieId(rs.getInt(1));
@@ -190,19 +201,21 @@ public class MovieDAO extends VideoLibraryDAO {
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal error has occurred");
 			}
 			Movie[] array= list.toArray(new Movie[list.size()]);
 			return array;
 		}
 		
-		public Movie[] searchByReleaseDate(String userInput){
+		public Movie[] searchByReleaseDate(String userInput) throws NoMovieFoundException, InternalServerException{
 			ArrayList<Movie> list = new ArrayList<Movie>();		
 			String str = "%"+userInput.replace(' ','%')+"%";
 			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.releaseDate like '"+str+"'";
 			try{
 				stmt.executeQuery(query);
 				rs=stmt.getResultSet();
+				if(!rs.isBeforeFirst())
+					throw new NoMovieFoundException("No movie found for the entered banner.");
 				while(rs.next()){
 					Movie movie = new Movie();
 					movie.setMovieId(rs.getInt(1));
@@ -216,7 +229,7 @@ public class MovieDAO extends VideoLibraryDAO {
 				rs.close();
 				stmt.close();
 			}catch(SQLException e){
-				e.printStackTrace();
+				throw new InternalServerException("Internal error has occurred");
 			}
 			Movie[] array= list.toArray(new Movie[list.size()]);
 			return array;

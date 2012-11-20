@@ -21,7 +21,11 @@ import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
 import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
+import edu.sjsu.videolibrary.exception.NoMovieFoundException;
+import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
+import edu.sjsu.videolibrary.exception.NoUserFoundException;
 @WebService
 
 public class Service {
@@ -217,76 +221,181 @@ public class Service {
 	
 	//List categories on home page
 		public String[] listCategories(){
-			String[] categoryName = movieDAO.listCategories();
+			String[] categoryName = null;
+			try {
+				categoryName = movieDAO.listCategories();
+			} catch (NoCategoryFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return categoryName;
 		}
 		
 		//List movies by chosen category
-		public Movie[] listMoviesByCategory(String categoryName) throws NoCategoryFoundException{
-			Movie[] array = movieDAO.listMoviesByCategory(categoryName);
-			if(array.length==0){
-				throw new NoCategoryFoundException();
+		public Movie[] listMoviesByCategory(String categoryName) {
+			Movie[] array = null;			
+			try {
+				array = movieDAO.listMoviesByCategory(categoryName);
+			} catch (NoMovieInCategoryException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
 			}
 			return array;
 		}
 		
 		//Display all Movies
 		public Movie[] listAllMovies(){
-			Movie[] array = movieDAO.listAllMovies();
+			Movie[] array=null;
+			try {
+				array = movieDAO.listAllMovies();
+			} catch (NoMovieFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search movies by name
 		public Movie[] searchByName(String userInput){
-			Movie[] array=movieDAO.searchByName(userInput);
+			Movie[] array = null;
+			try {
+				array = movieDAO.searchByName(userInput);
+			} catch (NoMovieFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search movies by banner
 		public Movie[] searchByMovieBanner(String userInput){
-			Movie[] array=movieDAO.searchByMovieBanner(userInput);
+			Movie[] array = null;
+			try {
+				array = movieDAO.searchByMovieBanner(userInput);
+			} catch (NoMovieFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search movies by release date
 		public Movie[] searchByReleaseDate(String userInput){
-			Movie[] array=movieDAO.searchByReleaseDate(userInput);
+			Movie[] array = null;
+			try {
+				array = movieDAO.searchByReleaseDate(userInput);
+			} catch (NoMovieFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by first name
 		public User[] searchUserByFirstName(String adminInput){
-			User[] array=adminDAO.searchUserByFirstName(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByFirstName(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by last name
 		public User[] searchUserByLastName(String adminInput){
-			User[] array=adminDAO.searchUserByLastName(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByLastName(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by city
 		public User[] searchUserByCity(String adminInput){
-			User[] array = adminDAO.searchUserByCity(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByCity(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by state
 		public User[] searchUserByState(String adminInput){
-			User[] array = adminDAO.searchUserByState(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByState(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by membership type
 		public User[] searchUserByMemberShipType(String adminInput){
-			User[] array = adminDAO.searchUserByMemberShipType(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByMemberShipType(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 		
 		//search user by member id
 		public User[] searchUserByMembershipId(int adminInput){
-			User[] array = adminDAO.searchUserByMembershipId(adminInput);
+			User[] array = null;
+			try {
+				array = adminDAO.searchUserByMembershipId(adminInput);
+			} catch (NoUserFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 			return array;
 		}
 
