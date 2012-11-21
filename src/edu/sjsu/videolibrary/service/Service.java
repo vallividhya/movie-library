@@ -1,16 +1,9 @@
 package edu.sjsu.videolibrary.service;
 
-
-
 import java.sql.SQLException;
-
-import java.sql.Date;
-
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.jws.WebService;
-
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -41,12 +34,16 @@ public class Service {
 	public String addItemsToCart(int membershipId, int movieId){
 		String isAddedToCart = "false";
 		try {
+		//	CartDAO cartDAO = new CartDAO();
 			cartDAO.addToCart(movieId, membershipId);
 			isAddedToCart = "true";
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		}  
+		} 
+//		finally {
+//			cartDAO.release();
+//		}
 		return isAddedToCart;
 	}
 

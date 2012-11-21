@@ -6,12 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 public class VideoLibraryDAO {
 	protected Connection con = null;
 	static ResultSet rs;
 	Statement stmt = null;
 
 	public VideoLibraryDAO(){
+		//		Pair<Connection,Statement> pair = ConnectionPool.getInstance().getConnection();
+		//		con = pair.getLeft();
+		//		stmt = pair.getRight();
+		//	System.out.print("Created new Connection for " + this.getClass().getCanonicalName() );
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
@@ -31,6 +37,15 @@ public class VideoLibraryDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
+		}
+	}
+
+	public void release() {
+		try {
+			ConnectionPool.getInstance().releaseConnection(Pair.of(con,stmt));
+		} catch (Exception e) {
+			System.err.println("Release connection failed for " + this.getClass().getCanonicalName());
+			e.printStackTrace();
 		}
 	}
 }
