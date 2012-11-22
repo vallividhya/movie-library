@@ -13,22 +13,15 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
 	public abstract User displayUserInformation (int membershipId);
 
-		
-
 	public abstract Movie displayMovieInformation (int movieId);
 
-		
-
 	public abstract double getRentAmountforMovie();
-
-		
 
 	public abstract double getMonthlyFeesForPremiumMember();
 
 	public abstract String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId);
 
 	public abstract String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException;
-
 	
 	public abstract String deleteUser (String userId);
 

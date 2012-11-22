@@ -4,22 +4,19 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
-
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
+import edu.sjsu.videolibrary.db.BaseAdminDAO;
 import edu.sjsu.videolibrary.db.CartDAO;
+import edu.sjsu.videolibrary.db.DAOFactory;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
-import edu.sjsu.videolibrary.db.SimpleAdminDAO;
-
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
-
 import edu.sjsu.videolibrary.exception.InternalServerException;
-
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
@@ -188,7 +185,7 @@ public class Service {
 
 	//List members
 	public User [] viewMembers (String type){	
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		List <User> memberList = adminDAO.listMembers(type);
 		User [] members = (User[]) memberList.toArray();
 		return members;
@@ -198,7 +195,7 @@ public class Service {
 	//Delete an user and admin account
 	public String deleteUserAccount (String userId) {
 		String isDeleted = "false"; 
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			isDeleted = adminDAO.deleteUser(userId);
 		} catch (Exception e) { 
@@ -210,7 +207,7 @@ public class Service {
 
 	public String deleteAdminAccount (String userId) {
 		String isDeleted = "false"; 
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			isDeleted = adminDAO.deleteAdmin(userId);
 		} catch (Exception e) { 
@@ -248,13 +245,13 @@ public class Service {
 	}
 
 	public User displayUserInformation (int membershipId){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		User user = adminDAO.displayUserInformation(membershipId);
 		return user;
 	}
 
 	public Movie displayMovieInformation (int movieId){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		Movie movie = adminDAO.displayMovieInformation(movieId);
 		return movie;
 	}
@@ -285,14 +282,14 @@ public class Service {
 	}
 
 	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		return result;
 	}
 
 	public String generateMonthlyStatement(int membershipId,int month,int year){
 		String result = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			result = adminDAO.generateMonthlyStatement(membershipId, month, year);
 		} catch (SQLException e) {
@@ -309,19 +306,19 @@ public class Service {
 	}
 
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
 		return pymnt;
 	}
 
 	public double getRentAmountforMovie(){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		double movieRentAmount = adminDAO.getRentAmountforMovie();
 		return movieRentAmount;
 	}
 
 	public double getMonthlyFeesForPremiumMember(){
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 		return monthlyFees;
 	}
@@ -425,7 +422,7 @@ public class Service {
 	//search user by first name
 	public User[] searchUserByFirstName(String adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByFirstName(adminInput);
 		} catch (NoUserFoundException e) {
@@ -441,7 +438,7 @@ public class Service {
 	//search user by last name
 	public User[] searchUserByLastName(String adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByLastName(adminInput);
 		} catch (NoUserFoundException e) {
@@ -457,7 +454,7 @@ public class Service {
 	//search user by city
 	public User[] searchUserByCity(String adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByCity(adminInput);
 		} catch (NoUserFoundException e) {
@@ -473,7 +470,7 @@ public class Service {
 	//search user by state
 	public User[] searchUserByState(String adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByState(adminInput);
 		} catch (NoUserFoundException e) {
@@ -489,7 +486,7 @@ public class Service {
 	//search user by membership type
 	public User[] searchUserByMemberShipType(String adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByMemberShipType(adminInput);
 		} catch (NoUserFoundException e) {
@@ -505,7 +502,7 @@ public class Service {
 	//search user by member id
 	public User[] searchUserByMembershipId(int adminInput){
 		User[] array = null;
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		try {
 			array = adminDAO.searchUserByMembershipId(adminInput);
 		} catch (NoUserFoundException e) {
