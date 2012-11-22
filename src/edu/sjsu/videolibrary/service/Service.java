@@ -63,12 +63,25 @@ public class Service {
 
 	public ItemOnCart[] viewCart(int membershipId){
 		CartDAO cartDAO = new CartDAO();
-		List<ItemOnCart> cartItemsList = cartDAO.listCartItems(membershipId);
-		ItemOnCart[] cartItems = new ItemOnCart[cartItemsList.size()];
-		for (int i = 0; i < cartItemsList.size(); i++) {
-			cartItems[i] = cartItemsList.get(i);
-			System.out.println(cartItems[i]);
+		List<ItemOnCart> cartItemsList;
+		ItemOnCart[] cartItems;
+		try{
+			cartItemsList	= cartDAO.listCartItems(membershipId);
+			cartItems = new ItemOnCart[cartItemsList.size()];
+			for (int i = 0; i < cartItemsList.size(); i++) {
+				cartItems[i] = cartItemsList.get(i);
+				System.out.println(cartItems[i]);
+			}
 		}
+		catch(Exception e)
+		{
+			e.getMessage();
+			cartItems = null;
+		}
+		finally{
+			cartDAO.release();
+		}
+		
 		return cartItems;
 	}
 
