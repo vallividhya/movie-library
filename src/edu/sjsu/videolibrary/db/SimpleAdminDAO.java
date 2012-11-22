@@ -18,7 +18,7 @@ import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 
-public class AdminDAO extends VideoLibraryDAO {
+public class SimpleAdminDAO extends BaseAdminDAO {
 
 	public User displayUserInformation (int membershipId){
 

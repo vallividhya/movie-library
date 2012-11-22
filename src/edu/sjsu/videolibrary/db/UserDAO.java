@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.sjsu.videolibrary.model.Transaction;
-import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -176,7 +176,7 @@ public class UserDAO extends VideoLibraryDAO
 				return result;
 			}
 
-			AdminDAO adminDAO = new AdminDAO();			
+			SimpleAdminDAO adminDAO = new SimpleAdminDAO();			
 			double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();			
 
 			String query2 = "INSERT INTO VideoLibrary.PaymentTransaction(rentDate,totalDueAmount,membershipId)"+
@@ -279,7 +279,7 @@ public class UserDAO extends VideoLibraryDAO
 				int statementId = result1.getInt("statementId");
 			}
 			else{
-				AdminDAO admin = new AdminDAO();
+				SimpleAdminDAO admin = new SimpleAdminDAO();
 				admin.generateMonthlyStatement(membershipId, month, year);
 			}
 

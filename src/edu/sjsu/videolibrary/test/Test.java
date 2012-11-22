@@ -3,7 +3,7 @@ package edu.sjsu.videolibrary.test;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
@@ -18,7 +18,7 @@ public class Test {
 		CartDAO cartDAO = new CartDAO();
 		UserDAO userDAO = new UserDAO(); 
 		MovieDAO movieDAO = new MovieDAO(); 
-		AdminDAO adminDAO  = new AdminDAO();
+		SimpleAdminDAO adminDAO  = new SimpleAdminDAO();
 
 		VideoLibraryDAO db = new VideoLibraryDAO();
 

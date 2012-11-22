@@ -14,7 +14,7 @@ import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
-import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 
@@ -188,7 +188,7 @@ public class Service {
 
 	//List members
 	public User [] viewMembers (String type){	
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		List <User> memberList = adminDAO.listMembers(type);
 		User [] members = (User[]) memberList.toArray();
 		return members;
@@ -198,7 +198,7 @@ public class Service {
 	//Delete an user and admin account
 	public String deleteUserAccount (String userId) {
 		String isDeleted = "false"; 
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			isDeleted = adminDAO.deleteUser(userId);
 		} catch (Exception e) { 
@@ -210,7 +210,7 @@ public class Service {
 
 	public String deleteAdminAccount (String userId) {
 		String isDeleted = "false"; 
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			isDeleted = adminDAO.deleteAdmin(userId);
 		} catch (Exception e) { 
@@ -248,13 +248,13 @@ public class Service {
 	}
 
 	public User displayUserInformation (int membershipId){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		User user = adminDAO.displayUserInformation(membershipId);
 		return user;
 	}
 
 	public Movie displayMovieInformation (int movieId){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		Movie movie = adminDAO.displayMovieInformation(movieId);
 		return movie;
 	}
@@ -285,14 +285,14 @@ public class Service {
 	}
 
 	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		return result;
 	}
 
 	public String generateMonthlyStatement(int membershipId,int month,int year){
 		String result = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			result = adminDAO.generateMonthlyStatement(membershipId, month, year);
 		} catch (SQLException e) {
@@ -309,19 +309,19 @@ public class Service {
 	}
 
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
 		return pymnt;
 	}
 
 	public double getRentAmountforMovie(){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		double movieRentAmount = adminDAO.getRentAmountforMovie();
 		return movieRentAmount;
 	}
 
 	public double getMonthlyFeesForPremiumMember(){
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 		return monthlyFees;
 	}
@@ -425,7 +425,7 @@ public class Service {
 	//search user by first name
 	public User[] searchUserByFirstName(String adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByFirstName(adminInput);
 		} catch (NoUserFoundException e) {
@@ -441,7 +441,7 @@ public class Service {
 	//search user by last name
 	public User[] searchUserByLastName(String adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByLastName(adminInput);
 		} catch (NoUserFoundException e) {
@@ -457,7 +457,7 @@ public class Service {
 	//search user by city
 	public User[] searchUserByCity(String adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByCity(adminInput);
 		} catch (NoUserFoundException e) {
@@ -473,7 +473,7 @@ public class Service {
 	//search user by state
 	public User[] searchUserByState(String adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByState(adminInput);
 		} catch (NoUserFoundException e) {
@@ -489,7 +489,7 @@ public class Service {
 	//search user by membership type
 	public User[] searchUserByMemberShipType(String adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByMemberShipType(adminInput);
 		} catch (NoUserFoundException e) {
@@ -505,7 +505,7 @@ public class Service {
 	//search user by member id
 	public User[] searchUserByMembershipId(int adminInput){
 		User[] array = null;
-		AdminDAO adminDAO = new AdminDAO();
+		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
 		try {
 			array = adminDAO.searchUserByMembershipId(adminInput);
 		} catch (NoUserFoundException e) {
