@@ -39,7 +39,6 @@ public class VideoLibraryDAO {
 			System.out.println(e.getMessage());
 		}
 	}
-<<<<<<< HEAD
 	
 	public void setCon (Connection con) {
 		this.con = con;
@@ -48,7 +47,7 @@ public class VideoLibraryDAO {
 	public Connection getCon() {
 		
 		return con;
-=======
+	}
 
 	public void release() {
 		try {
@@ -57,6 +56,5 @@ public class VideoLibraryDAO {
 			System.err.println("Release connection failed for " + this.getClass().getCanonicalName());
 			e.printStackTrace();
 		}
->>>>>>> f148801017936a2896013f10606afc2182f1ba6e
 	}
 }

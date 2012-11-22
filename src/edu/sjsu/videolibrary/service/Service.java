@@ -4,12 +4,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
-<<<<<<< HEAD
 
-import com.mysql.jdbc.Connection;
-
-=======
->>>>>>> f148801017936a2896013f10606afc2182f1ba6e
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -20,11 +15,11 @@ import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
 import edu.sjsu.videolibrary.db.AdminDAO;
-<<<<<<< HEAD
+
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
-=======
+
 import edu.sjsu.videolibrary.exception.InternalServerException;
->>>>>>> f148801017936a2896013f10606afc2182f1ba6e
+
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
@@ -33,16 +28,6 @@ import edu.sjsu.videolibrary.exception.NoUserFoundException;
 
 public class Service {
 
-<<<<<<< HEAD
-	// Add movies to shopping cart.
-	CartDAO cartDAO = new CartDAO();
-	UserDAO userDAO = new UserDAO(); 
-	MovieDAO movieDAO = new MovieDAO(); 
-	AdminDAO adminDAO = new AdminDAO();
-	VideoLibraryDAO videolibraryDAO = new VideoLibraryDAO();
-
-=======
->>>>>>> f148801017936a2896013f10606afc2182f1ba6e
 	// Add movies to shopping cart	
 
 	public String addItemsToCart(int membershipId, int movieId){
@@ -85,8 +70,10 @@ public class Service {
 		return cartItems;
 	}
 
-<<<<<<< HEAD
+
 	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
+		VideoLibraryDAO videolibraryDAO = new VideoLibraryDAO();
+		CartDAO cartDAO = new CartDAO();
 		java.sql.Connection con = videolibraryDAO.getCon();
 		
 		// Check credit card 
@@ -140,17 +127,14 @@ public class Service {
 		return result;
 	}
 	
-	public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
+	/*public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
 			{
 		return userDAO.signUpUser(userId, password, memType,new java.sql.Date(System.currentTimeMillis()), 
 				firstName, lastName, address, city, state, zipCode, ccNumber, 
 				new java.sql.Date(System.currentTimeMillis()));
-			}
-=======
-	public void checkOutMovieCart(int membershipId, String creditCardNumber) {
+			}*/
 
-	}
 
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city,String state, String zipCode,String ccNumber){
@@ -170,7 +154,7 @@ public class Service {
 		}
 		return user;
 	}
->>>>>>> f148801017936a2896013f10606afc2182f1ba6e
+
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
 		UserDAO userDAO = new UserDAO();
