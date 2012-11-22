@@ -55,7 +55,9 @@ public class Service {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		}  
+		} finally {
+			cartDAO.release();
+		}
 		return isDeletedFromCart;
 	}
 
