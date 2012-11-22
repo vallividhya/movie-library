@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import com.mysql.jdbc.Connection;
+
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -21,6 +23,7 @@ import edu.sjsu.videolibrary.db.CartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
 import edu.sjsu.videolibrary.db.UserDAO;
 import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 @WebService
 
@@ -30,7 +33,8 @@ public class Service {
 	CartDAO cartDAO = new CartDAO();
 	UserDAO userDAO = new UserDAO(); 
 	MovieDAO movieDAO = new MovieDAO(); 
-	AdminDAO adminDAO  =new AdminDAO();
+	AdminDAO adminDAO = new AdminDAO();
+	VideoLibraryDAO videolibraryDAO = new VideoLibraryDAO();
 
 	// Add movies to shopping cart	
 
@@ -68,8 +72,58 @@ public class Service {
 		return cartItems;
 	}
 
-	public void checkOutMovieCart(int membershipId, String creditCardNumber) {
+	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
+		java.sql.Connection con = videolibraryDAO.getCon();
 		
+		// Check credit card 
+		boolean isCardValid = false;
+		if (creditCardNumber.length() == 16) {
+			isCardValid = true;
+		}
+		String result = "true";
+		double totalAmount = 0;
+		boolean processComplete = false;
+		try {
+			
+			con.setAutoCommit(false);
+			if (isCardValid) {
+				ItemOnCart[] cartItems = viewCart(membershipId); 
+				System.out.println("Num of movies on Cart for this memeber = " + cartItems.length);
+				int[] movieId = new int[cartItems.length];
+				double[] rentAmount = new double[cartItems.length];
+				for (int i = 0; i< cartItems.length; i++) {
+					if (cartItems[i] != null) {
+						movieId[i] = cartItems[i].getMovieId();
+						rentAmount[i] = cartItems[i].getRentAmount();
+						totalAmount = totalAmount + rentAmount[i];
+						System.out.println("Movie Id [" + i + "] = " + movieId[i] );
+					}
+				}
+				System.out.println(totalAmount + " = total Amount");
+				System.out.println(membershipId + " = memId");
+				int transactionId = cartDAO.recordPaymentTransaction(totalAmount, membershipId);
+				for (int i = 0; i < movieId.length; i++) {
+					cartDAO.recordMovieTransaction(movieId[i], transactionId);
+				}
+				cartDAO.deleteCart(membershipId);
+			}
+			processComplete = true;
+			
+		} catch (SQLException e) {
+			result = "false";
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		} finally {
+			if ( processComplete ) {
+				con.commit();
+			} else {
+				con.rollback();
+			}
+			con.setAutoCommit(true);
+		}
+		
+		
+		return result;
 	}
 	
 	public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 

@@ -105,5 +105,7 @@ feesUpdateDate DATE,
 amount DOUBLE NOT NULL
 );
 
+ALTER TABLE `videolibrary`.`moviecart` DROP PRIMARY KEY,
+ADD PRIMARY KEY (`movieId`, `membershipId`);
 
 
