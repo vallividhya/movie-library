@@ -49,6 +49,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="checkOutMovieCart">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+      <element name="creditCardNumber" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="checkOutMovieCartResponse">
+    <complexType/>
+   </element>
    <element name="signUpUser">
     <complexType>
      <sequence>
@@ -591,6 +602,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="perMovieAmount" type="xsd:double"/>
      <element name="purchaseDate" nillable="true" type="xsd:string"/>
      <element name="returnDate" nillable="true" type="xsd:string"/>
+     <element name="transactionId" type="xsd:int"/>
     </sequence>
    </complexType>
    <complexType name="StatementInfo">
@@ -780,6 +792,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="checkOutMovieCartRequest">
+
+      <wsdl:part element="impl:checkOutMovieCart" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="viewAccountTransactionsResponse">
 
       <wsdl:part element="impl:viewAccountTransactionsResponse" name="parameters">
@@ -815,6 +835,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="displayMovieInformationResponse">
 
       <wsdl:part element="impl:displayMovieInformationResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkOutMovieCartResponse">
+
+      <wsdl:part element="impl:checkOutMovieCartResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1221,6 +1249,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:viewCartResponse" name="viewCartResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkOutMovieCart">
+
+         <wsdl:input message="impl:checkOutMovieCartRequest" name="checkOutMovieCartRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:checkOutMovieCartResponse" name="checkOutMovieCartResponse">
 
        </wsdl:output>
 
@@ -1675,6 +1715,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="viewCartResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkOutMovieCart">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="checkOutMovieCartRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="checkOutMovieCartResponse">
 
             <wsdlsoap:body use="literal"/>
 

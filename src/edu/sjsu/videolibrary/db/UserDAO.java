@@ -8,6 +8,7 @@ import java.util.List;
 
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.db.AdminDAO;
+import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
@@ -18,71 +19,107 @@ public class UserDAO extends VideoLibraryDAO
 	public UserDAO()
 	{ }
 
-	public String signUpUser (String userId, String password, String memType, java.sql.Date startDate,
-			String firstName, String lastName, String address, String city, 
-			String state, String zipCode,String ccNumber, java.sql.Date latestPaymentDate) throws SQLException 
+	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
+			String address, String city, 
+			String state, String zipCode,String ccNumber) throws SQLException 
 			{
-		
-			System.out.println("State:"+state);
+		User user = new User();
+
+		// System.out.println("State:"+state);
 
 		String sql = "INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName," +
-				"address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-		pst.setString(1, userId); pst.setString(2, Utils.encryptPassword(password));
-		pst.setString(3,memType); pst.setDate(4, startDate);
-		pst.setString(5, firstName);pst.setString(6, lastName);
-		pst.setString(7, address);pst.setString(8, city);
-		pst.setString(9, state);pst.setString(10, zipCode);
-		pst.setString(11, ccNumber);pst.setDate(12, latestPaymentDate);
+				"address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?)";
+		PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+		pst.setString(1, userId); 
+		pst.setString(2, Utils.encryptPassword(password));
+		pst.setString(3,memType);
+		pst.setString(4, firstName);
+		pst.setString(5, lastName);
+		pst.setString(6, address);
+		pst.setString(7, city);
+		pst.setString(8, state);
+		pst.setString(9, zipCode);
+		pst.setString(10, ccNumber);
+		pst.setString(11, null);
 		pst.execute();
 		ResultSet rs = pst.getGeneratedKeys();
 		if (rs.next())
 		{
-			Integer memID = rs.getInt(1);
-			return memID.toString();
-		}     
-		return "";
+			int membershipId = rs.getInt("membershipId");			
+			Date date = new Date();
+			
+			user.setMembershipId(membershipId);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setAddress(address);
+			user.setCity(city);
+			user.setCreditCardNumber(ccNumber);
+			user.setMembershipType(memType);
+			user.setState(state);
+			user.setZip(zipCode);			
+			user.setStartDate(date.toString());
+			user.setLatestPaymentDate(null);
+			user.setUserId(userId);
+			user.setPassword(password);			
+		}  
+		else{
+			user = null;
+		}
+		return user;
 			}
 
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException 
 	{
+		String result = null;
 		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES (?,?,?,?)";
-		PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-		pst.setString(1, userId); pst.setString(2, Utils.encryptPassword(password));
-		pst.setString(3, firstName);pst.setString(4, lastName);
+		PreparedStatement pst = con.prepareStatement(sql);
+		pst.setString(1, userId); 
+		pst.setString(2, Utils.encryptPassword(password));
+		pst.setString(3, firstName);
+		pst.setString(4, lastName);
 		pst.execute();
-		ResultSet rs = pst.getGeneratedKeys();
+		ResultSet rs = pst.executeQuery();
 		if (rs.next())
 		{
-			Integer memID = rs.getInt(1);
-			return memID.toString();
-		}     
-		return "";
+			result = "true";
+		}  
+		else{
+			result = "false";
+		}
+		return result;		
 	}
- 
+
 
 	public String signInUser(String userId, String password) throws SQLException
 	{
+		String result = null;
 		String sql = "SELECT userId, password FROM user WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if(rs.next())
 		{
-			return rs.getString(1);
+			result = "true";		
 		}
-		return "";
+		else{
+			result = "false";
+		}
+		return result;		
 	}
 
 	public String signInAdmin(String userId, String password) throws SQLException
 	{
+		String result = null;
 		String sql = "SELECT userId, password FROM admin where userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if(rs.next())
 		{
-			return rs.getString(1);
+			result = "true";
 		}
-		return "d";     
+		else{
+			result = "false";
+		}
+		return result;    
 	}
 
 	public LinkedList<Transaction> viewAccountTransactions(int membershipId){
@@ -253,9 +290,9 @@ public class UserDAO extends VideoLibraryDAO
 					" pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "+
 					" AND Statement.statementId = StatementTransactions.statementId AND month = "+month+" AND year = "+year+
 					" and Statement.membershipId = "+membershipId;
-			
-		//	System.out.println(query2); 
-				
+
+			//	System.out.println(query2); 
+
 
 			ResultSet result2 = stmt.executeQuery(query2);
 
@@ -283,184 +320,7 @@ public class UserDAO extends VideoLibraryDAO
 			e.getMessage();
 		}
 		return statementRows;
-	}
-	
-	public User[] searchUserByFirstName(String adminInput){
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where firstName like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByLastName(String adminInput){
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where lastName like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByCity(String adminInput){
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where city like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByState(String adminInput){
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where state like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByMemberShipType(String adminInput){
-		ArrayList<User> list= new ArrayList<User>();		
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipType='"+adminInput+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[]  searchUserByMembershipId(int adminInput){
-		ArrayList<User> list = new ArrayList<User>();
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipId="+adminInput;
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
+	}	
+
 }
 

@@ -60,20 +60,24 @@ public class Test {
 //			e.printStackTrace();
 //		}
 		
-		LinkedList<StatementInfo> st = userDAO.viewStatement(2,11,2012);
-		if(st != null && st.size() !=0){
-			for(StatementInfo s:st){
-				System.out.print(s.getMovieName()+"		");
-				System.out.print(s.getTotalDueAmount()+"		");
-				System.out.print(s.getRentDate()+"		");
-				System.out.print(s.getReturnDate()+"		");
-				System.out.println(); 
-			}
-		} else {
-			System.out.println("Nothing to view");
-		}
-
+//		LinkedList<StatementInfo> st = userDAO.viewStatement(2,11,2012);
+//		if(st != null && st.size() !=0){
+//			for(StatementInfo s:st){
+//				System.out.print(s.getMovieName()+"		");
+//				System.out.print(s.getTotalDueAmount()+"		");
+//				System.out.print(s.getRentDate()+"		");
+//				System.out.print(s.getReturnDate()+"		");
+//				System.out.println(); 
+//			}
+//		} else {
+//			System.out.println("Nothing to view");
+//		}
+//
+//		int id = adminDAO.recordPaymentTransaction (3.0,1);
+//		System.out.println(id);
 	}
+	
+	
 
 }	
 
