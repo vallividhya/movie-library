@@ -58,7 +58,11 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </complexType>
    </element>
    <element name="checkOutMovieCartResponse">
-    <complexType/>
+    <complexType>
+     <sequence>
+      <element name="checkOutMovieCartReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
    </element>
    <element name="signUpUser">
     <complexType>
@@ -79,10 +83,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="signUpUserResponse">
     <complexType>
      <sequence>
-      <element name="signUpUserReturn" type="xsd:string"/>
+      <element name="signUpUserReturn" type="tns1:User"/>
      </sequence>
     </complexType>
    </element>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
    <element name="signUpAdmin">
     <complexType>
      <sequence>
@@ -144,11 +153,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <complexType name="ArrayOf_xsd_string">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
-    </sequence>
-   </complexType>
    <element name="deleteUserAccount">
     <complexType>
      <sequence>

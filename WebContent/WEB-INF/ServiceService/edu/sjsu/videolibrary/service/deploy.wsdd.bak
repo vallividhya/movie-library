@@ -31,11 +31,11 @@
       <operation name="viewCart" qname="operNS:viewCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:ItemOnCart" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="checkOutMovieCart" qname="operNS:checkOutMovieCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" soapAction="" >
+      <operation name="checkOutMovieCart" qname="operNS:checkOutMovieCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:checkOutMovieCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:creditCardNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="signUpUser" qname="operNS:signUpUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      <operation name="signUpUser" qname="operNS:signUpUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:memType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
