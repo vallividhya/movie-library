@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
-
-import org.eclipse.jdt.internal.compiler.apt.model.Factory;
-
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -18,8 +15,6 @@ import edu.sjsu.videolibrary.db.BaseCartDAO;
 import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
-import edu.sjsu.videolibrary.db.SimpleMovieDAO;
-import edu.sjsu.videolibrary.db.SimpleUserDAO;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
