@@ -2,6 +2,10 @@ package edu.sjsu.videolibrary.db;
 
 public class DAOFactory {
 	
+	private DAOFactory(){
+		
+	}
+	
 	enum DAOObjectType {
 		Simple,
 		Prepared,
@@ -19,6 +23,30 @@ public class DAOFactory {
 		} else {
 			// TODO: Need to change this
 			return new SimpleAdminDAO();
+		}
+	}
+	
+	public static BaseCartDAO getCartDAO() {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleCartDAO();
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleCartDAO();
+		} else {
+			// TODO: Need to change this
+			return new SimpleCartDAO();
+		}
+	}
+	
+	public static BaseUserDAO getUserDAO() {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleUserDAO();
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleUserDAO();
+		} else {
+			// TODO: Need to change this
+			return new SimpleUserDAO();
 		}
 	}
 

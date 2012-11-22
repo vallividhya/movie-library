@@ -1,22 +1,17 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
-
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
-import edu.sjsu.videolibrary.exception.*;
-import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.util.Utils;
 
-public class UserDAO extends VideoLibraryDAO 
+public class SimpleUserDAO extends BaseUserDAO 
 {
-	public UserDAO()
+	public SimpleUserDAO()
 	{ }
 
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 

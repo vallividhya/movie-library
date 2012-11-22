@@ -11,10 +11,11 @@ import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.db.BaseAdminDAO;
-import edu.sjsu.videolibrary.db.CartDAO;
+import edu.sjsu.videolibrary.db.BaseCartDAO;
+import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
 import edu.sjsu.videolibrary.db.MovieDAO;
-import edu.sjsu.videolibrary.db.UserDAO;
+import edu.sjsu.videolibrary.db.SimpleUserDAO;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
@@ -29,7 +30,7 @@ public class Service {
 
 	public String addItemsToCart(int membershipId, int movieId){
 		String isAddedToCart = "false";
-		CartDAO cartDAO = new CartDAO();
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {				
 			cartDAO.addToCart(movieId, membershipId);
 			isAddedToCart = "true";
@@ -45,7 +46,7 @@ public class Service {
 
 	public String deleteMovieFromCart (int movieId, int membershipId) {
 		String isDeletedFromCart = "false";
-		CartDAO cartDAO = new CartDAO();
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {
 			cartDAO.deleteFromCart(movieId, membershipId);
 			isDeletedFromCart = "true";
@@ -59,7 +60,7 @@ public class Service {
 	}
 
 	public ItemOnCart[] viewCart(int membershipId){
-		CartDAO cartDAO = new CartDAO();
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems;
 		try{
@@ -85,7 +86,7 @@ public class Service {
 
 	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
 		VideoLibraryDAO videolibraryDAO = new VideoLibraryDAO();
-		CartDAO cartDAO = new CartDAO();
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		java.sql.Connection con = videolibraryDAO.getCon();
 		
 		// Check credit card 
@@ -151,7 +152,8 @@ public class Service {
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city,String state, String zipCode,String ccNumber){
 		User user = new User();
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
+		
 		try{
 			user = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
 		}
@@ -169,17 +171,17 @@ public class Service {
 
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		return userDAO.signUpAdmin(userId, password, firstName, lastName);
 	}
 	public String signInUser(String userId, String password) throws SQLException
 	{
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		return userDAO.signInUser(userId, password);
 	}
 	public String signInAdmin(String userId, String password) throws SQLException
 	{
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		return userDAO.signInAdmin(userId, password);
 	}
 
@@ -257,26 +259,26 @@ public class Service {
 	}
 
 	public Transaction[] viewAccountTransactions(int membershipId){
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		LinkedList<Transaction> ac = userDAO.viewAccountTransactions(membershipId);
 		Transaction[] trans = ac.toArray(new Transaction[0]);
 		return trans;
 	}
 
 	public String makeMonthlyPayment(int membershipId){
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.makeMonthlyPayment(membershipId);
 		return result;
 	}
 
 	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
 		return result;
 	}
 
 	public String updatePassword(int membershipId,String oldPassword,String newPassword){
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
 		return result;
 	}
@@ -300,7 +302,7 @@ public class Service {
 	}
 
 	public StatementInfo[] viewStatement(int membershipId,int month,int year){
-		UserDAO userDAO = new UserDAO();
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
 		return stmnt;
 	}

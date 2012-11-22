@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
-import edu.sjsu.videolibrary.db.CartDAO;
+import edu.sjsu.videolibrary.db.SimpleCartDAO;
 import edu.sjsu.videolibrary.db.MovieDAO;
-import edu.sjsu.videolibrary.db.UserDAO;
+import edu.sjsu.videolibrary.db.SimpleUserDAO;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -15,8 +15,8 @@ import edu.sjsu.videolibrary.model.User;
 public class Test {
 
 	public static void main(String args[]){
-		CartDAO cartDAO = new CartDAO();
-		UserDAO userDAO = new UserDAO(); 
+		SimpleCartDAO cartDAO = new SimpleCartDAO();
+		SimpleUserDAO userDAO = new SimpleUserDAO(); 
 		MovieDAO movieDAO = new MovieDAO(); 
 		SimpleAdminDAO adminDAO  = new SimpleAdminDAO();
 

@@ -1,20 +1,15 @@
 package edu.sjsu.videolibrary.db;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
-
 import edu.sjsu.videolibrary.model.ItemOnCart;
-import edu.sjsu.videolibrary.model.Transaction;
 
-public class CartDAO extends VideoLibraryDAO {
+public class SimpleCartDAO extends BaseCartDAO {
 	// Add items to cart
 	public void addToCart (int movieId, int membershipId) {
 		PreparedStatement preparedStmt = null;
@@ -70,7 +65,6 @@ public class CartDAO extends VideoLibraryDAO {
 
 	
 	public int recordPaymentTransaction (double totalAmount, int membershipId) {
-		PreparedStatement preparedStmt = null;
 		int transactionId = 0;
 			
 		SimpleDateFormat reFormat = new SimpleDateFormat("yyyy-MM-dd") ;

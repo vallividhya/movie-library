@@ -57,4 +57,13 @@ public class VideoLibraryDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Use this function to change autocommit on this DAO
+	 * @param autoCommit
+	 * @throws SQLException
+	 */
+	public void setAutoCommit( boolean autoCommit ) throws SQLException {
+		con.setAutoCommit(autoCommit);
+	}
 }
