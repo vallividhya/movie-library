@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
+
+import org.eclipse.jdt.internal.compiler.apt.model.Factory;
+
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
@@ -12,9 +15,10 @@ import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.db.BaseAdminDAO;
 import edu.sjsu.videolibrary.db.BaseCartDAO;
+import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
-import edu.sjsu.videolibrary.db.MovieDAO;
+import edu.sjsu.videolibrary.db.SimpleMovieDAO;
 import edu.sjsu.videolibrary.db.SimpleUserDAO;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
@@ -224,7 +228,7 @@ public class Service {
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		String isCreated = "false";
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		} catch (Exception e) { 
@@ -236,7 +240,7 @@ public class Service {
 
 	public String deleteMovie (String movieId) {
 		String isDeleted = "false"; 
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			isDeleted = movieDAO.deleteMovie(movieId);
 		} catch (Exception e) { 
@@ -328,7 +332,7 @@ public class Service {
 	//List categories on home page
 	public String[] listCategories(){
 		String[] categoryName = null;
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			categoryName = movieDAO.listCategories();
 		} catch (NoCategoryFoundException e) {
@@ -344,7 +348,7 @@ public class Service {
 	//List movies by chosen category
 	public Movie[] listMoviesByCategory(String categoryName) {
 		Movie[] array = null;		
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			array = movieDAO.listMoviesByCategory(categoryName);
 		} catch (NoMovieInCategoryException e) {
@@ -360,7 +364,7 @@ public class Service {
 	//Display all Movies
 	public Movie[] listAllMovies(){
 		Movie[] array=null;
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			array = movieDAO.listAllMovies();
 		} catch (NoMovieFoundException e) {
@@ -376,7 +380,7 @@ public class Service {
 	//search movies by name
 	public Movie[] searchByName(String userInput){
 		Movie[] array = null;
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			array = movieDAO.searchByName(userInput);
 		} catch (NoMovieFoundException e) {
@@ -392,7 +396,7 @@ public class Service {
 	//search movies by banner
 	public Movie[] searchByMovieBanner(String userInput){
 		Movie[] array = null;
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			array = movieDAO.searchByMovieBanner(userInput);
 		} catch (NoMovieFoundException e) {
@@ -408,7 +412,7 @@ public class Service {
 	//search movies by release date
 	public Movie[] searchByReleaseDate(String userInput){
 		Movie[] array = null;
-		MovieDAO movieDAO = new MovieDAO();
+		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			array = movieDAO.searchByReleaseDate(userInput);
 		} catch (NoMovieFoundException e) {

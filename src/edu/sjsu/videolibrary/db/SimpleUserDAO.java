@@ -11,8 +11,6 @@ import edu.sjsu.videolibrary.util.Utils;
 
 public class SimpleUserDAO extends BaseUserDAO 
 {
-	public SimpleUserDAO()
-	{ }
 
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, 

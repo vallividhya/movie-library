@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.db.SimpleCartDAO;
-import edu.sjsu.videolibrary.db.MovieDAO;
+import edu.sjsu.videolibrary.db.SimpleMovieDAO;
 import edu.sjsu.videolibrary.db.SimpleUserDAO;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.model.Movie;
@@ -17,7 +17,7 @@ public class Test {
 	public static void main(String args[]){
 		SimpleCartDAO cartDAO = new SimpleCartDAO();
 		SimpleUserDAO userDAO = new SimpleUserDAO(); 
-		MovieDAO movieDAO = new MovieDAO(); 
+		SimpleMovieDAO movieDAO = new SimpleMovieDAO(); 
 		SimpleAdminDAO adminDAO  = new SimpleAdminDAO();
 
 		VideoLibraryDAO db = new VideoLibraryDAO();

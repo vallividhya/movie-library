@@ -49,5 +49,17 @@ public class DAOFactory {
 			return new SimpleUserDAO();
 		}
 	}
+	
+	public static BaseMovieDAO getMovieDAO() {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleMovieDAO();
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleMovieDAO();
+		} else {
+			// TODO: Need to change this
+			return new SimpleMovieDAO();
+		}
+	}
 
 }

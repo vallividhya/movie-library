@@ -4,11 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.Movie;
-import edu.sjsu.videolibrary.util.Utils;
 
-public class MovieDAO extends VideoLibraryDAO {
-	
-	public MovieDAO () { } 
+public class SimpleMovieDAO extends BaseMovieDAO {
 	
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		try {
