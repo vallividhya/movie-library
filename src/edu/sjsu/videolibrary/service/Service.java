@@ -14,6 +14,7 @@ import edu.sjsu.videolibrary.db.BaseAdminDAO;
 import edu.sjsu.videolibrary.db.BaseCartDAO;
 import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
+import edu.sjsu.videolibrary.db.Cache;
 import edu.sjsu.videolibrary.db.DAOFactory;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
@@ -25,6 +26,7 @@ import edu.sjsu.videolibrary.exception.NoUserFoundException;
 public class Service {
 
 	// Add movies to shopping cart	
+	Cache cache = Cache.getInstance();
 
 	public String addItemsToCart(int membershipId, int movieId){
 		String isAddedToCart = "false";
@@ -322,31 +324,39 @@ public class Service {
 	//List categories on home page
 	public String[] listCategories(){
 		String[] categoryName = null;
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			categoryName = movieDAO.listCategories();
-		} catch (NoCategoryFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
+		categoryName = (String[])cache.get("listCategories");
+		if( categoryName == null ) {
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
+			try {
+				categoryName = movieDAO.listCategories();
+				cache.put("listCategories", categoryName);
+			} catch (NoCategoryFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 		}
 		return categoryName;
 	}
 
 	//List movies by chosen category
 	public Movie[] listMoviesByCategory(String categoryName) {
-		Movie[] array = null;		
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			array = movieDAO.listMoviesByCategory(categoryName);
-		} catch (NoMovieInCategoryException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
+		Movie[] array = null;
+		array = (Movie[]) cache.get("listMoviesByCategory" + categoryName);
+		if( array == null ) {
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
+			try {
+				array = movieDAO.listMoviesByCategory(categoryName);
+				cache.put("listMoviesByCategory" + categoryName, array);
+			} catch (NoMovieInCategoryException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 		}
 		return array;
 	}
@@ -354,15 +364,19 @@ public class Service {
 	//Display all Movies
 	public Movie[] listAllMovies(){
 		Movie[] array=null;
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			array = movieDAO.listAllMovies();
-		} catch (NoMovieFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
+		array = (Movie[]) cache.get("listAllMovies");
+		if( array == null ) {
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
+			try {
+				array = movieDAO.listAllMovies();
+				cache.put("listAllMovies", array);
+			} catch (NoMovieFoundException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			} catch (InternalServerException e) {
+				e.getLocalizedMessage();
+				e.printStackTrace();
+			}
 		}
 		return array;
 	}

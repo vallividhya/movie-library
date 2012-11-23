@@ -16,7 +16,6 @@ import edu.sjsu.videolibrary.model.User;
 public class SimpleAdminDAO extends BaseAdminDAO {
 
 	public User displayUserInformation (int membershipId){
-
 		try{
 
 			String query1 = "select user.FirstName,user.LastName,user.StartDate,"+
@@ -123,7 +122,6 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 	public double getRentAmountforMovie(){
-
 		double rentAmount = 0;
 		try{
 

@@ -11,7 +11,7 @@ import edu.sjsu.videolibrary.model.User;
 
 public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
-	public abstract User displayUserInformation (int membershipId);
+	public abstract User displayUserInformation(int membershipId);
 
 	public abstract Movie displayMovieInformation (int movieId);
 
@@ -41,9 +41,5 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
 	abstract public User[] searchUserByMemberShipType(String adminInput) throws NoUserFoundException, InternalServerException;
 	
-	
 	abstract public User[]  searchUserByMembershipId(int adminInput) throws NoUserFoundException, InternalServerException;
-	
-	
-
 }
