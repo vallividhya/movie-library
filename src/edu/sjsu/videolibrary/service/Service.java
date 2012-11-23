@@ -134,8 +134,6 @@ public class Service {
 			}
 			con.setAutoCommit(true);
 		}
-		
-		
 		return result;
 	}
 	

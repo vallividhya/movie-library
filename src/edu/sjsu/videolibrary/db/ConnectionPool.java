@@ -5,9 +5,6 @@ import java.util.concurrent.TimeUnit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 public class ConnectionPool {
 	static final int poolSize = 5;
@@ -16,8 +13,8 @@ public class ConnectionPool {
 	static final int MAX_BLOCK_TIME = 10;
 	static final TimeUnit BLOCK_TIME_UNIT = TimeUnit.MILLISECONDS;
 
-	LinkedBlockingQueue <Pair<Connection,Statement>> availablePool = 
-			new LinkedBlockingQueue <Pair<Connection,Statement>>(poolSize);
+	LinkedBlockingQueue <Connection> availablePool = 
+			new LinkedBlockingQueue<Connection>(poolSize);
 
 	private ConnectionPool() throws Exception {
 		if( poolEnabled ) {
@@ -34,37 +31,34 @@ public class ConnectionPool {
 		return INSTANCE;
 	}
 
-	public Pair<Connection,Statement> getConnection() throws Exception {
+	public Connection getConnection() throws Exception {
 		if( poolEnabled ) {
-			Pair<Connection,Statement> pair = null;
+			Connection connection = null;
 			do {
-				pair = availablePool.poll(MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
-			} while(pair == null );
-			return pair;
+				connection = availablePool.poll(MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
+			} while(connection == null );
+			return connection;
 		} else {
 			return createNewConnection();
 		}
 	}
 
-	public boolean releaseConnection(Pair<Connection,Statement> pair) throws Exception {
+	public boolean releaseConnection(Connection connection) throws Exception {
 		if(poolEnabled){
-			return availablePool.offer(pair, MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
+			return availablePool.offer(connection, MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
 		}
-		pair.getRight().close();
-		pair.getLeft().close();
+		connection.close();
 		return true;
 	}
 
-	private static Pair<Connection,Statement> createNewConnection() {
+	private static Connection createNewConnection() {
 		Connection con = null;
-		Statement stmt = null;
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
 			if (!con.isClosed()) {
 				System.out.println("");
 			}
-			stmt = con.createStatement();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 			e.getMessage();
@@ -78,6 +72,6 @@ public class ConnectionPool {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		return Pair.of(con, stmt);
+		return con;
 	}
 }
