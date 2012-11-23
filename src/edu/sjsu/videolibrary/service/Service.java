@@ -20,6 +20,7 @@ import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.Cache;
 import edu.sjsu.videolibrary.db.DAOFactory;
 import edu.sjsu.videolibrary.exception.InternalServerException;
+import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
@@ -32,16 +33,16 @@ public class Service {
 	Cache cache = Cache.getInstance();
 
 	public String addItemsToCart(int membershipId, int movieId){
-		String isAddedToCart = "false";
+		String isAddedToCart = "true";
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {				
 			cartDAO.addToCart(movieId, membershipId);
-			isAddedToCart = "true";
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} 
-		finally {
+			System.out.println("Added to cart successfully");
+			
+		} catch (ItemAlreadyInCartException e) {
+				isAddedToCart = "false";
+				System.out.println(e.getMessage());
+		} finally {
 			cartDAO.release();
 		}
 		return isAddedToCart;
@@ -66,30 +67,33 @@ public class Service {
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems;
-		try{
+		try {
 			cartItemsList	= cartDAO.listCartItems(membershipId);
 			cartItems = new ItemOnCart[cartItemsList.size()];
+
+			System.out.println("I've got " + cartItems.length + " items with me!");
+
 			for (int i = 0; i < cartItemsList.size(); i++) {
 				cartItems[i] = cartItemsList.get(i);
-				System.out.println(cartItems[i]);
+				System.out.println(cartItems[i].getMovieName());
 			}
-		}
-		catch(Exception e)
-		{
-			e.getMessage();
+	
+			System.out.println("I'm done with the try block");
+		} catch(Exception e) {
+			System.out.println("I'm in the catch block");
 			cartItems = null;
+		} finally {
+			System.out.println("I'm in the finally block");
+			//cartDAO.release();
 		}
-		finally{
-			cartDAO.release();
-		}
-		
+
+		System.out.println("I'm done");
 		return cartItems;
 	}
 
-
 	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
-		
+
 		// Check credit card 
 		boolean isCardValid = false;
 		if (creditCardNumber.length() == 16) {
@@ -99,7 +103,6 @@ public class Service {
 		double totalAmount = 0;
 		boolean processComplete = false;
 		try {
-			
 			cartDAO.setAutoCommit(false);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
@@ -138,7 +141,7 @@ public class Service {
 		}
 		return result;
 	}
-	
+
 	/*public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
 			{

@@ -2,10 +2,11 @@ package edu.sjsu.videolibrary.db;
 
 import java.util.List;
 
+import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public abstract class BaseCartDAO extends VideoLibraryDAO {
-	public abstract void addToCart (int movieId, int membershipId);
+	public abstract void addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException;
 	
 	public abstract void deleteFromCart (int movieId, int membershipId);
 

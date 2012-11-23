@@ -7,21 +7,56 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.sjsu.videolibrary.exception.InternalServerException;
+import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
+import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public class SimpleCartDAO extends BaseCartDAO {
+	
 	// Add items to cart
-	public void addToCart (int movieId, int membershipId) {
-		PreparedStatement preparedStmt = null;
+	public void addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException{
+		PreparedStatement preparedStmt;
 		String query = "INSERT INTO videolibrary.moviecart (movieId, membershipId) VALUES (?, ?)";
 		try {
-			preparedStmt = con.prepareStatement(query);
-			preparedStmt.setInt(1, movieId);
-			preparedStmt.setInt(2, membershipId);
-			preparedStmt.executeUpdate();
-		} catch (SQLException e) {
+			getMovieById (movieId);
+			throw new ItemAlreadyInCartException("Item already in cart");
+		} catch (InternalServerException e) {
 			e.printStackTrace();
-		}
+		} catch (NoMovieFoundException e) {
+			try {
+				preparedStmt = con.prepareStatement(query);
+				preparedStmt.setInt(1, movieId);
+				preparedStmt.setInt(2, membershipId);
+				System.out.println("Query is " + query);
+				preparedStmt.executeUpdate();	
+				System.out.println("Cart insert successful");
+				System.out.println(e.getMessage());
+			} catch (SQLException e1) {
+				System.out.println(e1.getMessage());
+			}
+		} 
+	}
+
+	public ItemOnCart getMovieById (int movieId) throws InternalServerException, NoMovieFoundException {
+		String query = "SELECT movieId, membershipId FROM moviecart WHERE movieId = " + movieId;
+		ItemOnCart cartItem = new ItemOnCart();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			if(!rs.isBeforeFirst()) {
+				throw new NoMovieFoundException("Movie Does not exist in cart");
+			}
+			while (rs.next()){
+				cartItem.setMovieId(rs.getInt("movieId"));
+				System.out.println(cartItem.getMovieId());
+			}
+			rs.close();
+		
+		} catch (SQLException e) {
+			throw new InternalServerException("DB error", e);
+		}  		
+		return cartItem;
 	}
 	
 	public void deleteFromCart (int movieId, int membershipId) {
@@ -36,7 +71,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public List<ItemOnCart> listCartItems (int membershipId){
 		String query = "SELECT mc.movieId, m.movieId, m.movieName, m.movieBanner, u.membershipType, a.amount FROM videolibrary.moviecart mc, videolibrary.movie m, videolibrary.user u, videolibrary.amountdetails a WHERE mc.membershipId = "+ membershipId+" AND mc.movieId = m.movieId AND mc.membershipId = u.membershipId AND u.membershipType = a.membershipType;";
 		System.out.println("MembershipId" + membershipId);
@@ -66,20 +101,20 @@ public class SimpleCartDAO extends BaseCartDAO {
 	
 	public int recordPaymentTransaction (double totalAmount, int membershipId) {
 		int transactionId = 0;
-			
+		PreparedStatement preparedStmt;	
 		SimpleDateFormat reFormat = new SimpleDateFormat("yyyy-MM-dd") ;
 		java.util.Date utilDate = new java.util.Date(); 
 		reFormat.format(utilDate);
 		java.sql.Date rentDate = new java.sql.Date(utilDate.getTime());
 	    System.out.println("Rent date = " + rentDate);
-		//String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (?, ?, ?)";
-	    String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), 4.5, 1)";
+		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (?, ?, ?)";
+	    //String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (NOW(), 4.5, 1)";
 		try {
 			
-			//preparedStmt = con.prepareStatement(paymentQuery);
-			//preparedStmt.setDate(1,rentDate);
-			//preparedStmt.setDouble(2, totalAmount);
-			//preparedStmt.setInt(3, membershipId);
+			preparedStmt = con.prepareStatement(paymentQuery);
+			preparedStmt.setDate(1,rentDate);
+			preparedStmt.setDouble(2, totalAmount);
+			preparedStmt.setInt(3, membershipId);
 			System.out.println("recordPayment insert Query " + paymentQuery);
 			int rowCount = stmt.executeUpdate(paymentQuery, Statement.RETURN_GENERATED_KEYS);
 			if (rowCount > 0) {
@@ -87,7 +122,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 				ResultSet rs = stmt.getGeneratedKeys();
 				rs.next();
 				transactionId = rs.getInt(1);
-				System.out.println("TransactionId *************** = " + transactionId);
+				System.out.println("TransactionId = " + transactionId);
 			} else {
 				System.out.println("No insert transaction");
 			}
