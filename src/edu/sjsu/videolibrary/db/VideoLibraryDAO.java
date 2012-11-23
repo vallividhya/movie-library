@@ -1,7 +1,7 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+//import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,15 +15,15 @@ public class VideoLibraryDAO {
 	public VideoLibraryDAO(){
 
 		try{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
-			stmt = con.createStatement();
-			if (!con.isClosed()) {
-				System.out.println("");
-			}
-//			con = ConnectionPool.getInstance().getConnection();
+//			Class.forName("com.mysql.jdbc.Driver").newInstance();
+//			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
 //			stmt = con.createStatement();
-//			System.out.print("Created new Connection for " + this.getClass().getCanonicalName() );
+//			if (!con.isClosed()) {
+//				System.out.println("");
+//			}
+			con = ConnectionPool.getInstance().getConnection();
+			stmt = con.createStatement();
+			//System.out.print("Created new Connection for " + this.getClass().getCanonicalName() );
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 			e.getMessage();
