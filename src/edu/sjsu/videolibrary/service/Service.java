@@ -15,7 +15,6 @@ import edu.sjsu.videolibrary.db.BaseCartDAO;
 import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
-import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
@@ -84,9 +83,7 @@ public class Service {
 
 
 	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
-		VideoLibraryDAO videolibraryDAO = new VideoLibraryDAO();
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
-		java.sql.Connection con = videolibraryDAO.getCon();
 		
 		// Check credit card 
 		boolean isCardValid = false;
@@ -98,7 +95,7 @@ public class Service {
 		boolean processComplete = false;
 		try {
 			
-			con.setAutoCommit(false);
+			cartDAO.setAutoCommit(false);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
 				System.out.println("Num of movies on Cart for this memeber = " + cartItems.length);
@@ -128,11 +125,11 @@ public class Service {
 			System.out.println(e.getMessage());
 		} finally {
 			if ( processComplete ) {
-				con.commit();
+				cartDAO.commit();
 			} else {
-				con.rollback();
+				cartDAO.rollback();
 			}
-			con.setAutoCommit(true);
+			cartDAO.setAutoCommit(true);
 		}
 		return result;
 	}

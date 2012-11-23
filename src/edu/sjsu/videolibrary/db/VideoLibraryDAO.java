@@ -1,13 +1,12 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.Connection;
-//import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class VideoLibraryDAO {
+public abstract class VideoLibraryDAO {
 	protected Connection con = null;
 	static ResultSet rs;
 	Statement stmt = null;
@@ -42,14 +41,6 @@ public class VideoLibraryDAO {
 		}
 	}
 
-	public void setCon (Connection con) {
-		this.con = con;
-	}
-
-	public Connection getCon() {
-		return con;
-	}
-
 	public void release() {
 		try {
 			stmt.close();
@@ -58,6 +49,14 @@ public class VideoLibraryDAO {
 			System.err.println("Release connection failed for " + this.getClass().getCanonicalName());
 			e.printStackTrace();
 		}
+	}
+	
+	public void commit() throws SQLException {
+		con.commit();
+	}
+	
+	public void rollback() throws SQLException {
+		con.rollback();
 	}
 
 	/**

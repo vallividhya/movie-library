@@ -15,12 +15,12 @@ import edu.sjsu.videolibrary.model.User;
 public class Test {
 
 	public static void main(String args[]){
-		SimpleCartDAO cartDAO = new SimpleCartDAO();
-		SimpleUserDAO userDAO = new SimpleUserDAO(); 
-		SimpleMovieDAO movieDAO = new SimpleMovieDAO(); 
-		SimpleAdminDAO adminDAO  = new SimpleAdminDAO();
-
-		VideoLibraryDAO db = new VideoLibraryDAO();
+//		SimpleCartDAO cartDAO = new SimpleCartDAO();
+//		SimpleUserDAO userDAO = new SimpleUserDAO(); 
+//		SimpleMovieDAO movieDAO = new SimpleMovieDAO(); 
+//		SimpleAdminDAO adminDAO  = new SimpleAdminDAO();
+//
+//		VideoLibraryDAO db = new VideoLibraryDAO();
 
 		//		User user = adminDAO.displayUserInformation("1");
 		//		System.out.println(user.getFirstName());
