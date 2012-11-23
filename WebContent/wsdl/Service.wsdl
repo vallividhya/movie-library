@@ -5,6 +5,16 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://service.videolibrary.sjsu.edu" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://model.videolibrary.sjsu.edu"/>
+   <element name="getStates">
+    <complexType/>
+   </element>
+   <element name="getStatesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getStatesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="addItemsToCart">
     <complexType>
      <sequence>
@@ -316,7 +326,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
       <element name="movieBanner" type="xsd:string"/>
       <element name="releaseDate" type="xsd:string"/>
       <element name="availableCopies" type="xsd:int"/>
-      <element name="rentAmount" type="xsd:double"/>
       <element name="categoryId" type="xsd:int"/>
      </sequence>
     </complexType>
@@ -556,6 +565,52 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="displayAdminInformation">
+    <complexType>
+     <sequence>
+      <element name="adminId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="displayAdminInformationResponse">
+    <complexType>
+     <sequence>
+      <element name="displayAdminInformationReturn" type="tns1:Admin"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateAdminInfo">
+    <complexType>
+     <sequence>
+      <element name="adminId" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateAdminInfoResponse">
+    <complexType>
+     <sequence>
+      <element name="updateAdminInfoReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateUserPassword">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+      <element name="newPassword" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateUserPasswordResponse">
+    <complexType>
+     <sequence>
+      <element name="updateUserPasswordReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
   </schema>
   <schema elementFormDefault="qualified" targetNamespace="http://model.videolibrary.sjsu.edu" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://service.videolibrary.sjsu.edu"/>
@@ -623,6 +678,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="monthlyPaymentAmount" type="xsd:double"/>
      <element name="paymentDate" nillable="true" type="xsd:string"/>
      <element name="paymentStatus" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Admin">
+    <sequence>
+     <element name="adminId" nillable="true" type="xsd:string"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
   </schema>
@@ -716,6 +779,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="deleteMovieFromCartRequest">
+
+      <wsdl:part element="impl:deleteMovieFromCart" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="deleteMovieRequest">
 
       <wsdl:part element="impl:deleteMovie" name="parameters">
@@ -724,9 +795,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="deleteMovieFromCartRequest">
+   <wsdl:message name="getStatesResponse">
 
-      <wsdl:part element="impl:deleteMovieFromCart" name="parameters">
+      <wsdl:part element="impl:getStatesResponse" name="parameters">
 
       </wsdl:part>
 
@@ -844,6 +915,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="getStatesRequest">
+
+      <wsdl:part element="impl:getStates" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="checkOutMovieCartResponse">
 
       <wsdl:part element="impl:checkOutMovieCartResponse" name="parameters">
@@ -868,9 +947,25 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="updateAdminInfoRequest">
+
+      <wsdl:part element="impl:updateAdminInfo" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="getMonthlyFeesForPremiumMemberResponse">
 
       <wsdl:part element="impl:getMonthlyFeesForPremiumMemberResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="displayAdminInformationResponse">
+
+      <wsdl:part element="impl:displayAdminInformationResponse" name="parameters">
 
       </wsdl:part>
 
@@ -887,6 +982,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="listAllMoviesRequest">
 
       <wsdl:part element="impl:listAllMovies" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateAdminInfoResponse">
+
+      <wsdl:part element="impl:updateAdminInfoResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1012,6 +1115,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="displayAdminInformationRequest">
+
+      <wsdl:part element="impl:displayAdminInformation" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="searchUserByLastNameResponse">
 
       <wsdl:part element="impl:searchUserByLastNameResponse" name="parameters">
@@ -1060,6 +1171,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="signInUserRequest">
+
+      <wsdl:part element="impl:signInUser" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="addItemsToCartResponse">
 
       <wsdl:part element="impl:addItemsToCartResponse" name="parameters">
@@ -1068,9 +1187,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="signInUserRequest">
+   <wsdl:message name="updateUserPasswordResponse">
 
-      <wsdl:part element="impl:signInUser" name="parameters">
+      <wsdl:part element="impl:updateUserPasswordResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1180,6 +1299,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="updateUserPasswordRequest">
+
+      <wsdl:part element="impl:updateUserPassword" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="searchByNameRequest">
 
       <wsdl:part element="impl:searchByName" name="parameters">
@@ -1221,6 +1348,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </wsdl:message>
 
    <wsdl:portType name="Service">
+
+      <wsdl:operation name="getStates">
+
+         <wsdl:input message="impl:getStatesRequest" name="getStatesRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getStatesResponse" name="getStatesResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
 
       <wsdl:operation name="addItemsToCart">
 
@@ -1666,11 +1805,65 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="displayAdminInformation">
+
+         <wsdl:input message="impl:displayAdminInformationRequest" name="displayAdminInformationRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:displayAdminInformationResponse" name="displayAdminInformationResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateAdminInfo">
+
+         <wsdl:input message="impl:updateAdminInfoRequest" name="updateAdminInfoRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:updateAdminInfoResponse" name="updateAdminInfoResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateUserPassword">
+
+         <wsdl:input message="impl:updateUserPasswordRequest" name="updateUserPasswordRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:updateUserPasswordResponse" name="updateUserPasswordResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
    </wsdl:portType>
 
    <wsdl:binding name="ServiceSoapBinding" type="impl:Service">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getStates">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getStatesRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getStatesResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
 
       <wsdl:operation name="addItemsToCart">
 
@@ -2331,6 +2524,60 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="searchUserByMembershipIdResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="displayAdminInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="displayAdminInformationRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="displayAdminInformationResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateAdminInfo">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateAdminInfoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateAdminInfoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateUserPassword">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateUserPasswordRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateUserPasswordResponse">
 
             <wsdlsoap:body use="literal"/>
 

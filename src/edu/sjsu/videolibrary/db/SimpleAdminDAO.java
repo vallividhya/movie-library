@@ -9,9 +9,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import edu.sjsu.videolibrary.exception.*;
+import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.User;
+import edu.sjsu.videolibrary.util.Utils;
 
 public class SimpleAdminDAO extends BaseAdminDAO {
 
@@ -547,6 +549,96 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		User[] array= list.toArray(new User[list.size()]);
 		return array;
 	}
+	
+	//Added recently
+		public String updateAdminInfo(String adminId,String firstName, String lastName, String password){
+			String result = "false";
+			try {
+				String query1 = "UPDATE VideoLibrary.admin SET firstName = '"+firstName+"' ,lastName = '"+lastName +"' WHERE userId = '" + adminId + "'";
+				System.out.println(query1);
+				int rowcount = stmt.executeUpdate(query1);
+
+				if(rowcount>0){
+					result = "true";
+				}
+			}
+			catch(Exception e){ e.printStackTrace(); }
+			return result;
+		}
+		
+		public Admin displayAdminInformation (String adminId) {
+			Admin admin = new Admin();
+			try {
+				String query = "SELECT admin.firstName, admin.lastName, admin.password FROM admin WHERE userId = '" + adminId + "'";
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()){
+					admin.setAdminId(adminId);
+					admin.setFirstName(rs.getString("firstName"));
+					admin.setLastName(rs.getString("lastName"));
+					admin.setPassword(rs.getString("password"));
+				}
+			} catch (SQLException e) { 
+				return null;
+			}
+			
+			return admin; 
+		}
+		
+		public String updateUserPassword(int membershipId,String newPassword){
+			String result = null;
+
+			try{
+				String query1 = "UPDATE VideoLibrary.User SET password = '"+Utils.encryptPassword(newPassword) + "' WHERE membershipId = "+membershipId;
+
+				int rowcount = stmt.executeUpdate(query1);
+
+				if(rowcount > 0){
+					result = "true";
+	 			}
+				else{
+	 				result = "invalidID";
+				}
+			}
+			catch(Exception e){
+	 			result = "false";
+			}
+			return result;		
+		}
+		
+		public Admin signInAdminObject (String userId, String password)  {
+//			Admin bean = new Admin(); 
+//			bean.setAdminId(userId);
+//			bean.setPassword(password);
+//			String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
+//			System.out.println(sql);
+//			try { 
+//			
+//				Statement stmt = con.createStatement();
+//				ResultSet rs = stmt.executeQuery(sql);
+//				if(rs.next())
+//				{
+//			        String firstName = rs.getString("firstName");
+//			        String lastName = rs.getString("lastName");
+//					
+//					bean.setFirstName(firstName);
+//					bean.setLastName(lastName);
+//					// Could not find this function. So code is disabled.
+//					
+//					// Please fix this.
+//					bean.setValid(true);
+//					return bean;
+//				} else {
+//					System.out.println("else");
+//					bean.setValid(false);
+//				}
+//			} catch (SQLException e) { } 
+//			return bean;
+			return null;
+		}
+		
+		
+
 }
 	
 	

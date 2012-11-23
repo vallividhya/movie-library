@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoUserFoundException;
+import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.User;
@@ -42,4 +43,12 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	abstract public User[] searchUserByMemberShipType(String adminInput) throws NoUserFoundException, InternalServerException;
 	
 	abstract public User[]  searchUserByMembershipId(int adminInput) throws NoUserFoundException, InternalServerException;
+	
+	abstract public Admin displayAdminInformation (String adminId) throws SQLException;
+	
+	abstract public String updateAdminInfo(String adminId,String firstName, String lastName, String password) throws SQLException;
+	
+	abstract public String updateUserPassword(int membershipId,String newPassword) throws SQLException;
+	
+	abstract public Admin signInAdminObject (String userId, String password) throws SQLException;
 }

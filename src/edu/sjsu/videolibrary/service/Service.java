@@ -4,9 +4,12 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
+
+import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.StatementInfo;
+import edu.sjsu.videolibrary.model.States;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
@@ -279,7 +282,7 @@ public class Service {
 		return result;
 	}
 
-	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, double rentAmount, int categoryId){
+	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		return result;
@@ -524,5 +527,50 @@ public class Service {
 		}
 		return array;
 	}
+	
+	public Admin displayAdminInformation (String adminId) {
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
+		Admin admin = null;
+		try {
+			admin = adminDAO.displayAdminInformation(adminId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return admin; 
+	}
+	
+	public String updateAdminInfo (String adminId,String firstName, String lastName, String password){
+		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
+		String result = null;
+		try {
+			result = adminDAO.updateAdminInfo(adminId, firstName, lastName, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+
+	public String updateUserPassword (int membershipId, String newPassword) {
+		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
+		String result = null;
+		try {
+			result = adminDAO.updateUserPassword(membershipId, newPassword);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return result;		
+	}
+	
+	public String [] getStates () { 
+		States states = new States();
+		return states.getStates();
+	}
+
+	
+	
 
 }
