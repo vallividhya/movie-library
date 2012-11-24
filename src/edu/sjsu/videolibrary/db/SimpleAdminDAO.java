@@ -637,6 +637,25 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			return null;
 		}
 		
+		public List <Admin> listAdmins () {
+			List <Admin> admins = new ArrayList<Admin>();
+			String query = "SELECT admin.userId, admin.firstName, admin.lastName FROM admin ORDER BY userId";
+			try {
+				ResultSet rs = stmt.executeQuery(query);
+				while (rs.next()) {
+					Admin admin = new Admin();
+					admin.setAdminId(rs.getString("userId"));
+					admin.setFirstName(rs.getString("firstName"));
+					admin.setLastName(rs.getString("lastName"));
+					admins.add(admin);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return admins; 
+			
+		}
 		
 
 }
