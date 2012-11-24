@@ -5,6 +5,8 @@ public class Admin {
 	private String password;
 	private String firstName;
 	private String lastName; 
+    public boolean valid;
+
 	
 	public String getAdminId() {
 		return adminId;
@@ -30,6 +32,14 @@ public class Admin {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	} 
+	
+    public boolean isValid() {
+        return valid;
+ 	}
+
+     public void setValid(boolean newValid) {
+        valid = newValid;
+ 	}	
 	
 	
 }
