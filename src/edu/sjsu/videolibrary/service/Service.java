@@ -49,6 +49,7 @@ public class Service {
 			commitTransaction(dbTransaction);
 
 			isAddedToCart = true;
+			cache.invalidate("viewCart"+membershipId);
 		} catch (ItemAlreadyInCartException e) {
 			System.out.println(e.getMessage());
 			try {
@@ -95,26 +96,30 @@ public class Service {
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
 
-		String dbTransaction = null;
-		try {
-			dbTransaction = startTransaction();
-			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
-			cartItemsList	= cartDAO.listCartItems(membershipId);
-			cartItems = new ItemOnCart[cartItemsList.size()];
-
-			System.out.println("I've got " + cartItems.length + " items with me!");
-
-			for (int i = 0; i < cartItemsList.size(); i++) {
-				cartItems[i] = cartItemsList.get(i);
-				System.out.println(cartItems[i].getMovieName());
-			}	
-		} catch (InternalServerException e) {
-			e.printStackTrace();
-		} finally {
+		cartItems = (ItemOnCart[])cache.get("viewCart" + membershipId);
+		if(cartItems == null){
+			String dbTransaction = null;
 			try {
-				commitTransaction(dbTransaction);
+				dbTransaction = startTransaction();
+				BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+				cartItemsList	= cartDAO.listCartItems(membershipId);
+				cartItems = new ItemOnCart[cartItemsList.size()];
+
+				System.out.println("I've got " + cartItems.length + " items with me!");
+
+				for (int i = 0; i < cartItemsList.size(); i++) {
+					cartItems[i] = cartItemsList.get(i);
+					System.out.println(cartItems[i].getMovieName());
+				}	
+				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					commitTransaction(dbTransaction);
+				} catch (InternalServerException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -161,6 +166,7 @@ public class Service {
 			}
 
 			commitTransaction(dbTransaction);
+			cache.invalidate("viewCart"+membershipId);
 			processComplete = true;
 		} catch (InternalServerException e) {
 			e.printStackTrace();
@@ -193,7 +199,7 @@ public class Service {
 			String address, String city,String state, String zipCode,String ccNumber){
 		User user = new User();
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		
+
 		try{
 			user = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
 		}
@@ -217,7 +223,14 @@ public class Service {
 	public String signInUser(String userId, String password) throws SQLException
 	{
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		return userDAO.signInUser(userId, password);
+		String result = (String)cache.get("signInUser"+userId+password);
+		if(result == null){		
+			result = userDAO.signInUser(userId, password);
+			if(result.equalsIgnoreCase("true")){
+				cache.put("signInUser"+userId+password, result);
+			}
+		}
+		return result;
 	}
 	public String signInAdmin(String userId, String password) throws SQLException
 	{
@@ -264,6 +277,9 @@ public class Service {
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		String isCreated = "false";
+		cache.invalidate("listAllMovies");
+		cache.invalidatePrefix("searchMovie");
+		cache.invalidatePrefix("listMoviesByCategory");
 		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
@@ -314,12 +330,14 @@ public class Service {
 	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+		cache.invalidatePrefix("signInUser"+userId);
 		return result;
 	}
 
 	public String updatePassword(int membershipId,String oldPassword,String newPassword){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
+		cache.invalidatePrefix("signInUser"); //invalidates caching for all users
 		return result;
 	}
 
@@ -599,7 +617,7 @@ public class Service {
 		}
 		return array;
 	}
-	
+
 	public Admin displayAdminInformation (String adminId) {
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		Admin admin = null;
@@ -611,7 +629,7 @@ public class Service {
 		}
 		return admin; 
 	}
-	
+
 	public String updateAdminInfo (String adminId,String firstName, String lastName, String password){
 		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
 		String result = null;
@@ -623,20 +641,21 @@ public class Service {
 		}
 		return result;
 	}
-	
+
 
 	public String updateUserPassword (int membershipId, String newPassword) {
 		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
 		String result = null;
 		try {
 			result = adminDAO.updateUserPassword(membershipId, newPassword);
+			cache.invalidatePrefix("signInUser"); //invalidate caching for all users
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		return result;		
 	}
-	
+
 	public String [] getStates () { 
 		States states = new States();
 		return states.getStates();
@@ -664,6 +683,22 @@ public class Service {
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());
 		}
+	}
+
+
+	public Movie[] searchMovie(String movieName, String movieBanner, String releaseDate){
+		Movie[] array = null;
+		array = (Movie[])cache.get("searchMovie" + movieName + movieBanner + releaseDate);
+		if( array == null ) {
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
+			try {
+				array = movieDAO.searchMovie(movieName, movieBanner, releaseDate);
+				cache.put("searchMovie" + movieName + movieBanner + releaseDate, array);
+			} catch (Exception e) {			
+				e.printStackTrace();
+			}
+		}
+		return array;
 	}
 
 }
