@@ -24,7 +24,11 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	public abstract String[] listCategories() throws NoCategoryFoundException, InternalServerException;
 
 	//List movies by chosen category
-	public abstract Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException;
+	public Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException {
+		return listMoviesByCategory(categoryName,0,100);
+	}
+	
+	public abstract Movie[] listMoviesByCategory(String categoryName, int start, int stop) throws NoMovieInCategoryException, InternalServerException;
 
 	//Display all Movies
 	public abstract Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException;

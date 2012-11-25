@@ -8,13 +8,15 @@ import java.util.UUID;
 
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
+import edu.sjsu.videolibrary.model.Movie;
 
 public class Test {
 	private static int MAX_RETRIES = 3;
 	public static void main(String[] args) throws Exception {
-		storedProc();
+	//	abc();
+		SP_searchMovie();
 	}
-	
+
 	public static void test() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 		try {
@@ -24,7 +26,7 @@ public class Test {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		int retryCount = 0;
 		while (retryCount < MAX_RETRIES) {
 			try {
@@ -41,11 +43,34 @@ public class Test {
 			//throw new InternalException();
 		}
 	}
-	
+
 	public static void storedProc() throws Exception {
 		StoredProcMovieDAO dao = new StoredProcMovieDAO();
 		for( String str : dao.listCategories() ) {
 			System.out.println(str);
+		}
+	}
+
+	public static void storedProc2() throws Exception {
+		StoredProcMovieDAO dao = new StoredProcMovieDAO();
+		for( Movie mv : dao.listMoviesByCategory("Drama",0,10) ) {
+			System.out.println(mv.getMovieName());
+		}
+	}
+
+	public static void abc() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		for( Movie m: dao.searchMovie("Lord of", null, null) ) {
+			System.out.println(m.getMovieName());
+			System.out.println(m.getMovieId());
+		}
+	}
+	
+	public static void SP_searchMovie() throws Exception {
+		StoredProcMovieDAO dao = new StoredProcMovieDAO();
+		for( Movie m: dao.searchMovie("Lord of", null, null) ) {
+			System.out.println(m.getMovieName());
+			System.out.println(m.getMovieId());
 		}
 	}
 }

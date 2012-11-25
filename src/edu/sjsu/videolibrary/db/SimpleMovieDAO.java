@@ -93,10 +93,12 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 	}
 
 	//List movies by chosen category
-	public Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException{
+	@Override
+	public Movie[] listMoviesByCategory(String categoryName, int start, int stop) throws NoMovieInCategoryException, InternalServerException {
 		ArrayList<Movie> list = new ArrayList<Movie>();
 		try{
-			String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName='"+categoryName+"')";
+			String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName='"+categoryName+
+					"') limit " + start + "," + stop;
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
 			if(!rs.isBeforeFirst())
@@ -116,7 +118,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			throw new InternalServerException("Internal erro has occurred.");
 		}
 		Movie[] array= list.toArray(new Movie[list.size()]);
-		return array;		
+		return array;
 	}
 
 	//Display all Movies
@@ -227,6 +229,46 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			stmt.close();
 		}catch(SQLException e){
 			throw new InternalServerException("Internal error has occurred");
+		}
+		Movie[] array= list.toArray(new Movie[list.size()]);
+		return array;
+	}
+	
+	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate){
+		ArrayList<Movie> list = new ArrayList<Movie>();		
+//		String str = "%"+userInput.replace(' ','%')+"%";
+		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId ";
+		if(movieName!=null){
+			String mName= "%"+movieName+"%";
+			query = query +"and m.movieName like '"+mName+"'";
+		}
+		if(movieBanner!=null){
+			String mBanner= "%"+movieBanner+"%";
+			query = query +"and m.movieBanner like '"+mBanner+"'";
+		}
+		if(releaseDate!=null){
+			String rDate= "%"+releaseDate+"%";
+			query = query +"and m.releaseDate like '"+rDate+"'";
+		}
+
+		
+		try{
+			stmt.executeQuery(query);
+			rs=stmt.getResultSet();
+			while(rs.next()){
+				Movie movie = new Movie();
+				movie.setMovieId(rs.getInt(1));
+				movie.setMovieName(rs.getString(2));
+				movie.setMovieBanner(rs.getString(3));
+				movie.setReleaseDate(rs.getString(4));				
+				movie.setAvailableCopies(rs.getInt(5));
+				movie.setCategoryName(rs.getString(6));
+				list.add(movie);
+			}
+			rs.close();
+			stmt.close();
+		}catch(SQLException e){
+			e.printStackTrace();
 		}
 		Movie[] array= list.toArray(new Movie[list.size()]);
 		return array;

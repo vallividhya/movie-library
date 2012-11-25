@@ -126,7 +126,7 @@ public class Service {
 				cartDAO.deleteCart(membershipId);
 			}
 			processComplete = true;
-			
+			 
 		} catch (SQLException e) {
 			result = "false";
 			e.printStackTrace();

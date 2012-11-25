@@ -57,8 +57,7 @@ public class DAOFactory {
 			// TODO: Need to change this
 			return new SimpleMovieDAO();
 		} else {
-			// TODO: Need to change this
-			return new SimpleMovieDAO();
+			return new StoredProcMovieDAO();
 		}
 	}
 
