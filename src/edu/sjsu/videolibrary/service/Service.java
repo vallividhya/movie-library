@@ -258,6 +258,9 @@ public class Service {
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		String isCreated = "false";
+		cache.invalidate("listAllMovies");
+		cache.invalidatePrefix("searchMovie");
+		cache.invalidatePrefix("listMoviesByCategory");
 		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
@@ -627,6 +630,22 @@ public class Service {
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());
 		}
+	}
+	
+	
+	public Movie[] searchMovie(String movieName, String movieBanner, String releaseDate){
+		Movie[] array = null;
+		array = (Movie[])cache.get("searchMovie" + movieName + movieBanner + releaseDate);
+		if( array == null ) {
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
+			try {
+				array = movieDAO.searchMovie(movieName, movieBanner, releaseDate);
+				cache.put("searchMovie" + movieName + movieBanner + releaseDate, array);
+			} catch (Exception e) {			
+				e.printStackTrace();
+			}
+		}
+		return array;
 	}
 
 }

@@ -50,4 +50,8 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	public abstract String updateCopiesCount (int movieId);
 	
 	public abstract int getAvailableCopies (int movieId);
+	
+	public abstract Movie[] searchMovie(String movieName,String movieBanner, String releaseDate) throws Exception;
 }
+
+

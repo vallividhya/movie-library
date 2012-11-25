@@ -3,6 +3,7 @@ package edu.sjsu.videolibrary.db;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Cache {
 
@@ -36,16 +37,22 @@ public class Cache {
 		return cacheStorage.invalidate(key);
 	}
 	
+	public void invalidatePrefix(String keyPrefix) {
+		cacheStorage.invalidatePrefix(keyPrefix);
+	}
+	
 	static private interface ICacheStorage {
 		public void put( String key, Object value);
 		public Object get(String key);
 		public Object invalidate(String key);
+		public void invalidatePrefix(String key);
 	};
 	
 	static private class DisabledCacheStorage implements ICacheStorage {
 		public void put( String key, Object value) {}
 		public Object get(String key){ return null; }
 		public Object invalidate(String key) {return null;}
+		public void invalidatePrefix(String key) {}
 	}
 	
 	static private class LRUCacheStorage implements ICacheStorage {
@@ -68,6 +75,16 @@ public class Cache {
 		@Override
 		public Object invalidate(String key) {
 			return cacheStorage.remove(key);
+		}
+
+		@Override
+		public void invalidatePrefix(String keyPrefix) {
+			Set<String> keySet = cacheStorage.keySet();
+			for( String key : keySet ) {
+				if( key.startsWith(keyPrefix)) {
+					cacheStorage.remove(key);
+				}
+			}
 		}
 	}
 	
