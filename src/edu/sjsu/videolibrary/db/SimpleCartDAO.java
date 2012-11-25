@@ -51,7 +51,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if(!rs.isBeforeFirst()) {
-				throw new NoMovieFoundException("Movie Does not exist in cart");
+				throw new NoMovieFoundException("Movie does not exist in cart");
 			}
 			while (rs.next()){
 				cartItem.setMovieId(rs.getInt("movieId"));

@@ -1,7 +1,10 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
+
+import edu.sjsu.videolibrary.exception.NoUserFoundException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
@@ -36,4 +39,9 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 	public abstract String updatePassword(int membershipId,String oldPassword,String newPassword);
 
 	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year);
+	
+	public abstract User[] searchUser(String membershipId, String userId,
+			String membershipType, String startDate, String firstName,
+			String lastName, String address, String city, String state,
+			String zipCode) throws NoUserFoundException;
 }
