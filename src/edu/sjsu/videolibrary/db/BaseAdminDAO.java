@@ -11,7 +11,15 @@ import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.User;
 
 public abstract class BaseAdminDAO extends VideoLibraryDAO {
-	
+
+	public BaseAdminDAO() {
+		super();
+	}
+
+	public BaseAdminDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public abstract User displayUserInformation(int membershipId);
 
 	public abstract Movie displayMovieInformation (int movieId);

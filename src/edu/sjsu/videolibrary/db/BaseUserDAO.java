@@ -8,6 +8,14 @@ import edu.sjsu.videolibrary.model.User;
 
 public abstract class BaseUserDAO extends VideoLibraryDAO {
 
+	public BaseUserDAO() {
+		super();
+	}
+
+	public BaseUserDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public abstract User signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, 
 			String state, String zipCode,String ccNumber) throws SQLException 

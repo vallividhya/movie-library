@@ -11,31 +11,28 @@ public abstract class VideoLibraryDAO {
 	static ResultSet rs;
 	Statement stmt = null;
 
-	public VideoLibraryDAO(){
+	protected String transactionId;
 
-		try{
-//			Class.forName("com.mysql.jdbc.Driver").newInstance();
-//			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
-//			stmt = con.createStatement();
-//			if (!con.isClosed()) {
-//				System.out.println("");
-//			}
-			con = ConnectionPool.getInstance().getConnection();
-			stmt = con.createStatement();
-			//System.out.print("Created new Connection for " + this.getClass().getCanonicalName() );
-		} catch (IllegalAccessException e) {
+	public VideoLibraryDAO() {
+		try {
+			this.con = ConnectionPool.getInstance().getConnection();
+			this.stmt = con.createStatement();
+		} catch (Exception e) {
 			e.printStackTrace();
 			e.getMessage();
+		}
+	}
+
+	public VideoLibraryDAO(String transactionId){
+		try {
+			this.transactionId = transactionId;
+
+			this.con = TransactionManager.INSTANCE.getConnection(transactionId);
+			stmt = con.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			e.getMessage();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			e.getMessage();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		} catch( Exception e ) {
+		} catch (Exception e ) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
@@ -44,27 +41,12 @@ public abstract class VideoLibraryDAO {
 	public void release() {
 		try {
 			stmt.close();
-			ConnectionPool.getInstance().releaseConnection(con);
+			if (transactionId == null) {
+				ConnectionPool.getInstance().releaseConnection(con);
+			}
 		} catch (Exception e) {
 			System.err.println("Release connection failed for " + this.getClass().getCanonicalName());
 			e.printStackTrace();
 		}
-	}
-	
-	public void commit() throws SQLException {
-		con.commit();
-	}
-	
-	public void rollback() throws SQLException {
-		con.rollback();
-	}
-
-	/**
-	 * Use this function to change autocommit on this DAO
-	 * @param autoCommit
-	 * @throws SQLException
-	 */
-	public void setAutoCommit( boolean autoCommit ) throws SQLException {
-		con.setAutoCommit(autoCommit);
 	}
 }

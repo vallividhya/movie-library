@@ -8,6 +8,14 @@ import edu.sjsu.videolibrary.model.Movie;
 
 public abstract class BaseMovieDAO extends VideoLibraryDAO {
 
+	public BaseMovieDAO() {
+		super();
+	}
+
+	public BaseMovieDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public abstract String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId);
 
 	public abstract String deleteMovie (String movieId) ;
@@ -38,4 +46,8 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	public abstract Movie[] searchByMovieBanner(String userInput) throws NoMovieFoundException, InternalServerException;
 
 	public abstract Movie[] searchByReleaseDate(String userInput) throws NoMovieFoundException, InternalServerException;
+
+	public abstract String updateCopiesCount (int movieId);
+	
+	public abstract int getAvailableCopies (int movieId);
 }

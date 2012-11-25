@@ -17,6 +17,14 @@ import edu.sjsu.videolibrary.util.Utils;
 
 public class SimpleAdminDAO extends BaseAdminDAO {
 
+	public SimpleAdminDAO() {
+		super();
+	}
+
+	public SimpleAdminDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public User displayUserInformation (int membershipId){
 		try{
 

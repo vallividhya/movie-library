@@ -156,4 +156,16 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 		return null;
 	}
 
+	@Override
+	public int getAvailableCopies(int movieId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String updateCopiesCount(int movieId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

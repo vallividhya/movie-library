@@ -3,6 +3,7 @@ package edu.sjsu.videolibrary.service;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.jws.WebService;
 
 import edu.sjsu.videolibrary.model.Admin;
@@ -19,6 +20,7 @@ import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.Cache;
 import edu.sjsu.videolibrary.db.DAOFactory;
+import edu.sjsu.videolibrary.db.TransactionManager;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
@@ -32,42 +34,69 @@ public class Service {
 	// Add movies to shopping cart	
 	Cache cache = Cache.getInstance();
 
-	public String addItemsToCart(int membershipId, int movieId){
-		String isAddedToCart = "true";
-		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+	public boolean addItemsToCart(int membershipId, int movieId) {
+		boolean isAddedToCart = false;
+
+		String dbTransaction = null;
 		try {				
+			dbTransaction = startTransaction();
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+
 			cartDAO.addToCart(movieId, membershipId);
 			System.out.println("Added to cart successfully");
-			
+			commitTransaction(dbTransaction);
+
+			isAddedToCart = true;
 		} catch (ItemAlreadyInCartException e) {
-				isAddedToCart = "false";
-				System.out.println(e.getMessage());
-		} finally {
-			cartDAO.release();
+			System.out.println(e.getMessage());
+			try {
+				commitTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
+			}
+		} catch (InternalServerException e) {
+			e.printStackTrace();
+			try {
+				rollbackTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
+			}
 		}
+
 		return isAddedToCart;
 	}
 
-	public String deleteMovieFromCart (int movieId, int membershipId) {
-		String isDeletedFromCart = "false";
-		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+	public boolean deleteMovieFromCart (int movieId, int membershipId) {
+		boolean isDeletedFromCart = false;
+
+		String dbTransaction = null;
 		try {
+			dbTransaction = startTransaction();
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
 			cartDAO.deleteFromCart(movieId, membershipId);
-			isDeletedFromCart = "true";
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			commitTransaction(dbTransaction);
+
+			isDeletedFromCart = true;
+		} catch (InternalServerException e) {
 			e.printStackTrace();
-		} finally {
-			cartDAO.release();
+			try {
+				rollbackTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
+			}
 		}
+
 		return isDeletedFromCart;
 	}
 
-	public ItemOnCart[] viewCart(int membershipId){
-		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+	public ItemOnCart[] viewCart(int membershipId) {
 		List<ItemOnCart> cartItemsList;
-		ItemOnCart[] cartItems;
+		ItemOnCart[] cartItems = null;
+
+		String dbTransaction = null;
 		try {
+			dbTransaction = startTransaction();
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
 			cartItemsList	= cartDAO.listCartItems(membershipId);
 			cartItems = new ItemOnCart[cartItemsList.size()];
 
@@ -76,37 +105,39 @@ public class Service {
 			for (int i = 0; i < cartItemsList.size(); i++) {
 				cartItems[i] = cartItemsList.get(i);
 				System.out.println(cartItems[i].getMovieName());
+			}	
+		} catch (InternalServerException e) {
+			e.printStackTrace();
+			try {
+				rollbackTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
 			}
-	
-			System.out.println("I'm done with the try block");
-		} catch(Exception e) {
-			System.out.println("I'm in the catch block");
-			cartItems = null;
-		} finally {
-			System.out.println("I'm in the finally block");
-			//cartDAO.release();
 		}
 
 		System.out.println("I'm done");
 		return cartItems;
 	}
 
-	public String checkOutMovieCart(int membershipId, String creditCardNumber) throws SQLException {
-		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+	public boolean checkOutMovieCart(int membershipId, String creditCardNumber) {
+		System.out.println("Inside checkout");
 
 		// Check credit card 
 		boolean isCardValid = false;
 		if (creditCardNumber.length() == 16) {
 			isCardValid = true;
 		}
-		String result = "true";
+
 		double totalAmount = 0;
 		boolean processComplete = false;
+		String dbTransaction = null;
 		try {
-			cartDAO.setAutoCommit(false);
+			dbTransaction = startTransaction();
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO(dbTransaction);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
-				System.out.println("Num of movies on Cart for this memeber = " + cartItems.length);
+				System.out.println("Num of movies on Cart for this member = " + cartItems.length);
 				int[] movieId = new int[cartItems.length];
 				double[] rentAmount = new double[cartItems.length];
 				for (int i = 0; i< cartItems.length; i++) {
@@ -122,24 +153,25 @@ public class Service {
 				int transactionId = cartDAO.recordPaymentTransaction(totalAmount, membershipId);
 				for (int i = 0; i < movieId.length; i++) {
 					cartDAO.recordMovieTransaction(movieId[i], transactionId);
+					System.out.println("Updating copies");
+					movieDAO.updateCopiesCount(movieId[i]);
+					System.out.println("Finished update of copies. Now back to checkout function");
 				}
 				cartDAO.deleteCart(membershipId);
 			}
+
+			commitTransaction(dbTransaction);
 			processComplete = true;
-			 
-		} catch (SQLException e) {
-			result = "false";
+		} catch (InternalServerException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
-		} finally {
-			if ( processComplete ) {
-				cartDAO.commit();
-			} else {
-				cartDAO.rollback();
+			try {
+				rollbackTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
 			}
-			cartDAO.setAutoCommit(true);
 		}
-		return result;
+
+		return processComplete;
 	}
 
 	/*public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
@@ -573,7 +605,28 @@ public class Service {
 		return states.getStates();
 	}
 
-	
-	
+	private String startTransaction() throws InternalServerException {
+		try {
+			return TransactionManager.INSTANCE.startTransaction();
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	private void commitTransaction(String dbTransaction) throws InternalServerException {
+		try {
+			TransactionManager.INSTANCE.commitTransaction(dbTransaction);
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	private void rollbackTransaction(String dbTransaction) throws InternalServerException {
+		try {
+			TransactionManager.INSTANCE.rollbackTransaction(dbTransaction);
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
 
 }

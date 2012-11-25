@@ -12,6 +12,14 @@ import edu.sjsu.videolibrary.util.Utils;
 public class SimpleUserDAO extends BaseUserDAO 
 {
 
+	public SimpleUserDAO() {
+		super();
+	}
+
+	public SimpleUserDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, 
 			String state, String zipCode,String ccNumber) throws SQLException 
@@ -269,13 +277,12 @@ public class SimpleUserDAO extends BaseUserDAO
 					" AND statement.year = "+year+" AND statement.membershipId = "+membershipId;
 			ResultSet result1 = stmt.executeQuery(query1);
 			if(result1.next()){
-				int statementId = result1.getInt("statementId");
+				result1.getInt("statementId");
 			}
 			else{
 				SimpleAdminDAO admin = new SimpleAdminDAO();
 				admin.generateMonthlyStatement(membershipId, month, year);
 			}
-
 
 			String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"+
 					" FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"+

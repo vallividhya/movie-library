@@ -13,7 +13,7 @@ public class DAOFactory {
 	};
 	
 	static final DAOObjectType currentObj = DAOObjectType.Simple;
-	
+
 	public static BaseAdminDAO getAdminDAO() {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleAdminDAO();
@@ -25,16 +25,28 @@ public class DAOFactory {
 			return new SimpleAdminDAO();
 		}
 	}
-	
-	public static BaseCartDAO getCartDAO() {
+
+	public static BaseAdminDAO getAdminDAO(String transactionId) {
 		if( currentObj.equals(DAOObjectType.Simple)) {
-			return new SimpleCartDAO();
+			return new SimpleAdminDAO(transactionId);
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
 			// TODO: Need to change this
-			return new SimpleCartDAO();
+			return new SimpleAdminDAO(transactionId);
 		} else {
 			// TODO: Need to change this
-			return new SimpleCartDAO();
+			return new SimpleAdminDAO(transactionId);
+		}
+	}
+
+	public static BaseCartDAO getCartDAO(String transactionId) {
+		if(currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleCartDAO(transactionId);
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleCartDAO(transactionId);
+		} else {
+			// TODO: Need to change this
+			return new SimpleCartDAO(transactionId);
 		}
 	}
 	
@@ -50,6 +62,18 @@ public class DAOFactory {
 		}
 	}
 	
+	public static BaseUserDAO getUserDAO(String transactionId) {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleUserDAO(transactionId);
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleUserDAO(transactionId);
+		} else {
+			// TODO: Need to change this
+			return new SimpleUserDAO(transactionId);
+		}
+	}
+
 	public static BaseMovieDAO getMovieDAO() {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleMovieDAO();
@@ -61,4 +85,15 @@ public class DAOFactory {
 		}
 	}
 
+	public static BaseMovieDAO getMovieDAO(String transactionId) {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleMovieDAO(transactionId);
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			// TODO: Need to change this
+			return new SimpleMovieDAO(transactionId);
+		} else {
+			// TODO: Need to change this
+			return new SimpleMovieDAO(transactionId);
+		}
+	}
 }

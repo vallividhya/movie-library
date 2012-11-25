@@ -7,6 +7,14 @@ import edu.sjsu.videolibrary.model.Movie;
 
 public class SimpleMovieDAO extends BaseMovieDAO {
 
+	public SimpleMovieDAO() {
+		super();
+	}
+
+	public SimpleMovieDAO(String transactionId) {
+		super(transactionId);
+	}
+
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
@@ -251,7 +259,6 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			query = query +"and m.releaseDate like '"+rDate+"'";
 		}
 
-		
 		try{
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
@@ -274,7 +281,54 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
+	public String updateCopiesCount(int movieId) {
+		System.out.println("Movie Id for updating = " + movieId);
+		int availableCopies = getAvailableCopies(movieId);
+		String isCopiesUpdated = "false";
+		System.out.println(availableCopies
+				+ " are available for movie with movieId = " + movieId);
+		try {
+			if (availableCopies > 0) {
+				availableCopies = availableCopies - 1;
+				System.out.println("Available copies after renting out = "
+						+ availableCopies);
+				String query = "UPDATE videolibrary.movie SET availableCopies = "
+						+ availableCopies + " WHERE movieId = " + movieId;
+				System.out.println("Start time of update tx "
+						+ (System.currentTimeMillis() / 1000) + " seconds");
+				int rowCount = stmt.executeUpdate(query);
+				System.out.println("Stop time of update tx "
+						+ (System.currentTimeMillis() / 1000) + " seconds");
+				if (rowCount > 0) {
+					isCopiesUpdated = "true";
+					System.out.println("Update of availableCopies Successful");
+				}
+			} else {
+				System.out
+						.println("All copies rented out. Nothing available now");
+			}
 
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return isCopiesUpdated;
+	}
+
+	public int getAvailableCopies(int movieId) {
+		String query = "SELECT availableCopies FROM videolibrary.movie WHERE movieId = "
+				+ movieId;
+		Movie movie = new Movie();
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				movie.setAvailableCopies(rs.getInt("availableCopies"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return movie.getAvailableCopies();
+	}
 }
 
 
