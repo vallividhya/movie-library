@@ -368,6 +368,8 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		return members;
 	}
 	
+	
+	
 	public User[] searchUserByFirstName(String adminInput) throws NoUserFoundException, InternalServerException{
 		ArrayList<User> list= new ArrayList<User>();		
 		String str = "%"+adminInput.replace(' ','%')+"%";
@@ -615,34 +617,31 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		}
 		
 		public Admin signInAdminObject (String userId, String password)  {
-//			Admin bean = new Admin(); 
-//			bean.setAdminId(userId);
-//			bean.setPassword(password);
-//			String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
-//			System.out.println(sql);
-//			try { 
-//			
-//				Statement stmt = con.createStatement();
-//				ResultSet rs = stmt.executeQuery(sql);
-//				if(rs.next())
-//				{
-//			        String firstName = rs.getString("firstName");
-//			        String lastName = rs.getString("lastName");
-//					
-//					bean.setFirstName(firstName);
-//					bean.setLastName(lastName);
-//					// Could not find this function. So code is disabled.
-//					
-//					// Please fix this.
-//					bean.setValid(true);
-//					return bean;
-//				} else {
-//					System.out.println("else");
-//					bean.setValid(false);
-//				}
-//			} catch (SQLException e) { } 
-//			return bean;
-			return null;
+			Admin bean = new Admin(); 
+			bean.setAdminId(userId);
+			bean.setPassword(password);
+			String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
+			System.out.println(sql);
+			try { 
+			
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				if(rs.next())
+				{
+			        String firstName = rs.getString("firstName");
+			        String lastName = rs.getString("lastName");
+					
+					bean.setFirstName(firstName);
+					bean.setLastName(lastName);
+ 
+					bean.setValid(true);
+					return bean;
+				} else {
+					System.out.println("else");
+					bean.setValid(false);
+				}
+			} catch (SQLException e) { } 
+			return bean;
 		}
 		
 		public List <Admin> listAdmins () {

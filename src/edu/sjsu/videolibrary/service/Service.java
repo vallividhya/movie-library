@@ -186,15 +186,6 @@ public class Service {
 
 	}
 
-	/*public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
-			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
-			{
-		return userDAO.signUpUser(userId, password, memType,new java.sql.Date(System.currentTimeMillis()), 
-				firstName, lastName, address, city, state, zipCode, ccNumber, 
-				new java.sql.Date(System.currentTimeMillis()));
-			}*/
-
-
 	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city,String state, String zipCode,String ccNumber){
 		User user = new User();
@@ -246,6 +237,14 @@ public class Service {
 		return members;
 
 	}
+
+	public Admin [] viewAdmins () {	
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
+		List <Admin> memberList = adminDAO.listAdmins();
+		Admin [] admins = memberList.toArray(new Admin[0]);
+		return admins;
+	}
+
 
 	//Delete an user and admin account
 	public String deleteUserAccount (String userId) {
