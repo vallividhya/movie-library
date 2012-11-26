@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
+import edu.sjsu.videolibrary.model.ItemOnCart;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.User;
 
@@ -16,9 +17,19 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 	//	abc();
 	//	SP_searchMovie();
-		SP_searchUser();
+//		SP_searchUser();
+		listCartItems();
 	}
 
+	public static void listCartItems() throws Exception {
+		String transId = TransactionManager.INSTANCE.startTransaction();
+		StoredProcCartDAO cartDAO = new StoredProcCartDAO(transId);
+		for( ItemOnCart cartItem : cartDAO.listCartItems(1) ) {
+			System.out.println(cartItem.getMovieName());
+		}
+		TransactionManager.INSTANCE.commitTransaction(transId);
+	}
+	
 	public static void test() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 		try {

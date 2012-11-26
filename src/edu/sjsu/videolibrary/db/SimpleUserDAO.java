@@ -96,9 +96,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 	public String signInUser(String userId, String password)
 			throws SQLException {
 		String result = null;
+		String encryptedPasswrd = Utils.encryptPassword(password);
 		String sql = "SELECT userId, password FROM user WHERE userId = '"
 				+ userId + "'" + " AND password = '"
-				+ Utils.encryptPassword(password) + "'";
+				+ encryptedPasswrd + "'";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if (rs.next()) {

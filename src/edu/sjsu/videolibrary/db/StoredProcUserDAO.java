@@ -3,6 +3,7 @@ package edu.sjsu.videolibrary.db;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import edu.sjsu.videolibrary.exception.NoUserFoundException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
+import edu.sjsu.videolibrary.util.Utils;
 
 public class StoredProcUserDAO extends BaseUserDAO {
 
@@ -32,8 +34,18 @@ public class StoredProcUserDAO extends BaseUserDAO {
 	@Override
 	public String signInUser(String userId, String password)
 			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		String result = null;
+		String encryptedPasswrd = Utils.encryptPassword(password);
+		String sql = " call videolibrary.signInUser('"+userId+"','"+encryptedPasswrd+"');";
+		Statement stmt = con.createStatement();
+		 stmt.execute(sql);
+		 ResultSet rs = stmt.getResultSet();
+		if (rs.next()) {
+			result = "true";
+		} else {
+			result = "false";
+		}
+		return result;
 	}
 
 	@Override

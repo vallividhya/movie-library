@@ -4,6 +4,8 @@ DROP PROCEDURE IF EXISTS `videolibrary`.`listMoviesByCategory`;
 DROP PROCEDURE IF EXISTS `videolibrary`.`searchMovie`;
 DROP PROCEDURE IF EXISTS `videolibrary`.`test`;
 DROP PROCEDURE IF EXISTS `videolibrary`.`searchUser`;
+DROP PROCEDURE IF EXISTS `videolibrary`.`listCartItems`;
+DROP PROCEDURE IF EXISTS `videolibrary`.`signInUser`;
 
 DELIMITER $$
 CREATE PROCEDURE `videolibrary`.`get_categories` ()
@@ -119,7 +121,26 @@ if zipCode is not null then
 END;
 $$
 
- call videolibrary.searchUser('1',null,null,null,null,null,null,null,'CA',null);
+DELIMITER $$
+CREATE PROCEDURE `videolibrary`.`listCartItems` (pMembershipId int)
+BEGIN
+	SELECT m.movieId, m.movieName, m.movieBanner, u.membershipType, a.amount 
+	FROM videolibrary.moviecart mc, videolibrary.movie m, videolibrary.user u, videolibrary.amountdetails a 
+	WHERE mc.membershipId = pMembershipId
+	AND mc.movieId = m.movieId AND mc.membershipId = u.membershipId AND u.membershipType = a.membershipType;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE `videolibrary`.`signInUser` (puserId varchar(20),p_password varchar(32))
+BEGIN
+	SELECT userId, password FROM user WHERE userId = puserId  AND password = p_password;
+END;
+$$
+
+call videolibrary.signInUser("sr@yahoo.com","sr123");
+-- call videolibrary.listCartItems(1);
+-- call videolibrary.searchUser('1',null,null,null,null,null,null,null,'CA',null);
 -- call videolibrary.test();
 -- call videolibrary.searchMovie('Gan',null,null);
 
