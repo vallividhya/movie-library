@@ -47,6 +47,11 @@ public class MovieData {
 				int numberOfCopies = randomizer.nextInt(9)+1;
 				movieDao.createNewMovie(movie[0].trim() + i, movie[1].trim(), movie[2].trim(), numberOfCopies, movieCategoryId);
 			}
+			movieDao.release();
+			movieDao = DAOFactory.getMovieDAO();
+			if( i % 1000 == 0 ) {
+				System.out.println(".");
+			}
 		}
 	}
 	
