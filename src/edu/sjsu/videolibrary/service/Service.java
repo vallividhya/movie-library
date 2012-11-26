@@ -32,9 +32,9 @@ import edu.sjsu.videolibrary.exception.NoUserFoundException;
 @WebService
 
 public class Service {
-	
+
 	Cache cache = Cache.getInstance();
-		
+
 	// Add movies to shopping cart	
 	public boolean addItemsToCart(int membershipId, int movieId) {
 		boolean isAddedToCart = false;
@@ -181,11 +181,11 @@ public class Service {
 	}
 
 	// Return Movie
-	
+
 	public void returnMovie () {
-		
+
 	}
-	
+
 	/*public String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, String state, String zipCode,String ccNumber) throws SQLException 
 			{
@@ -331,6 +331,7 @@ public class Service {
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
 		cache.invalidatePrefix("signInUser"+userId);
+		cache.invalidatePrefix("searchUser");
 		return result;
 	}
 
@@ -490,34 +491,38 @@ public class Service {
 		}
 		return array;
 	}
-	
+
 	// Search User by any attribute 
-	
+
 	public User[] searchUser (String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
 			String zipCode) {
-		
-		
+
+
 		User[] users = null;
 		String dbTransaction = null;
-		try {				
-			dbTransaction = startTransaction();
-			BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
-			users = userDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
-			System.out.println("Users : ");
-			for (User i:users) {
-				System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
-			}
-		} catch (NoUserFoundException e) {
-			System.out.println(e.getMessage());
-		} catch (InternalServerException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				commitTransaction(dbTransaction);
+		users = (User[])cache.get("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode);
+		if(users == null){
+			try {				
+				dbTransaction = startTransaction();
+				BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
+				users = userDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
+				System.out.println("Users : ");
+				for (User i:users) {
+					System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
+				}
+				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
+			} catch (NoUserFoundException e) {
+				System.out.println(e.getMessage());
 			} catch (InternalServerException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					commitTransaction(dbTransaction);
+				} catch (InternalServerException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return users;

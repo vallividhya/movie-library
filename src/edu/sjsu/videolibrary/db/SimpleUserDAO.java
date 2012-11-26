@@ -403,10 +403,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 				user.setState(rs.getString(10));
 				user.setZip(rs.getString(11));
 				user.setCreditCardNumber(rs.getString(12));
-				/*
-				 * Date paymentDate = rs.getDate(13); if (paymentDate != null) {
-				 * user.setLatestPaymentDate(paymentDate.toString()); }
-				 */
+				Date paymentDate = rs.getDate(13); 
+				if (paymentDate != null) {
+					user.setLatestPaymentDate(paymentDate.toString()); 
+				}
 				System.out.println(user.getMembershipId());
 				searchList.add(user);
 			}

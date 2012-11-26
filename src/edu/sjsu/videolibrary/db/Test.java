@@ -9,12 +9,14 @@ import java.util.UUID;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.model.User;
 
 public class Test {
 	private static int MAX_RETRIES = 3;
 	public static void main(String[] args) throws Exception {
 	//	abc();
-		SP_searchMovie();
+	//	SP_searchMovie();
+		SP_searchUser();
 	}
 
 	public static void test() {
@@ -71,6 +73,14 @@ public class Test {
 		for( Movie m: dao.searchMovie("Lord of", null, null) ) {
 			System.out.println(m.getMovieName());
 			System.out.println(m.getMovieId());
+		}
+	}
+	
+	public static void SP_searchUser() throws Exception {
+		StoredProcUserDAO dao = new StoredProcUserDAO();
+		for( User usr: dao.searchUser("1",null,null,null,null,null,null,null,"CA",null)){
+			System.out.println(usr.getFirstName());
+			System.out.println(usr.getUserId());
 		}
 	}
 }

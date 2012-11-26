@@ -55,7 +55,7 @@ public class ConnectionPool {
 		Connection con = null;
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","1248");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/videoLibrary","root","ruh12ruh");
 			if (!con.isClosed()) {
 				System.out.println("");
 			}
