@@ -223,10 +223,10 @@ public class Service {
 		}
 		return result;
 	}
-	public String signInAdmin(String userId, String password) throws SQLException
+	public Admin signInAdmin (String userId, String password) throws SQLException
 	{
-		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		return userDAO.signInAdmin(userId, password);
+		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
+		return adminDAO.signInAdminObject(userId, password);
 	}
 
 	//List members
