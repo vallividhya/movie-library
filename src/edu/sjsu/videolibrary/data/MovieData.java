@@ -46,6 +46,7 @@ public class MovieData {
 				int movieCategoryId = randomizer.nextInt(categories.length)+1;
 				int numberOfCopies = randomizer.nextInt(9)+1;
 				movieDao.createNewMovie(movie[0].trim() + i, movie[1].trim(), movie[2].trim(), numberOfCopies, movieCategoryId);
+
 			}
 			movieDao.release();
 			movieDao = DAOFactory.getMovieDAO();

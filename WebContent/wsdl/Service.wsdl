@@ -151,7 +151,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="signInAdminResponse">
     <complexType>
      <sequence>
-      <element name="signInAdminReturn" type="xsd:string"/>
+      <element name="signInAdminReturn" type="tns1:Admin"/>
      </sequence>
     </complexType>
    </element>
@@ -166,6 +166,16 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element maxOccurs="unbounded" name="viewMembersReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewAdmins">
+    <complexType/>
+   </element>
+   <element name="viewAdminsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="viewAdminsReturn" type="tns1:Admin"/>
      </sequence>
     </complexType>
    </element>
@@ -348,6 +358,29 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="searchUser">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:string"/>
+      <element name="userId" type="xsd:string"/>
+      <element name="membershipType" type="xsd:string"/>
+      <element name="startDate" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+      <element name="address" type="xsd:string"/>
+      <element name="city" type="xsd:string"/>
+      <element name="state" type="xsd:string"/>
+      <element name="zipCode" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchUserResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchUserReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="updatePassword">
     <complexType>
      <sequence>
@@ -500,29 +533,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element maxOccurs="unbounded" name="searchByReleaseDateReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUser">
-    <complexType>
-     <sequence>
-      <element name="membershipId" type="xsd:string"/>
-      <element name="userId" type="xsd:string"/>
-      <element name="membershipType" type="xsd:string"/>
-      <element name="startDate" type="xsd:string"/>
-      <element name="firstName" type="xsd:string"/>
-      <element name="lastName" type="xsd:string"/>
-      <element name="address" type="xsd:string"/>
-      <element name="city" type="xsd:string"/>
-      <element name="state" type="xsd:string"/>
-      <element name="zipCode" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserReturn" type="tns1:User"/>
      </sequence>
     </complexType>
    </element>
@@ -686,6 +696,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="zip" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
+   <complexType name="Admin">
+    <sequence>
+     <element name="adminId" nillable="true" type="xsd:string"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="valid" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
    <complexType name="Movie">
     <sequence>
      <element name="availableCopies" type="xsd:int"/>
@@ -723,15 +742,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="monthlyPaymentAmount" type="xsd:double"/>
      <element name="paymentDate" nillable="true" type="xsd:string"/>
      <element name="paymentStatus" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <complexType name="Admin">
-    <sequence>
-     <element name="adminId" nillable="true" type="xsd:string"/>
-     <element name="firstName" nillable="true" type="xsd:string"/>
-     <element name="lastName" nillable="true" type="xsd:string"/>
-     <element name="password" nillable="true" type="xsd:string"/>
-     <element name="valid" type="xsd:boolean"/>
     </sequence>
    </complexType>
   </schema>
@@ -1025,6 +1035,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="viewAdminsResponse">
+
+      <wsdl:part element="impl:viewAdminsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="searchMovieRequest">
 
       <wsdl:part element="impl:searchMovie" name="parameters">
@@ -1052,6 +1070,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="searchUserResponse">
 
       <wsdl:part element="impl:searchUserResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="viewAdminsRequest">
+
+      <wsdl:part element="impl:viewAdmins" name="parameters">
 
       </wsdl:part>
 
@@ -1097,17 +1123,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="deleteAdminAccountResponse">
+   <wsdl:message name="updatePasswordResponse">
 
-      <wsdl:part element="impl:deleteAdminAccountResponse" name="parameters">
+      <wsdl:part element="impl:updatePasswordResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="updatePasswordResponse">
+   <wsdl:message name="deleteAdminAccountResponse">
 
-      <wsdl:part element="impl:updatePasswordResponse" name="parameters">
+      <wsdl:part element="impl:deleteAdminAccountResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1377,17 +1403,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserRequest">
+   <wsdl:message name="listCategoriesRequest">
 
-      <wsdl:part element="impl:searchUser" name="parameters">
+      <wsdl:part element="impl:listCategories" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="listCategoriesRequest">
+   <wsdl:message name="searchUserRequest">
 
-      <wsdl:part element="impl:listCategories" name="parameters">
+      <wsdl:part element="impl:searchUser" name="parameters">
 
       </wsdl:part>
 
@@ -1575,6 +1601,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="viewAdmins">
+
+         <wsdl:input message="impl:viewAdminsRequest" name="viewAdminsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:viewAdminsResponse" name="viewAdminsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="deleteUserAccount">
 
          <wsdl:input message="impl:deleteUserAccountRequest" name="deleteUserAccountRequest">
@@ -1719,6 +1757,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="searchUser">
+
+         <wsdl:input message="impl:searchUserRequest" name="searchUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchUserResponse" name="searchUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="updatePassword">
 
          <wsdl:input message="impl:updatePasswordRequest" name="updatePasswordRequest">
@@ -1846,18 +1896,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:searchByReleaseDateResponse" name="searchByReleaseDateResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUser">
-
-         <wsdl:input message="impl:searchUserRequest" name="searchUserRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserResponse" name="searchUserResponse">
 
        </wsdl:output>
 
@@ -2175,6 +2213,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="viewAdmins">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="viewAdminsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="viewAdminsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="deleteUserAccount">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2391,6 +2447,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="searchUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="updatePassword">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2582,24 +2656,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="searchByReleaseDateResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUser">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserResponse">
 
             <wsdlsoap:body use="literal"/>
 

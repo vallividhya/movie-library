@@ -68,7 +68,9 @@ movieId INTEGER NOT NULL,
 membershipId INTEGER NOT NULL,
 
 FOREIGN KEY(movieId) REFERENCES Movie(movieId),
-FOREIGN KEY(membershipId) REFERENCES User(membershipId)
+FOREIGN KEY(membershipId) REFERENCES User(membershipId),
+PRIMARY KEY (movieId,membershipId)
+
 );
 
 CREATE TABLE VideoLibrary.Admin
@@ -105,7 +107,8 @@ feesUpdateDate DATE,
 amount DOUBLE NOT NULL
 );
 
-ALTER TABLE `videolibrary`.`moviecart` DROP PRIMARY KEY,
-ADD PRIMARY KEY (`movieId`, `membershipId`);
+ALTER TABLE videolibrary.user AUTO_INCREMENT = 111111111;
+
+
 
 
