@@ -18,17 +18,10 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
-					"VALUES (?,?,?,?,?)";
-			PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-
-			pst.setString(1, movieName); 
-			pst.setString(2, movieBanner);
-			pst.setString(3,releaseDate); 
-			pst.setInt(4, availableCopies);
-			pst.setInt(5, categoryId);
-
-			pst.execute();
-			ResultSet rs = pst.getGeneratedKeys();
+					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"','"+availableCopies+"','"+categoryId+"')";
+			
+			stmt.executeUpdate(sql);
+			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
 				Integer movieID = rs.getInt(1);
@@ -61,12 +54,10 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 	}
 
 	public String returnMovie(int membershipId, String movieId) {
-		PreparedStatement preparedStmt = null;
-		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE M_Id = ?"; 
+		
+		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE M_Id = "+movieId; 
 		try {
-			preparedStmt = con.prepareStatement(query);
-			preparedStmt.setInt(1, Integer.parseInt(movieId));
-			preparedStmt.executeUpdate();
+			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -158,89 +149,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
-	public Movie[] searchByName(String userInput) throws NoMovieFoundException, InternalServerException{
-		ArrayList<Movie> list = new ArrayList<Movie>();		
-		String str = "%"+userInput.replace(' ','%')+"%";
-		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieName like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoMovieFoundException("No movie found with the entered name.");
-			while(rs.next()){
-				Movie movie = new Movie();
-				movie.setMovieId(rs.getInt(1));
-				movie.setMovieName(rs.getString(2));
-				movie.setMovieBanner(rs.getString(3));
-				movie.setReleaseDate(rs.getString(4));				
-				movie.setAvailableCopies(rs.getInt(5));
-				movie.setCategoryName(rs.getString(6));
-				list.add(movie);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal Error has occurred.");
-		}
-		Movie[] array= list.toArray(new Movie[list.size()]);
-		return array;
-	}
-
-	public Movie[] searchByMovieBanner(String userInput) throws NoMovieFoundException, InternalServerException{
-		ArrayList<Movie> list = new ArrayList<Movie>();		
-		String str = "%"+userInput.replace(' ','%')+"%";
-		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.movieBanner like '"+str+"'"; 
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoMovieFoundException("No movie found for the entered banner.");
-			while(rs.next()){
-				Movie movie = new Movie();
-				movie.setMovieId(rs.getInt(1));
-				movie.setMovieName(rs.getString(2));
-				movie.setMovieBanner(rs.getString(3));
-				movie.setReleaseDate(rs.getString(4));				
-				movie.setAvailableCopies(rs.getInt(5));
-				movie.setCategoryName(rs.getString(6));
-				list.add(movie);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred");
-		}
-		Movie[] array= list.toArray(new Movie[list.size()]);
-		return array;
-	}
-
-	public Movie[] searchByReleaseDate(String userInput) throws NoMovieFoundException, InternalServerException{
-		ArrayList<Movie> list = new ArrayList<Movie>();		
-		String str = "%"+userInput.replace(' ','%')+"%";
-		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId and m.releaseDate like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoMovieFoundException("No movie found for the entered banner.");
-			while(rs.next()){
-				Movie movie = new Movie();
-				movie.setMovieId(rs.getInt(1));
-				movie.setMovieName(rs.getString(2));
-				movie.setMovieBanner(rs.getString(3));
-				movie.setReleaseDate(rs.getString(4));				
-				movie.setAvailableCopies(rs.getInt(5));
-				movie.setCategoryName(rs.getString(6));
-				list.add(movie);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred");
-		}
-		Movie[] array= list.toArray(new Movie[list.size()]);
-		return array;
-	}
+	
 	
 	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate){
 		ArrayList<Movie> list = new ArrayList<Movie>();		

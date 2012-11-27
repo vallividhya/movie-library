@@ -136,27 +136,6 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 	}
 
 	@Override
-	public Movie[] searchByName(String userInput) throws NoMovieFoundException,
-	InternalServerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Movie[] searchByMovieBanner(String userInput)
-			throws NoMovieFoundException, InternalServerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Movie[] searchByReleaseDate(String userInput)
-			throws NoMovieFoundException, InternalServerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int getAvailableCopies(int movieId) {
 		// TODO Auto-generated method stub
 		return 0;

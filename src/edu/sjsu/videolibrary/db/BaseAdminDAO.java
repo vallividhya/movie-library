@@ -42,17 +42,10 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
 	public abstract List <Admin> listAdmins(); 
 	
-	public abstract User[] searchUserByFirstName(String adminInput) throws NoUserFoundException, InternalServerException;
-	
-	public abstract User[] searchUserByLastName(String adminInput) throws NoUserFoundException, InternalServerException;
-	
-	public abstract User[] searchUserByCity(String adminInput) throws NoUserFoundException, InternalServerException;
-	
-	abstract public User[] searchUserByState(String adminInput) throws NoUserFoundException, InternalServerException;
-	
-	abstract public User[] searchUserByMemberShipType(String adminInput) throws NoUserFoundException, InternalServerException;
-	
-	abstract public User[]  searchUserByMembershipId(int adminInput) throws NoUserFoundException, InternalServerException;
+	public abstract User[] searchUser(String membershipId, String userId,
+			String membershipType, String startDate, String firstName,
+			String lastName, String address, String city, String state,
+			String zipCode) throws NoUserFoundException;
 	
 	abstract public Admin displayAdminInformation (String adminId) throws SQLException;
 	

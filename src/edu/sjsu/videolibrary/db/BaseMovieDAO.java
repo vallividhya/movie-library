@@ -41,11 +41,7 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	//Display all Movies
 	public abstract Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException;
 
-	public abstract Movie[] searchByName(String userInput) throws NoMovieFoundException, InternalServerException;
-
-	public abstract Movie[] searchByMovieBanner(String userInput) throws NoMovieFoundException, InternalServerException;
-
-	public abstract Movie[] searchByReleaseDate(String userInput) throws NoMovieFoundException, InternalServerException;
+	
 
 	public abstract String updateCopiesCount (int movieId);
 	

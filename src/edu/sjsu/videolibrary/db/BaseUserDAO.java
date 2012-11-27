@@ -40,8 +40,5 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 
 	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year);
 	
-	public abstract User[] searchUser(String membershipId, String userId,
-			String membershipType, String startDate, String firstName,
-			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException;
+	
 }

@@ -1,13 +1,17 @@
 package edu.sjsu.videolibrary.db;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
@@ -33,24 +37,24 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 					"user.State,user.Zip,user.CreditCardNumber,user.latestPaymentDate from VideoLibrary.user"+
 					" where user.MembershipId = "+ membershipId;
 
-			ResultSet result1 = stmt.executeQuery(query1);
+			rs = stmt.executeQuery(query1);
 			User user = new User();
 
-			while(result1.next()){
-				user.setFirstName(result1.getString("FirstName"));
-				user.setLastName(result1.getString("LastName"));
-				user.setUserId(result1.getString("UserId"));
-				user.setPassword(result1.getString("Password"));
-				user.setMembershipType(result1.getString("MembershipType"));
-				user.setMembershipId(result1.getInt("MembershipId"));
-				user.setAddress(result1.getString("Address"));
-				user.setCity(result1.getString("City"));
-				user.setState(result1.getString("State"));
-				user.setZip(result1.getString("Zip"));
-				user.setCreditCardNumber(result1.getString("CreditCardNumber"));
-				Date latestPaymentDate = result1.getDate("latestPaymentDate");
+			while(rs.next()){
+				user.setFirstName(rs.getString("FirstName"));
+				user.setLastName(rs.getString("LastName"));
+				user.setUserId(rs.getString("UserId"));
+				user.setPassword(rs.getString("Password"));
+				user.setMembershipType(rs.getString("MembershipType"));
+				user.setMembershipId(rs.getInt("MembershipId"));
+				user.setAddress(rs.getString("Address"));
+				user.setCity(rs.getString("City"));
+				user.setState(rs.getString("State"));
+				user.setZip(rs.getString("Zip"));
+				user.setCreditCardNumber(rs.getString("CreditCardNumber"));
+				Date latestPaymentDate = rs.getDate("latestPaymentDate");
 				if(latestPaymentDate !=null){
-					user.setLatestPaymentDate(result1.getDate("latestPaymentDate").toString());
+					user.setLatestPaymentDate(rs.getDate("latestPaymentDate").toString());
 				}
 				else{
 					user.setLatestPaymentDate(null);
@@ -263,12 +267,10 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	//Moved from UserDAO 
 	public String deleteUser (String userId) {
 		try {
-			String sql = "DELETE from user WHERE membershipId  = ?";
+			String sql = "DELETE from user WHERE membershipId  ="+userId;
 
-			PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			pst.setString(1, userId); 
-			pst.execute();
-			ResultSet rs = pst.getGeneratedKeys();
+			stmt.executeQuery(sql);
+			rs = stmt.getGeneratedKeys();
 			if (rs.next())
 			{
 				Integer memID = rs.getInt(1);
@@ -320,10 +322,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			try {
 				String sql = "DELETE FROM admin WHERE userId = " + userId;
 				System.out.println(sql);
-				//PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-				//pst.setString(1, userId); 
-				//pst.execute();
-				//ResultSet rs = pst.getGeneratedKeys();
+				
 				int rowcount = stmt.executeUpdate(sql);
 				if (rowcount > 0) {
 					Integer memID = rs.getInt(1);
@@ -338,7 +337,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 
 	public List <User> listMembers (String type){		
-		//PreparedStatement preparedStmt = null;
+		
 		List <User> members = new ArrayList<User>();
 		String query = ""; 
 
@@ -370,194 +369,94 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	
 	
 	
-	public User[] searchUserByFirstName(String adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where firstName like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found with the entered first name.");
-			while(rs.next()){
+	public User[] searchUser(String membershipId, String userId,
+			String membershipType, String startDate, String firstName,
+			String lastName, String address, String city, String state,
+			String zipCode) throws NoUserFoundException {
+
+		ArrayList<User> searchList = new ArrayList<User>();
+		User[] userArray = null;
+		Map<String, String> queryParameters = new HashMap<String, String>();
+		if (membershipId != null) {
+			queryParameters.put("membershipId", membershipId);
+		}
+		if (userId != null) {
+			queryParameters.put("userId", userId);
+		}
+		if (membershipType != null) {
+			queryParameters.put("membershipType", membershipType);
+		}
+		if (startDate != null) {
+			queryParameters.put("startDate", startDate);
+		}
+		if (firstName != null) {
+			queryParameters.put("firstName", firstName);
+		}
+		if (lastName != null) {
+			queryParameters.put("lastName", lastName);
+		}
+		if (address != null) {
+			queryParameters.put("address", address);
+		}
+		if (city != null) {
+			queryParameters.put("city", city);
+		}
+		if (state != null) {
+			queryParameters.put("state", state);
+		}
+		if (zipCode != null) {
+			queryParameters.put("zipCode", zipCode);
+		}
+
+		StringBuilder query = new StringBuilder("SELECT membershipId, userId, password, membershipType, startDate, firstName, lastName, address, city, state, zip, creditCardNumber, latestPaymentDate FROM videolibrary.user WHERE ");
+
+		Iterator<Entry<String, String>> paramIter = queryParameters.entrySet().iterator();
+		while (paramIter.hasNext()) {
+			Entry<String, String> entry = paramIter.next();
+			query.append(entry.getKey());
+			query.append(" LIKE '%").append(entry.getValue()).append("%'");
+			if (paramIter.hasNext()) {
+				query.append(" AND ");
+			}
+		}
+
+		Statement stmt = null;
+		System.out.println(" My search Query : " + query);
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query.toString());
+			if (!rs.isBeforeFirst()) {
+				throw new NoUserFoundException(
+						"No users found with the given search criteria");
+			}
+			while (rs.next()) {
 				User user = new User();
 				user.setMembershipId(rs.getInt(1));
 				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
+				user.setPassword(rs.getString(3));
+				user.setMembershipType(rs.getString(4));
+				user.setStartDate(rs.getDate(5).toString());
+				user.setFirstName(rs.getString(6));
+				user.setLastName(rs.getString(7));
+				user.setAddress(rs.getString(8));
+				user.setCity(rs.getString(9));
+				user.setState(rs.getString(10));
+				user.setZip(rs.getString(11));
+				user.setCreditCardNumber(rs.getString(12));
+				Date paymentDate = rs.getDate(13); 
+				if (paymentDate != null) {
+					user.setLatestPaymentDate(paymentDate.toString()); 
+				}
+				System.out.println(user.getMembershipId());
+				searchList.add(user);
 			}
 			rs.close();
 			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred.");
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByLastName(String adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where lastName like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found with the entered last name.");
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred");
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByCity(String adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where city like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found for the entered city.");
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred.");
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByState(String adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list= new ArrayList<User>();		
-		String str = "%"+adminInput.replace(' ','%')+"%";
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where state like '"+str+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found for the entered state.");
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred.");
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[] searchUserByMemberShipType(String adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list= new ArrayList<User>();		
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipType='"+adminInput+"'";
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found for the entered membership type.");
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred.");
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
-	}
-	
-	public User[]  searchUserByMembershipId(int adminInput) throws NoUserFoundException, InternalServerException{
-		ArrayList<User> list = new ArrayList<User>();
-		String query="Select membershipId, userId,firstName, lastName,startDate, membershipType, address, city, state,zip from User where membershipId="+adminInput;
-		try{
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
-			if(!rs.isBeforeFirst())
-				throw new NoUserFoundException("No user found for the entered membership id.");
-			while(rs.next()){
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setFirstName(rs.getString(3));
-				user.setLastName(rs.getString(4));
-				user.setStartDate(rs.getString(5));
-				user.setMembershipType(rs.getString(6));
-				user.setAddress(rs.getString(7));
-				user.setCity(rs.getString(8));
-				user.setState(rs.getString(9));
-				user.setZip(rs.getString(10));
-				list.add(user);
-			}
-			rs.close();
-			stmt.close();
-		}catch(SQLException e){
-			throw new InternalServerException("Internal error has occurred.");
-		}
-		User[] array= list.toArray(new User[list.size()]);
-		return array;
+		userArray = searchList.toArray(new User[searchList.size()]);
+		return userArray;
 	}
 	
 	//Added recently

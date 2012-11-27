@@ -35,23 +35,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 		// System.out.println("State:"+state);
 
 		String sql = "INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName,"
-				+ "address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?)";
-		PreparedStatement pst = con.prepareStatement(sql,
-				PreparedStatement.RETURN_GENERATED_KEYS);
-		pst.setString(1, userId);
-		pst.setString(2, Utils.encryptPassword(password));
-		pst.setString(3, memType);
-		pst.setString(4, firstName);
-		pst.setString(5, lastName);
-		pst.setString(6, address);
-		pst.setString(7, city);
-		pst.setString(8, state);
-		pst.setString(9, zipCode);
-		pst.setString(10, ccNumber);
-		pst.setString(11, null);
-		pst.execute();
-		ResultSet rs = pst.getGeneratedKeys();
-		if (rs.next()) {
+				+ "address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+memType+"',NOW(),'"+firstName+"','"+lastName+"','"+address+"','"+city+"','"+state+"','"+zipCode+"','"+ccNumber+"',"+null+")";
+		int rc = stmt.executeUpdate(sql);
+		 
+		if (rc>0) {
 			int membershipId = rs.getInt("membershipId");
 			Date date = new Date();
 
@@ -77,15 +64,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 	public String signUpAdmin(String userId, String password, String firstName,
 			String lastName) throws SQLException {
 		String result = null;
-		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES (?,?,?,?)";
-		PreparedStatement pst = con.prepareStatement(sql);
-		pst.setString(1, userId);
-		pst.setString(2, Utils.encryptPassword(password));
-		pst.setString(3, firstName);
-		pst.setString(4, lastName);
-		pst.execute();
-		ResultSet rs = pst.executeQuery();
-		if (rs.next()) {
+		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+firstName+"','"+lastName+"')";
+		int rc = stmt.executeUpdate(sql);
+		
+		if (rc>0) {
 			result = "true";
 		} else {
 			result = "false";
@@ -330,93 +312,5 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return statementRows;
 	}
 
-	public User[] searchUser(String membershipId, String userId,
-			String membershipType, String startDate, String firstName,
-			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException {
-
-		ArrayList<User> searchList = new ArrayList<User>();
-		User[] userArray = null;
-		Map<String, String> queryParameters = new HashMap<String, String>();
-		if (membershipId != null) {
-			queryParameters.put("membershipId", membershipId);
-		}
-		if (userId != null) {
-			queryParameters.put("userId", userId);
-		}
-		if (membershipType != null) {
-			queryParameters.put("membershipType", membershipType);
-		}
-		if (startDate != null) {
-			queryParameters.put("startDate", startDate);
-		}
-		if (firstName != null) {
-			queryParameters.put("firstName", firstName);
-		}
-		if (lastName != null) {
-			queryParameters.put("lastName", lastName);
-		}
-		if (address != null) {
-			queryParameters.put("address", address);
-		}
-		if (city != null) {
-			queryParameters.put("city", city);
-		}
-		if (state != null) {
-			queryParameters.put("state", state);
-		}
-		if (zipCode != null) {
-			queryParameters.put("zipCode", zipCode);
-		}
-
-		StringBuilder query = new StringBuilder("SELECT membershipId, userId, password, membershipType, startDate, firstName, lastName, address, city, state, zip, creditCardNumber, latestPaymentDate FROM videolibrary.user WHERE ");
-
-		Iterator<Entry<String, String>> paramIter = queryParameters.entrySet().iterator();
-		while (paramIter.hasNext()) {
-			Entry<String, String> entry = paramIter.next();
-			query.append(entry.getKey());
-			query.append(" LIKE '%").append(entry.getValue()).append("%'");
-			if (paramIter.hasNext()) {
-				query.append(" AND ");
-			}
-		}
-
-		Statement stmt = null;
-		System.out.println(" My search Query : " + query);
-		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query.toString());
-			if (!rs.isBeforeFirst()) {
-				throw new NoUserFoundException(
-						"No users found with the given search criteria");
-			}
-			while (rs.next()) {
-				User user = new User();
-				user.setMembershipId(rs.getInt(1));
-				user.setUserId(rs.getString(2));
-				user.setPassword(rs.getString(3));
-				user.setMembershipType(rs.getString(4));
-				user.setStartDate(rs.getDate(5).toString());
-				user.setFirstName(rs.getString(6));
-				user.setLastName(rs.getString(7));
-				user.setAddress(rs.getString(8));
-				user.setCity(rs.getString(9));
-				user.setState(rs.getString(10));
-				user.setZip(rs.getString(11));
-				user.setCreditCardNumber(rs.getString(12));
-				Date paymentDate = rs.getDate(13); 
-				if (paymentDate != null) {
-					user.setLatestPaymentDate(paymentDate.toString()); 
-				}
-				System.out.println(user.getMembershipId());
-				searchList.add(user);
-			}
-			rs.close();
-			stmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		userArray = searchList.toArray(new User[searchList.size()]);
-		return userArray;
-	}
+	
 }

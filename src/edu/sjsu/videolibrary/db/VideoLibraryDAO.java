@@ -1,6 +1,7 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,6 +11,7 @@ public abstract class VideoLibraryDAO {
 	protected Connection con = null;
 	static ResultSet rs;
 	Statement stmt = null;
+	PreparedStatement pst = null;
 
 	protected String transactionId;
 

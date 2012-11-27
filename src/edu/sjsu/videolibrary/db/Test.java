@@ -88,7 +88,7 @@ public class Test {
 	}
 	
 	public static void SP_searchUser() throws Exception {
-		StoredProcUserDAO dao = new StoredProcUserDAO();
+		StoredProcAdminDAO dao = new StoredProcAdminDAO();
 		for( User usr: dao.searchUser("1",null,null,null,null,null,null,null,"CA",null)){
 			System.out.println(usr.getFirstName());
 			System.out.println(usr.getUserId());

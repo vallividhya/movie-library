@@ -444,52 +444,7 @@ public class Service {
 	}
 
 	//search movies by name
-	public Movie[] searchByName(String userInput){
-		Movie[] array = null;
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			array = movieDAO.searchByName(userInput);
-		} catch (NoMovieFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search movies by banner
-	public Movie[] searchByMovieBanner(String userInput){
-		Movie[] array = null;
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			array = movieDAO.searchByMovieBanner(userInput);
-		} catch (NoMovieFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search movies by release date
-	public Movie[] searchByReleaseDate(String userInput){
-		Movie[] array = null;
-		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-		try {
-			array = movieDAO.searchByReleaseDate(userInput);
-		} catch (NoMovieFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
+	
 
 	// Search User by any attribute 
 
@@ -505,8 +460,8 @@ public class Service {
 		if(users == null){
 			try {				
 				dbTransaction = startTransaction();
-				BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
-				users = userDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
+				BaseAdminDAO adminDAO = DAOFactory.getAdminDAO(dbTransaction);
+				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
 				System.out.println("Users : ");
 				for (User i:users) {
 					System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
@@ -526,101 +481,7 @@ public class Service {
 		}
 		return users;
 	}
-
-	//search user by first name
-	public User[] searchUserByFirstName(String adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByFirstName(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search user by last name
-	public User[] searchUserByLastName(String adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByLastName(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search user by city
-	public User[] searchUserByCity(String adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByCity(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search user by state
-	public User[] searchUserByState(String adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByState(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search user by membership type
-	public User[] searchUserByMemberShipType(String adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByMemberShipType(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
-
-	//search user by member id
-	public User[] searchUserByMembershipId(int adminInput){
-		User[] array = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			array = adminDAO.searchUserByMembershipId(adminInput);
-		} catch (NoUserFoundException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		} catch (InternalServerException e) {
-			e.getLocalizedMessage();
-			e.printStackTrace();
-		}
-		return array;
-	}
+	
 
 	public Admin displayAdminInformation (String adminId) {
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
