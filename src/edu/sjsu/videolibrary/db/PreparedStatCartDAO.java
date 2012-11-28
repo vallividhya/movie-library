@@ -24,7 +24,7 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 		String query = "INSERT INTO videolibrary.moviecart (movieId, membershipId) VALUES (?, ?)";
 		try {
 			getMovieById (movieId, membershipId);
-			throw new ItemAlreadyInCartException("Item already in cart");
+			throw new ItemAlreadyInCartException("Item already in cart.");
 		} catch (InternalServerException e) {
 			e.printStackTrace();
 		} catch (NoMovieFoundException e) {

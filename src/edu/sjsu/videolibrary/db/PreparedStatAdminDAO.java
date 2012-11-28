@@ -428,8 +428,8 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 		Statement stmt = null;
 		System.out.println(" My search Query : " + query);
 		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query.toString());
+			 pst = con.prepareStatement(query.toString());
+			rs = pst.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				throw new NoUserFoundException(
 						"No users found with the given search criteria");

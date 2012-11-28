@@ -118,7 +118,7 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 			pst.setInt(3, stop);
 			rs=pst.getResultSet();
 			if(!rs.isBeforeFirst())
-				throw new NoMovieInCategoryException("There are no movies in this category");
+				throw new NoMovieInCategoryException("There are no movies in this category.");
 			while(rs.next()){
 				Movie movie = new Movie();
 				movie.setMovieId(rs.getInt(1));
