@@ -99,15 +99,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="signUpUserResponse">
     <complexType>
      <sequence>
-      <element name="signUpUserReturn" type="tns1:User"/>
+      <element name="signUpUserReturn" type="xsd:string"/>
      </sequence>
     </complexType>
    </element>
-   <complexType name="ArrayOf_xsd_string">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
-    </sequence>
-   </complexType>
    <element name="signUpAdmin">
     <complexType>
      <sequence>
@@ -136,10 +131,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="signInUserResponse">
     <complexType>
      <sequence>
-      <element name="signInUserReturn" type="xsd:string"/>
+      <element name="signInUserReturn" type="tns1:User"/>
      </sequence>
     </complexType>
    </element>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
    <element name="signInAdmin">
     <complexType>
      <sequence>
@@ -494,132 +494,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="searchByName">
-    <complexType>
-     <sequence>
-      <element name="userInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchByNameResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchByNameReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchByMovieBanner">
-    <complexType>
-     <sequence>
-      <element name="userInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchByMovieBannerResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchByMovieBannerReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchByReleaseDate">
-    <complexType>
-     <sequence>
-      <element name="userInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchByReleaseDateResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchByReleaseDateReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByFirstName">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByFirstNameResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByFirstNameReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByLastName">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByLastNameResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByLastNameReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByCity">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByCityResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByCityReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByState">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByStateResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByStateReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByMemberShipType">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByMemberShipTypeResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByMemberShipTypeReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByMembershipId">
-    <complexType>
-     <sequence>
-      <element name="adminInput" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserByMembershipIdResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserByMembershipIdReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
    <element name="displayAdminInformation">
     <complexType>
      <sequence>
@@ -771,14 +645,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchByReleaseDateResponse">
-
-      <wsdl:part element="impl:searchByReleaseDateResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="listMoviesByCategoryResponse">
 
       <wsdl:part element="impl:listMoviesByCategoryResponse" name="parameters">
@@ -803,14 +669,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchByMovieBannerResponse">
-
-      <wsdl:part element="impl:searchByMovieBannerResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="deleteUserAccountRequest">
 
       <wsdl:part element="impl:deleteUserAccount" name="parameters">
@@ -822,22 +680,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="signInAdminRequest">
 
       <wsdl:part element="impl:signInAdmin" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByCityRequest">
-
-      <wsdl:part element="impl:searchUserByCity" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByFirstNameResponse">
-
-      <wsdl:part element="impl:searchUserByFirstNameResponse" name="parameters">
 
       </wsdl:part>
 
@@ -902,14 +744,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="deleteUserAccountResponse">
 
       <wsdl:part element="impl:deleteUserAccountResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchByMovieBannerRequest">
-
-      <wsdl:part element="impl:searchByMovieBanner" name="parameters">
 
       </wsdl:part>
 
@@ -1059,14 +893,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserByCityResponse">
-
-      <wsdl:part element="impl:searchUserByCityResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="searchUserResponse">
 
       <wsdl:part element="impl:searchUserResponse" name="parameters">
@@ -1094,14 +920,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="updateAdminInfoResponse">
 
       <wsdl:part element="impl:updateAdminInfoResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByMemberShipTypeRequest">
-
-      <wsdl:part element="impl:searchUserByMemberShipType" name="parameters">
 
       </wsdl:part>
 
@@ -1139,41 +957,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserByLastNameRequest">
-
-      <wsdl:part element="impl:searchUserByLastName" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByMemberShipTypeResponse">
-
-      <wsdl:part element="impl:searchUserByMemberShipTypeResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByMembershipIdResponse">
-
-      <wsdl:part element="impl:searchUserByMembershipIdResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="getRentAmountforMovieResponse">
 
       <wsdl:part element="impl:getRentAmountforMovieResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByStateResponse">
-
-      <wsdl:part element="impl:searchUserByStateResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1235,22 +1021,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserByLastNameResponse">
-
-      <wsdl:part element="impl:searchUserByLastNameResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchByReleaseDateRequest">
-
-      <wsdl:part element="impl:searchByReleaseDate" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="createNewMovieRequest">
 
       <wsdl:part element="impl:createNewMovie" name="parameters">
@@ -1270,14 +1040,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="viewCartRequest">
 
       <wsdl:part element="impl:viewCart" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchUserByStateRequest">
-
-      <wsdl:part element="impl:searchUserByState" name="parameters">
 
       </wsdl:part>
 
@@ -1307,25 +1069,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserByFirstNameRequest">
-
-      <wsdl:part element="impl:searchUserByFirstName" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="deleteMovieResponse">
 
       <wsdl:part element="impl:deleteMovieResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchByNameResponse">
-
-      <wsdl:part element="impl:searchByNameResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1379,14 +1125,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserByMembershipIdRequest">
-
-      <wsdl:part element="impl:searchUserByMembershipId" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="viewMembersResponse">
 
       <wsdl:part element="impl:viewMembersResponse" name="parameters">
@@ -1422,14 +1160,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="updateUserPasswordRequest">
 
       <wsdl:part element="impl:updateUserPassword" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchByNameRequest">
-
-      <wsdl:part element="impl:searchByName" name="parameters">
 
       </wsdl:part>
 
@@ -1860,114 +1590,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:listCategoriesResponse" name="listCategoriesResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByName">
-
-         <wsdl:input message="impl:searchByNameRequest" name="searchByNameRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchByNameResponse" name="searchByNameResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByMovieBanner">
-
-         <wsdl:input message="impl:searchByMovieBannerRequest" name="searchByMovieBannerRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchByMovieBannerResponse" name="searchByMovieBannerResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByReleaseDate">
-
-         <wsdl:input message="impl:searchByReleaseDateRequest" name="searchByReleaseDateRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchByReleaseDateResponse" name="searchByReleaseDateResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByFirstName">
-
-         <wsdl:input message="impl:searchUserByFirstNameRequest" name="searchUserByFirstNameRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByFirstNameResponse" name="searchUserByFirstNameResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByLastName">
-
-         <wsdl:input message="impl:searchUserByLastNameRequest" name="searchUserByLastNameRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByLastNameResponse" name="searchUserByLastNameResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByCity">
-
-         <wsdl:input message="impl:searchUserByCityRequest" name="searchUserByCityRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByCityResponse" name="searchUserByCityResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByState">
-
-         <wsdl:input message="impl:searchUserByStateRequest" name="searchUserByStateRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByStateResponse" name="searchUserByStateResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByMemberShipType">
-
-         <wsdl:input message="impl:searchUserByMemberShipTypeRequest" name="searchUserByMemberShipTypeRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByMemberShipTypeResponse" name="searchUserByMemberShipTypeResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByMembershipId">
-
-         <wsdl:input message="impl:searchUserByMembershipIdRequest" name="searchUserByMembershipIdRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserByMembershipIdResponse" name="searchUserByMembershipIdResponse">
 
        </wsdl:output>
 
@@ -2602,168 +2224,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="listCategoriesResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByName">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchByNameRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchByNameResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByMovieBanner">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchByMovieBannerRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchByMovieBannerResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchByReleaseDate">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchByReleaseDateRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchByReleaseDateResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByFirstName">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByFirstNameRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByFirstNameResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByLastName">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByLastNameRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByLastNameResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByCity">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByCityRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByCityResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByState">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByStateRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByStateResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByMemberShipType">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByMemberShipTypeRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByMemberShipTypeResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="searchUserByMembershipId">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserByMembershipIdRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserByMembershipIdResponse">
 
             <wsdlsoap:body use="literal"/>
 

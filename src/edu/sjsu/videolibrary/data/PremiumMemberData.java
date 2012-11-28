@@ -16,14 +16,15 @@ public class PremiumMemberData {
 				{"bh@gmail.com","bh","Bobby","Hill","Premium","Boston Drive","Seatle","WA","80876"},
 				{"rv@yahoo.com","rv","Robin","Vanguard","Premium","Pebble Dr","Anaheim","MO","54637"},
 				{"rm@gmail.com","rm","Riya","Mehta","Premium","Idaho Dr","Gilroy","CA","93487"},
-				{"sk@gmail.com","sk","Suhana","Kapoor","Premium","Washington Street","MorganHill","MA","23746"}
+				{"sk@gmail.com","sk","Suhana","Kapoor","Premium","Washington Street","MorganHill","MA","23746"},
+				{"jk@gmail.com","ja","Jiya","Khan","Premium","Alpine Street","Fremont","CA","92034"}
 		};
 		BaseUserDAO userDAO = DAOFactory.getUserDAO();
 		
-		for( int i = 1; i < 1000; i++) {
+		for( int i = 1; i < 1001; i++) {
 			for(String[] user : userData) {
 								
-				userDAO.signUpUser(i+user[0].trim(),user[1].trim()+i,user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),null);
+				userDAO.signUpUser(i+user[0].trim(),user[1].trim()+i,user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),getCC());
 				
 			}
 			userDAO.release();
