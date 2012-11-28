@@ -19,6 +19,7 @@ public abstract class VideoLibraryDAO {
 		try {
 			this.con = ConnectionPool.getInstance().getConnection();
 			this.stmt = con.createStatement();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			e.getMessage();
