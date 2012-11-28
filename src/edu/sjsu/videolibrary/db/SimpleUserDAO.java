@@ -27,38 +27,24 @@ public class SimpleUserDAO extends BaseUserDAO {
 		super(transactionId);
 	}
 
-	public User signUpUser(String userId, String password, String memType,
+	public String signUpUser(String userId, String password, String memType,
 			String firstName, String lastName, String address, String city,
 			String state, String zipCode, String ccNumber) throws SQLException {
-		User user = new User();
 
+		String result = null;
 		// System.out.println("State:"+state);
 
 		String sql = "INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName,"
 				+ "address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+memType+"',NOW(),'"+firstName+"','"+lastName+"','"+address+"','"+city+"','"+state+"','"+zipCode+"','"+ccNumber+"',"+null+")";
 		int rc = stmt.executeUpdate(sql);
-		 
-		if (rc>0) {
-			int membershipId = rs.getInt("membershipId");
-			Date date = new Date();
 
-			user.setMembershipId(membershipId);
-			user.setFirstName(firstName);
-			user.setLastName(lastName);
-			user.setAddress(address);
-			user.setCity(city);
-			user.setCreditCardNumber(ccNumber);
-			user.setMembershipType(memType);
-			user.setState(state);
-			user.setZip(zipCode);
-			user.setStartDate(date.toString());
-			user.setLatestPaymentDate(null);
-			user.setUserId(userId);
-			user.setPassword(password);
-		} else {
-			user = null;
+		if (rc>0) {
+			result = "true";		
 		}
-		return user;
+		else{
+			result = "false";
+		}
+		return result;
 	}
 
 	public String signUpAdmin(String userId, String password, String firstName,
@@ -66,7 +52,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 		String result = null;
 		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+firstName+"','"+lastName+"')";
 		int rc = stmt.executeUpdate(sql);
-		
+
 		if (rc>0) {
 			result = "true";
 		} else {
@@ -75,21 +61,47 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return result;
 	}
 
-	public String signInUser(String userId, String password)
+	public User signInUser(String userId, String password)
 			throws SQLException {
-		String result = null;
+
+		User user = new User();
 		String encryptedPasswrd = Utils.encryptPassword(password);
-		String sql = "SELECT userId, password FROM user WHERE userId = '"
+		String sql = "SELECT membershipId,firstName,lastName,address,city,ccNumber,membershipType,state,zipCode,startDate,latestPaymentDate,userId, password FROM user WHERE userId = '"
 				+ userId + "'" + " AND password = '"
 				+ encryptedPasswrd + "'";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if (rs.next()) {
-			result = "true";
-		} else {
-			result = "false";
+			user.setMembershipId(rs.getInt("membershipId"));
+			user.setFirstName(rs.getString("firstName"));
+			user.setLastName(rs.getString("lastName"));
+			user.setAddress(rs.getString("address"));
+			user.setCity(rs.getString("city"));
+			user.setCreditCardNumber(rs.getString("creditCardNumber"));
+			user.setMembershipType(rs.getString("membershipType"));
+			user.setState(rs.getString("state"));
+			user.setZip(rs.getString("zipCode"));
+			Date startDate = rs.getDate("startDate");
+			if(startDate !=null){
+				user.setStartDate(startDate.toString());
+			}
+			else{
+				user.setStartDate(null);
+			}
+			Date latestPaymentDate = rs.getDate("latestPaymentDate");
+			if(latestPaymentDate !=null){
+				user.setStartDate(latestPaymentDate.toString());
+			}
+			else{
+				user.setLatestPaymentDate(null);
+			}			
+			user.setUserId(rs.getString("userId"));
+			user.setPassword(rs.getString("password"));
+		} 
+		else{
+			user = null;
 		}
-		return result;
+		return user;
 	}
 
 	public String signInAdmin(String userId, String password)
@@ -312,5 +324,5 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return statementRows;
 	}
 
-	
+
 }
