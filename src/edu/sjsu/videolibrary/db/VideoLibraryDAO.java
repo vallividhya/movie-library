@@ -51,4 +51,13 @@ public abstract class VideoLibraryDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * This function is just for testing
+	 * @param mockedConnection
+	 */
+	@SuppressWarnings("unused")
+	private void setConnection( Connection mockedConnection ) {
+		this.con = mockedConnection;
+	}
 }
