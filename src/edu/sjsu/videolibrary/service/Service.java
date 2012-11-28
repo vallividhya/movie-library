@@ -186,24 +186,24 @@ public class Service {
 
 	}
 
-	public User signUpUser (String userId, String password, String memType,String firstName, String lastName, 
+	public String signUpUser (String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city,String state, String zipCode,String ccNumber){
-		User user = new User();
+		String result = null;
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 
 		try{
-			user = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
+			result = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
 		}
 		catch(SQLException e){
 			e.getMessage();
-			user = null;
+			result = "false";
 		}
 		catch(Exception e){
 			e.getMessage();
-			user = null;
+			result = "false";
 
 		}
-		return user;
+		return result;
 	}
 
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
@@ -211,17 +211,18 @@ public class Service {
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		return userDAO.signUpAdmin(userId, password, firstName, lastName);
 	}
-	public String signInUser(String userId, String password) throws SQLException
+	public User signInUser(String userId, String password) throws SQLException
 	{
+		User user = new User();
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = (String)cache.get("signInUser"+userId+password);
 		if(result == null){		
-			result = userDAO.signInUser(userId, password);
-			if(result.equalsIgnoreCase("true")){
-				cache.put("signInUser"+userId+password, result);
+			user = userDAO.signInUser(userId, password);
+			if(user != null){
+				cache.put("signInUser"+userId+password, user);
 			}
 		}
-		return result;
+		return user;
 	}
 	public Admin signInAdmin (String userId, String password) throws SQLException
 	{
