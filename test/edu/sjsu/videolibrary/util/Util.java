@@ -27,6 +27,11 @@ public class Util extends TestCase {
 	public void testEncryptPassword1() {
 		assertEquals("Correct MD5 Returned",Utils.encryptPassword("abc"),"900150983cd24fb0d6963f7d28e17f72");
 	}
+	
+//	@Test
+//	public void testEncryptPassword1() {
+//		assertNull("Correct MD5 Returned",Utils.encryptPassword("abc"),"900150983cd24fb0d6963f7d28e17f72");
+//	}
 
 	@Test
 	public void testIsValidInput1() {
