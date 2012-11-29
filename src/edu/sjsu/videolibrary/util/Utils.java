@@ -22,6 +22,7 @@ public class Utils {
 	
 	static public String encryptPassword(String pwd){
 		String securePwd = null;
+		if(isValidInput(pwd)){		
 		byte[] bytesOfMessage;
 		try {
 			bytesOfMessage = pwd.getBytes("UTF-8");
@@ -38,6 +39,10 @@ public class Utils {
 
 		} catch (UnsupportedEncodingException e) {
 			System.out.println(e.getMessage());
+		}
+		}
+		else{
+			securePwd = null;
 		}
 		return securePwd;
 	}

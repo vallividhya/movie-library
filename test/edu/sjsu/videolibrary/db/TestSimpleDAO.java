@@ -38,7 +38,7 @@ public class TestSimpleDAO extends TestCase {
 	}
 
 	@Test
-	public void testSignInAdmin() throws Exception {
+	public void testSignInUserWrongInput() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
 
@@ -54,9 +54,41 @@ public class TestSimpleDAO extends TestCase {
 			fail(e.getMessage());
 		}
 	}
+	
+	public void testSignInUserEmptyStringInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
 
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(false);
+
+
+		try {
+			User u = dao.signInUser("","");
+			assertNull(u);
+			verify(stmt).executeQuery(eq( "SELECT membershipId,firstName,lastName,address,city,ccNumber,membershipType,state,zipCode,startDate,latestPaymentDate,userId, password FROM user WHERE userId = '' AND password = 'null'"));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	public void testSignInUserNullInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(false);
+
+
+		try {
+			User u = dao.signInUser(null,null);
+			assertNull(u);
+			verify(stmt).executeQuery(eq( "SELECT membershipId,firstName,lastName,address,city,ccNumber,membershipType,state,zipCode,startDate,latestPaymentDate,userId, password FROM user WHERE userId = 'null' AND password = 'null'"));
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
 	@Test
-	public void testSQLException() throws Exception {
+	public void testSignInUserThrowSQLException() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
 

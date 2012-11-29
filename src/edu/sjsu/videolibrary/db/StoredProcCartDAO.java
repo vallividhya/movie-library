@@ -16,9 +16,12 @@ public class StoredProcCartDAO extends BaseCartDAO {
 		super(transactionId);
 	}
 
+	// check this function tomorrow
 	@Override
-	public void addToCart(int movieId, int membershipId)
+	public String addToCart(int movieId, int membershipId)
 			throws ItemAlreadyInCartException, InternalServerException {
+		String result = null;
+		return result;
 		// TODO Auto-generated method stub
 
 	}
