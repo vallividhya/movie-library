@@ -11,7 +11,7 @@ public abstract class BaseCartDAO extends VideoLibraryDAO {
 		super(transactionId);
 	}
 
-	public abstract void addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException;
+	public abstract String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException;
 	
 	public abstract void deleteFromCart (int movieId, int membershipId) throws InternalServerException;
 

@@ -20,8 +20,8 @@ public class SimpleCartDAO extends BaseCartDAO {
 	}
 
 	// Add items to cart
-	public void addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
-		
+	public String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
+		String result = null;
 		String query = "INSERT INTO videolibrary.moviecart (movieId, membershipId) VALUES ("+movieId+", "+membershipId+")";
 		try {
 			getMovieById (movieId, membershipId);
@@ -30,14 +30,17 @@ public class SimpleCartDAO extends BaseCartDAO {
 			e.printStackTrace();
 		} catch (NoMovieFoundException e) {
 			try {
-				
+
 				stmt.executeUpdate(query);	
+				result = "true";
 				System.out.println("Cart insert successful");
 				System.out.println(e.getMessage());
 			} catch (SQLException e1) {
+				result = "false";
 				throw new InternalServerException("DB error", e);
 			}
 		} 
+		return result;
 	}
 
 	public ItemOnCart getMovieById (int movieId, int membershipId) throws InternalServerException, NoMovieFoundException {
@@ -68,10 +71,10 @@ public class SimpleCartDAO extends BaseCartDAO {
 	}
 
 	public void deleteFromCart (int movieId, int membershipId) throws InternalServerException {
-		
+
 		String query = "DELETE FROM videolibrary.moviecart WHERE movieId = "+movieId+" AND membershipId = "+membershipId+";";
 		try {
-			
+
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			throw new InternalServerException("DB error", e);
@@ -87,7 +90,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			 rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 			if (!rs.isBeforeFirst()){
 				System.out.println("No items in cart"); 
 			} 
@@ -118,11 +121,11 @@ public class SimpleCartDAO extends BaseCartDAO {
 		java.util.Date utilDate = new java.util.Date(); 
 		reFormat.format(utilDate);
 		java.sql.Date rentDate = new java.sql.Date(utilDate.getTime());
-	    System.out.println("Rent date = " + rentDate);
+		System.out.println("Rent date = " + rentDate);
 		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES ('"+rentDate+"',"+totalAmount+","+membershipId+")";
 
 		try {
-			
+
 			int rowCount = stmt.executeUpdate(paymentQuery);
 			if (rowCount > 0) {
 				System.out.println("Inserted transaction successfully in payment tx");
@@ -140,18 +143,18 @@ public class SimpleCartDAO extends BaseCartDAO {
 	}
 
 	public void recordMovieTransaction(int movieId, int transactionId) throws InternalServerException {
-		
+
 		String movieTransactionQuery = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES ("+movieId+","+transactionId+")";
 		try {
-			
+
 			stmt.executeUpdate(movieTransactionQuery);
 		} catch (SQLException e) {
 			throw new InternalServerException("DB error", e);
 		}
 	}
-	
+
 	public void updateReturnDate(int movieId, int transactionId) throws InternalServerException {
-		
+
 		String query = "UPDATE videolibrary.rentmovietransaction SET returnDate = NOW() WHERE movieId = "+movieId+" AND transactionId = "+transactionId;
 		try {
 			stmt.executeUpdate(query);

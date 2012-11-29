@@ -38,7 +38,7 @@ public class TestSimpleDAO extends TestCase {
 	}
 
 	@Test
-	public void testSignInAdmin() throws Exception {
+	public void testSignInUser() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
 

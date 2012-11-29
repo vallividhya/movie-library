@@ -19,8 +19,9 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 	}
 
 	// Add items to cart
-	public void addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
+	public String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
 		PreparedStatement preparedStmt;
+		String result = null;
 		String query = "INSERT INTO videolibrary.moviecart (movieId, membershipId) VALUES (?, ?)";
 		try {
 			getMovieById (movieId, membershipId);
@@ -34,12 +35,15 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 				preparedStmt.setInt(2, membershipId);
 				System.out.println("Query is " + query);
 				preparedStmt.executeUpdate();	
+				result = "true";
 				System.out.println("Cart insert successful");
 				System.out.println(e.getMessage());
 			} catch (SQLException e1) {
+				result = "false";
 				throw new InternalServerException("DB error", e);
 			}
 		} 
+		return result;
 	}
 
 	public ItemOnCart getMovieById (int movieId, int membershipId) throws InternalServerException, NoMovieFoundException {
@@ -88,7 +92,7 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 		System.out.println("Query" + query);
 		List<ItemOnCart> cartItems = new ArrayList<ItemOnCart>();
 		PreparedStatement preparedStmt = null;
-		
+
 		try {
 			preparedStmt = con.prepareStatement(query);
 			preparedStmt.setInt(1, membershipId);
@@ -124,7 +128,7 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 		java.util.Date utilDate = new java.util.Date(); 
 		reFormat.format(utilDate);
 		java.sql.Date rentDate = new java.sql.Date(utilDate.getTime());
-	    System.out.println("Rent date = " + rentDate);
+		System.out.println("Rent date = " + rentDate);
 		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES (?, ?, ?)";
 
 		try {
@@ -161,7 +165,7 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 			throw new InternalServerException("DB error", e);
 		}
 	}
-	
+
 	public void updateReturnDate(int movieId, int transactionId) throws InternalServerException {
 		PreparedStatement preparedStmt = null;
 		String query = "UPDATE videolibrary.rentmovietransaction SET returnDate = NOW() WHERE movieId = ? AND transactionId = ?";
