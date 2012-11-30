@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.sjsu.videolibrary.db;
+package edu.sjsu.videolibrary.test;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.NoUserFoundException;
 import edu.sjsu.videolibrary.model.Admin;
@@ -155,38 +156,7 @@ public class SimpleAdminDAOTest
 		catch(Exception e) {}
 		assertTrue(l.size() > 0 );
 	}
-	@Test
-	public void testsearchUserByFirstName() throws NoUserFoundException, InternalServerException
-	{
-		User[] u = null;
-		try
-		{
-			u = DAO.searchUserByFirstName("guest");
-		}
-		catch(Exception e) {}
-		assertTrue(u ==null );
-	}
-	@Test
-	public void testsearchUserByLastName() throws NoUserFoundException, InternalServerException
-	{
-		User[] u = null;
-		try
-		{
-			u = DAO.searchUserByLastName("guest");
-		}
-		catch(Exception e){}
-		assertTrue(u == null);
-	}
-	public void testsearchUserByCity() throws NoUserFoundException, InternalServerException
-	{
-		User[] u = DAO.searchUserByCity("X");
-		assertFalse(u != null);
-	}
-	public void testsearchUserByState() throws NoUserFoundException, InternalServerException
-	{
-		User[] u = DAO.searchUserByState("X");
-		assertFalse(u != null);
-	}
+	
 	@Test
 	public void testupdateUserPassword() 
 	{

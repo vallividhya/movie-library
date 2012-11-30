@@ -16,6 +16,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 	}
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
+		String s =null;
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
 					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"','"+availableCopies+"','"+categoryId+"')";
@@ -25,11 +26,13 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 
 			if (rs.next()) {
 				Integer movieID = rs.getInt(1);
-				return movieID.toString();
+				s= movieID.toString();
 			} 
+			else
+				s="";
 
 		} catch (SQLException e) { } 
-		return ""; 
+		return s; 
 	}	
 
 	public String deleteMovie (String movieId) {
