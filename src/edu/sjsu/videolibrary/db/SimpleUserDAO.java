@@ -278,7 +278,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 		while (result2.next()) {
 			StatementInfo stmnt = new StatementInfo();
 			stmnt.setMovieName(result2.getString("movieName"));
-			stmnt.setTotalDueAmount(result2.getString("totalDueAmount"));
+			stmnt.setTotalDueAmount(result2.getDouble("totalDueAmount"));
 			stmnt.setRentDate(result2.getDate("rentDate").toString());
 			Date returnDate = result2.getDate("returnDate");
 			if (returnDate == null) {

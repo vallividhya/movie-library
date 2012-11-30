@@ -9,10 +9,13 @@ import org.junit.Test;
 
 import com.sun.org.apache.bcel.internal.generic.D2F;
 
+import edu.sjsu.videolibrary.model.StatementInfo;
+import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.test.BaseTestCase;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class TestSimpleUserDAO extends BaseTestCase {
 
@@ -205,7 +208,7 @@ public class TestSimpleUserDAO extends BaseTestCase {
 	public void testUpdatePasswordEmptyStringInput() throws Exception{
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
-		
+
 		stub(stmt.executeUpdate(anyString())).toReturn(0);
 
 		try {
@@ -228,7 +231,7 @@ public class TestSimpleUserDAO extends BaseTestCase {
 			fail("Exception Thrown");
 		}
 	}
-	
+
 	@Test
 	public void testUpdatePasswordThrowSQLException() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
@@ -242,7 +245,70 @@ public class TestSimpleUserDAO extends BaseTestCase {
 		} catch(SQLException e) {
 		}
 	}
+
+	@Test
+
+	public void testUpdateUserInfoWrongInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(0);
+
+		try {
+			String result = dao.updateUserInfo(1, "userId", "firstName", "lastName", "address", "city", "state", "zipCode", "membershipType", "creditCardNumber");
+			assertEquals("false", result);			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+
+	public void testUpdateUserInfoNullInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(0);
+
+		try {
+			String result = dao.updateUserInfo(1, "userId", "null", "null", "address", "city", "state", "zipCode", "membershipType", "creditCardNumber");
+			assertEquals("false", result);			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
 	
+	@Test
+
+	public void testUpdateUserInfoEmptyStringInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(0);
+
+		try {
+			String result = dao.updateUserInfo(1, "", "", "", "address", "city", "state", "zipCode", "membershipType", "creditCardNumber");
+			assertEquals("false", result);			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+
+	public void testUpdateUserInfoCorrectInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(1);
+
+		try {
+			String result = dao.updateUserInfo(1, "userId", "firstName", "lastName", "address", "city", "state", "zipCode", "membershipType", "creditCardNumber");
+			assertEquals("true", result);			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
 	@Test
 	public void testUpdateUserInfoThrowSQLException() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
@@ -258,6 +324,22 @@ public class TestSimpleUserDAO extends BaseTestCase {
 	}
 	
 	@Test
+
+	public void testMakeMonthlyPaymentCorrectInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(1);
+
+		try {
+			String result = dao.makeMonthlyPayment(1);
+			assertEquals("true", result);			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void testMakeMonthlyPaymentThrowSQLException() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
@@ -271,17 +353,71 @@ public class TestSimpleUserDAO extends BaseTestCase {
 		}
 	}
 	
+	
+	@Test
+
+	public void testMViewAccountTransactionCorrectInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(true).toReturn(true).toReturn(false);
+		stub(rs.getDouble(anyString())).toReturn(0.0);
+		stub(rs.getString(anyString())).toReturn("movieName");
+		java.sql.Date date = new java.sql.Date(0);
+		stub(rs.getDate(anyString())).toReturn(date).toReturn(date);
+
+		try {
+			LinkedList<Transaction> trans = dao.viewAccountTransactions(1);
+			assertNotNull(trans);	
+			assertEquals(2, trans.size());
+			assertEquals("movieName", trans.get(0).getMovieName());
+			assertEquals(0.0,trans.get(0).getPerMovieAmount());
+			assertEquals(date.toString(), trans.get(0).getPurchaseDate());
+			assertEquals(date.toString(), trans.get(0).getReturnDate());
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}		  
+
 	@Test
 	public void testViewAccountThrowSQLException() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toThrow(new SQLException(""));
-		
+
 		try {
 			dao.viewAccountTransactions(1);
 			fail("Exception not thrown");
 		} catch(SQLException e) {
+		}
+	}
+	
+	
+	@Test
+
+	public void testMViewStatementTransactionCorrectInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(true).toReturn(true).toReturn(false);
+		stub(rs.getDouble(anyString())).toReturn(0.0);
+		stub(rs.getString(anyString())).toReturn("movieName");
+		java.sql.Date date = new java.sql.Date(0);
+		stub(rs.getDate(anyString())).toReturn(date).toReturn(date);
+
+		try {
+			LinkedList<StatementInfo> s = dao.viewStatement(1, 1, 1);
+			assertNotNull(s);	
+			assertEquals(1, s.size());
+			assertEquals("movieName", s.get(0).getMovieName());
+			assertEquals(0.0,s.get(0).getTotalDueAmount());
+			assertEquals(date.toString(), s.get(0).getRentDate());
+			assertEquals(date.toString(), s.get(0).getReturnDate());
+		} catch(Exception e) {
+			fail(e.getMessage());
 		}
 	}
 
@@ -291,7 +427,7 @@ public class TestSimpleUserDAO extends BaseTestCase {
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toThrow(new SQLException(""));
-		
+
 		try {
 			dao.viewStatement(1, 1, 2012);
 			fail("Exception not thrown");
