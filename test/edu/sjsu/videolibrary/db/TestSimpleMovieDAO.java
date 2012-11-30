@@ -2,7 +2,6 @@ package edu.sjsu.videolibrary.db;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +13,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SimpleMovieDAOTest {
-
+public class TestSimpleMovieDAO {
 	Connection con = null;
 	Statement stmt = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
-	
+	int rc ;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		super.setUp();
@@ -45,26 +44,33 @@ public class SimpleMovieDAOTest {
 	}
 
 	@Test
-	public void WrongValuetestCreateNewMovie() {
+	public void TestCreateNewMovie() {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeUpdate(anyString())).toReturn(rc);
+		stub(rc>0).toReturn(false);
+		try{
+			assertEquals(true,dao.createNewMovie(aa,bb,cc,dd,ff));
+		}catch(Exception e){
+			fail(e.getMessage);
+		}
+	}
+	
+	/*@Test
+	public void nullValueTestCreateNewMovie() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void NullValuetestCreateNewMovie() {
+	public void correctValueTestCreateNewMovie() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void CorrectValuetestCreateNewMovie() {
+	public void sqlExceptionTestCreateNewMovie() {
 		fail("Not yet implemented");
 	}
-	
-	@Test
-	public void SQLExceptiontestCreateNewMovie() {
-		fail("Not yet implemented");
-	}
-	
-	
 
 	@Test
 	public void testDeleteMovie() {
@@ -115,6 +121,7 @@ public class SimpleMovieDAOTest {
 	public void testSimpleMovieDAOString() {
 		fail("Not yet implemented");
 	}
+	
 	private void setupConnection(VideoLibraryDAO dao) {
 		try {
 			Method m = VideoLibraryDAO.class.getDeclaredMethod("setConnection", java.sql.Connection.class);
@@ -124,5 +131,6 @@ public class SimpleMovieDAOTest {
 			fail(e.getMessage());
 		}
 	}
+*/
 
 }
