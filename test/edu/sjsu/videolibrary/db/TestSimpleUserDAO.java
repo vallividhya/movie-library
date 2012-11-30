@@ -242,7 +242,61 @@ public class TestSimpleUserDAO extends BaseTestCase {
 		} catch(SQLException e) {
 		}
 	}
+	
+	@Test
+	public void testUpdateUserInfoThrowSQLException() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
 
+		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException(""));
 
+		try {
+			dao.updateUserInfo(1, "userId", "firstName", "lastName", "address", "city", "state", "zipCode", "membershipType", "creditCardNumber");
+			fail("Exception not thrown");
+		} catch(SQLException e) {
+		}
+	}
+	
+	@Test
+	public void testMakeMonthlyPaymentThrowSQLException() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException(""));
+
+		try {
+			dao.makeMonthlyPayment(1);
+			fail("Exception not thrown");
+		} catch(SQLException e) {
+		}
+	}
+	
+	@Test
+	public void testViewAccountThrowSQLException() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeQuery(anyString())).toThrow(new SQLException(""));
+		
+		try {
+			dao.viewAccountTransactions(1);
+			fail("Exception not thrown");
+		} catch(SQLException e) {
+		}
+	}
+
+	@Test
+	public void testViewStatementThrowSQLException() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeQuery(anyString())).toThrow(new SQLException(""));
+		
+		try {
+			dao.viewStatement(1, 1, 2012);
+			fail("Exception not thrown");
+		} catch(SQLException e) {
+		}
+	}
 
 }

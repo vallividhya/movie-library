@@ -30,15 +30,15 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 
 	public abstract String signInAdmin(String userId, String password) throws SQLException;
 
-	public abstract LinkedList<Transaction> viewAccountTransactions(int membershipId);
+	public abstract LinkedList<Transaction> viewAccountTransactions(int membershipId) throws Exception;
 
-	public abstract String makeMonthlyPayment(int membershipId);
+	public abstract String makeMonthlyPayment(int membershipId) throws Exception;
 
-	public abstract String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber);
+	public abstract String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber) throws Exception;
 
 	public abstract String updatePassword(int membershipId,String oldPassword,String newPassword) throws Exception;
 
-	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year);
+	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year) throws Exception;
 	
 	
 }
