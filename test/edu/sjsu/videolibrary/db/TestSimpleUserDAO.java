@@ -1,35 +1,19 @@
 package edu.sjsu.videolibrary.db;
 
 import static org.mockito.Mockito.*;
-import java.lang.reflect.Method;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.sjsu.videolibrary.model.User;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import edu.sjsu.videolibrary.test.BaseTestCase;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-import junit.framework.TestCase;
+public class TestSimpleUserDAO extends BaseTestCase {
 
-public class TestSimpleDAO extends TestCase {
-
-	Connection con = null;
-	Statement stmt = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-		con = mock(Connection.class);
-		stmt = mock(Statement.class);
-		rs = mock(ResultSet.class);
-		stub(con.createStatement()).toReturn(stmt);
-		stub(con.prepareStatement(anyString())).toReturn(pstmt);
 	}
 
 	@After
@@ -54,7 +38,7 @@ public class TestSimpleDAO extends TestCase {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	public void testSignInUserEmptyStringInput() throws Exception {
 		SimpleUserDAO dao = new SimpleUserDAO();
 		setupConnection(dao);
@@ -93,7 +77,7 @@ public class TestSimpleDAO extends TestCase {
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toThrow(new SQLException(""));
-		
+
 		try {
 			dao.signInUser("userId", "password");
 			fail("Exception not thrown");
@@ -101,13 +85,35 @@ public class TestSimpleDAO extends TestCase {
 		}
 	}
 
-	private void setupConnection(VideoLibraryDAO dao) {
+	public void testSignUpUserNullInput() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toReturn(0);
+
 		try {
-			Method m = VideoLibraryDAO.class.getDeclaredMethod("setConnection", java.sql.Connection.class);
-			m.setAccessible(true);
-			m.invoke(dao, con);
-		} catch( Exception e ) {
+			String result = dao.signUpUser(null, null,"memType", "firstName", "lastName", "address", "city", "st", "zipCo", "ccNumber");
+			assertEquals("false", result);
+			verify(stmt).executeUpdate(eq("INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName,address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES ('null','null','memType',NOW(),'firstName','lastName','address','city','st','zipCo','ccNumber',null)"));
+		} catch(Exception e) {
 			fail(e.getMessage());
+		}
+	}
+
+
+
+
+	@Test
+	public void testSignUpUserThrowSQLException() throws Exception {
+		SimpleUserDAO dao = new SimpleUserDAO();
+		setupConnection(dao);
+
+		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException(""));
+
+		try {
+			dao.signUpUser("userId", "password", "memType", "firstName", "lastName", "address", "city", "state", "zipCode", "ccNumber");
+			fail("Exception not thrown");
+		} catch(SQLException e) {
 		}
 	}
 }
