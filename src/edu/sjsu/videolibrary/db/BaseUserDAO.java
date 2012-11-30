@@ -36,7 +36,7 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 
 	public abstract String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber);
 
-	public abstract String updatePassword(int membershipId,String oldPassword,String newPassword);
+	public abstract String updatePassword(int membershipId,String oldPassword,String newPassword) throws Exception;
 
 	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year);
 	

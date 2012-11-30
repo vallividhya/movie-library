@@ -239,90 +239,84 @@ public class SimpleUserDAO extends BaseUserDAO {
 	}
 
 	public String updatePassword(int membershipId, String oldPassword,
-			String newPassword) {
+			String newPassword) throws Exception{
 		String result = null;
 
-		try {
-			String query1 = "UPDATE VideoLibrary.User SET password = '"
-					+ Utils.encryptPassword(newPassword)
-					+ "' WHERE membershipId = " + membershipId
-					+ " AND password = '" + Utils.encryptPassword(oldPassword)
-					+ "'";
 
-			int rowcount = stmt.executeUpdate(query1);
+		String query1 = "UPDATE VideoLibrary.User SET password = '"
+				+ Utils.encryptPassword(newPassword)
+				+ "' WHERE membershipId = " + membershipId
+				+ " AND password = '" + Utils.encryptPassword(oldPassword)
+				+ "'";
 
-			if (rowcount > 0) {
-				result = "true";
-				System.out.println("Update Successful");
-			} else {
-				System.out.println("Update unsuccessful.");
-				result = "invalidOldPassword";
-			}
-		} catch (SQLException e) {
-			e.getMessage();
-			result = "false";
-		} catch (Exception e) {
-			e.getMessage();
-			result = null;
+		int rowcount = stmt.executeUpdate(query1);
+
+		if (rowcount > 0) {
+			result = "true";
+			System.out.println("Update Successful");
+		} else {
+			System.out.println("Update unsuccessful.");
+			result = "invalidOldPassword";
 		}
-		return result;
-	}
 
-	public LinkedList<StatementInfo> viewStatement(int membershipId, int month,
-			int year) {
-		LinkedList<StatementInfo> statementRows = new LinkedList<StatementInfo>();
+			return result;
+		}
 
-		// TODO: Need to check the month is not earlier than user join date
-		try {
-			String query1 = "SELECT statementId FROM VideoLibrary.Statement WHERE statement.month = "
-					+ month
-					+ " AND statement.year = "
-					+ year
-					+ " AND statement.membershipId = " + membershipId;
-			ResultSet result1 = stmt.executeQuery(query1);
-			if (result1.next()) {
-				result1.getInt("statementId");
-			} else {
-				SimpleAdminDAO admin = new SimpleAdminDAO();
-				admin.generateMonthlyStatement(membershipId, month, year);
-			}
+		public LinkedList<StatementInfo> viewStatement(int membershipId, int month,
+				int year) {
+			LinkedList<StatementInfo> statementRows = new LinkedList<StatementInfo>();
 
-			String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"
-					+ " FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"
-					+ " VideoLibrary.StatementTransactions,VideoLibrary.Statement WHERE StatementTransactions.transactionId = "
-					+ " pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "
-					+ " AND Statement.statementId = StatementTransactions.statementId AND month = "
-					+ month
-					+ " AND year = "
-					+ year
-					+ " and Statement.membershipId = " + membershipId;
-
-			// System.out.println(query2);
-
-			ResultSet result2 = stmt.executeQuery(query2);
-
-			while (result2.next()) {
-				StatementInfo stmnt = new StatementInfo();
-				stmnt.setMovieName(result2.getString("movieName"));
-				stmnt.setTotalDueAmount(result2.getString("totalDueAmount"));
-				stmnt.setRentDate(result2.getDate("rentDate").toString());
-				Date returnDate = result2.getDate("returnDate");
-				if (returnDate == null) {
-					stmnt.setReturnDate("Not returned");
+			// TODO: Need to check the month is not earlier than user join date
+			try {
+				String query1 = "SELECT statementId FROM VideoLibrary.Statement WHERE statement.month = "
+						+ month
+						+ " AND statement.year = "
+						+ year
+						+ " AND statement.membershipId = " + membershipId;
+				ResultSet result1 = stmt.executeQuery(query1);
+				if (result1.next()) {
+					result1.getInt("statementId");
 				} else {
-					stmnt.setReturnDate(returnDate.toString());
+					SimpleAdminDAO admin = new SimpleAdminDAO();
+					admin.generateMonthlyStatement(membershipId, month, year);
 				}
-				statementRows.add(stmnt);
+
+				String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"
+						+ " FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"
+						+ " VideoLibrary.StatementTransactions,VideoLibrary.Statement WHERE StatementTransactions.transactionId = "
+						+ " pymnt.transactionId AND pymnt.transactionId = rnt.transactionId AND rnt.movieId = Movie.movieId "
+						+ " AND Statement.statementId = StatementTransactions.statementId AND month = "
+						+ month
+						+ " AND year = "
+						+ year
+						+ " and Statement.membershipId = " + membershipId;
+
+				// System.out.println(query2);
+
+				ResultSet result2 = stmt.executeQuery(query2);
+
+				while (result2.next()) {
+					StatementInfo stmnt = new StatementInfo();
+					stmnt.setMovieName(result2.getString("movieName"));
+					stmnt.setTotalDueAmount(result2.getString("totalDueAmount"));
+					stmnt.setRentDate(result2.getDate("rentDate").toString());
+					Date returnDate = result2.getDate("returnDate");
+					if (returnDate == null) {
+						stmnt.setReturnDate("Not returned");
+					} else {
+						stmnt.setReturnDate(returnDate.toString());
+					}
+					statementRows.add(stmnt);
+				}
+			} catch (SQLException e) {
+				statementRows = null;
+				e.getMessage();
+			} catch (Exception e) {
+				statementRows = null;
+				e.getMessage();
 			}
-		} catch (SQLException e) {
-			statementRows = null;
-			e.getMessage();
-		} catch (Exception e) {
-			statementRows = null;
-			e.getMessage();
+			return statementRows;
 		}
-		return statementRows;
+
+
 	}
-
-
-}
