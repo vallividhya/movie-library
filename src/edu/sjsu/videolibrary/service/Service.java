@@ -316,20 +316,38 @@ public class Service {
 
 	public Transaction[] viewAccountTransactions(int membershipId){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		LinkedList<Transaction> ac = userDAO.viewAccountTransactions(membershipId);
+		LinkedList<Transaction> ac = null;
+		try {
+			ac = userDAO.viewAccountTransactions(membershipId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Transaction[] trans = ac.toArray(new Transaction[0]);
 		return trans;
 	}
 
 	public String makeMonthlyPayment(int membershipId){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		String result = userDAO.makeMonthlyPayment(membershipId);
+		String result = null;
+		try {
+			result = userDAO.makeMonthlyPayment(membershipId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 
 	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		String result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+		String result =  null;
+		try {
+			result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cache.invalidatePrefix("signInUser"+userId);
 		cache.invalidatePrefix("searchUser");
 		return result;
@@ -337,7 +355,13 @@ public class Service {
 
 	public String updatePassword(int membershipId,String oldPassword,String newPassword){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		String result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
+		String result = null;
+		try {
+			result = userDAO.updatePassword(membershipId, oldPassword, newPassword);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cache.invalidatePrefix("signInUser"); //invalidates caching for all users
 		return result;
 	}
@@ -362,7 +386,13 @@ public class Service {
 
 	public StatementInfo[] viewStatement(int membershipId,int month,int year){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		StatementInfo [] stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
+		StatementInfo[] stmnt = null;
+		try {
+			stmnt = userDAO.viewStatement(membershipId, month, year).toArray(new StatementInfo[0]);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return stmnt;
 	}
 
