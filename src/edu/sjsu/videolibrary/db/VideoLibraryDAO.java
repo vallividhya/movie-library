@@ -61,4 +61,13 @@ public abstract class VideoLibraryDAO {
 	private void setConnection( Connection mockedConnection ) {
 		this.con = mockedConnection;
 	}
+	
+	/**
+	 * This function is just for testing
+	 * @param mockedConnection
+	 */
+	@SuppressWarnings("unused")
+	private void setStatement( Statement mockedStatement ) {
+		this.stmt = mockedStatement;
+	}
 }
