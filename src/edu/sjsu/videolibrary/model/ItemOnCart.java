@@ -37,6 +37,4 @@ public class ItemOnCart {
 	public void setRentAmount(double rentAmount) {
 		this.rentAmount = rentAmount;
 	}
-	
-	
 }

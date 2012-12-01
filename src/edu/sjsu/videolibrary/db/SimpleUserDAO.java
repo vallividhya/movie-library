@@ -66,7 +66,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 
 		User user = new User();
 		String encryptedPasswrd = Utils.encryptPassword(password);
-		String sql = "SELECT membershipId,firstName,lastName,address,city,ccNumber,membershipType,state,zipCode,startDate,latestPaymentDate,userId, password FROM user WHERE userId = '"
+		String sql = "SELECT membershipId,firstName,lastName,address,city,creditCardNumber,membershipType,state,zip,startDate,latestPaymentDate,userId, password FROM user WHERE userId = '"
 				+ userId + "'" + " AND password = '"
 				+ encryptedPasswrd + "'";
 		Statement stmt = con.createStatement();
@@ -80,7 +80,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 			user.setCreditCardNumber(rs.getString("creditCardNumber"));
 			user.setMembershipType(rs.getString("membershipType"));
 			user.setState(rs.getString("state"));
-			user.setZip(rs.getString("zipCode"));
+			user.setZip(rs.getString("zip"));
 			Date startDate = rs.getDate("startDate");
 			if(startDate !=null){
 				user.setStartDate(startDate.toString());

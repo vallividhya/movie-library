@@ -215,8 +215,8 @@ public class Service {
 	{
 		User user = new User();
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		String result = (String)cache.get("signInUser"+userId+password);
-		if(result == null){		
+		 user = (User)cache.get("signInUser"+userId+password);
+		if(user == null){		
 			user = userDAO.signInUser(userId, password);
 			if(user != null){
 				cache.put("signInUser"+userId+password, user);
