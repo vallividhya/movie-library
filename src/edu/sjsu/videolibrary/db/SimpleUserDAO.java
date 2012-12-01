@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
+import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.util.Utils;
@@ -289,8 +290,8 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return statementRows;
 	}
 
-	public User queryMembershipTypeForRentedMovies (int membershipId) {
-		String query = "SELECT membershipType, rentedMovies FROM videolibrary.user WHERE membershipId = " + membershipId;
+	public User queryMembershipType (int membershipId) {
+		String query = "SELECT membershipType, rentedMovies,creditCardNumber FROM videolibrary.user WHERE membershipId = " + membershipId;
 		Statement stmt = null;
 		User user = new User();
 		try {
@@ -300,7 +301,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 			while (rs.next()) {
 				user.setMembershipType(rs.getString("membershipType"));
 				user.setRentedMovies(rs.getInt("rentedMovies"));
-				
+				user.setCreditCardNumber(rs.getString("creditCardNumber"));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -324,6 +325,16 @@ public class SimpleUserDAO extends BaseUserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String queryCreditCardNumber (int membershipId) throws InvalidCreditCardException {
+		User user = queryMembershipType(membershipId);
+		if (user.getMembershipType().equals("Premium")) {
+			user.getCreditCardNumber();
+		} else {
+			throw new InvalidCreditCardException("Invalid credit card");
+		}
+		return user.getCreditCardNumber();
 	}
 
 	

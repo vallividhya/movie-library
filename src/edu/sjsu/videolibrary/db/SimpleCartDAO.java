@@ -26,7 +26,6 @@ public class SimpleCartDAO extends BaseCartDAO {
 			e.printStackTrace();
 		} catch (NoMovieFoundException e) {
 			try {
-
 				stmt.executeUpdate(query);	
 				result = "true";
 				System.out.println("Cart insert successful");

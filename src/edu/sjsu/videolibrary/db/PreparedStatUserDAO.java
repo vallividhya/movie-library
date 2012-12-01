@@ -335,7 +335,7 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 	}
 
 	@Override
-	public User queryMembershipTypeForRentedMovies(int membershipId) {
+	public User queryMembershipType(int membershipId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -345,6 +345,12 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 			throws InternalServerException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String queryCreditCardNumber(int membershipId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
