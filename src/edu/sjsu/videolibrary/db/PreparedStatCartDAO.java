@@ -198,5 +198,12 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 			}
 		}
 	}
+
+	@Override
+	public void recordMovieTransaction(int movieId, int transactionId,
+			int membershipId) throws InternalServerException {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

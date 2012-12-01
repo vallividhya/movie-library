@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.Date;
 import java.util.LinkedList;
 
+import edu.sjsu.videolibrary.exception.InternalServerException;
+import edu.sjsu.videolibrary.exception.NoUserFoundException;
 import edu.sjsu.videolibrary.model.*;
 import edu.sjsu.videolibrary.util.*;
 
@@ -331,5 +333,19 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 		}
 		return statementRows;
 	}
+
+	@Override
+	public User queryMembershipTypeForRentedMovies(int membershipId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateRentedMoviesForUser(int membershipId, int rentedMovies)
+			throws InternalServerException {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

@@ -43,7 +43,7 @@ public class Service {
 		try {				
 			dbTransaction = startTransaction();
 			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
-
+			// Check if the movie is already rented out previously by this user ******** TODO
 			cartDAO.addToCart(movieId, membershipId);
 			System.out.println("Added to cart successfully");
 			commitTransaction(dbTransaction);
@@ -68,7 +68,8 @@ public class Service {
 
 		return isAddedToCart;
 	}
-
+	
+	// Delete item from cart
 	public boolean deleteMovieFromCart (int movieId, int membershipId) {
 		boolean isDeletedFromCart = false;
 
@@ -91,7 +92,8 @@ public class Service {
 
 		return isDeletedFromCart;
 	}
-
+	
+	// View Cart 
 	public ItemOnCart[] viewCart(int membershipId) {
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
@@ -126,7 +128,8 @@ public class Service {
 		System.out.println("I'm done");
 		return cartItems;
 	}
-
+	
+	// Check out cart
 	public boolean checkOutMovieCart(int membershipId, String creditCardNumber) {
 
 		// Check credit card 
@@ -138,33 +141,59 @@ public class Service {
 		double totalAmount = 0;
 		boolean processComplete = false;
 		String dbTransaction = null;
+		int limitOfMovies;
+		int availableCopiesOfMovie = 0;
+		int userRentedMovies = 0;
 		try {
 			dbTransaction = startTransaction();
 			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
 			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO(dbTransaction);
+			BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
 				System.out.println("Num of movies on Cart for this member = " + cartItems.length);
-				int[] movieId = new int[cartItems.length];
-				double[] rentAmount = new double[cartItems.length];
-				for (int i = 0; i< cartItems.length; i++) {
-					if (cartItems[i] != null) {
-						movieId[i] = cartItems[i].getMovieId();
-						rentAmount[i] = cartItems[i].getRentAmount();
-						totalAmount = totalAmount + rentAmount[i];
-						System.out.println("Movie Id [" + i + "] = " + movieId[i] );
+				// Get membership type and check the limit for movies. 
+				User user = userDAO.queryMembershipTypeForRentedMovies(membershipId);
+				
+				if (user.getMembershipType().equals("Simple")) {
+					limitOfMovies = 2;
+				} else {
+					limitOfMovies = 8;
+				}
+				userRentedMovies = user.getRentedMovies();
+				System.out.println("Already rented movies by this user= " + userRentedMovies);
+				if (cartItems.length > limitOfMovies && userRentedMovies >= limitOfMovies) {
+					System.out.println("Exceeded limit of movies. Please delete some items from cart.");
+				} else {
+					int[] movieId = new int[cartItems.length];
+					double[] rentAmount = new double[cartItems.length];
+					for (int i = 0; i< cartItems.length; i++) {
+						if (cartItems[i] != null) {
+							movieId[i] = cartItems[i].getMovieId();
+							availableCopiesOfMovie = movieDAO.getAvailableCopies(movieId[i]);
+							System.out.println("Available Copies for Movie Id " + movieId[i] + " = " + availableCopiesOfMovie);
+							rentAmount[i] = cartItems[i].getRentAmount();
+							totalAmount = totalAmount + rentAmount[i];
+							System.out.println("Movie Id [" + i + "] = " + movieId[i] );
+						}
+					}
+					System.out.println(totalAmount + " = total Amount");
+					System.out.println(membershipId + " = memId");
+					if (availableCopiesOfMovie != 0) {
+						int transactionId = cartDAO.recordPaymentTransaction(totalAmount, membershipId);
+						for (int i = 0; i < movieId.length; i++) {
+							cartDAO.recordMovieTransaction(movieId[i], transactionId, membershipId);
+							movieDAO.updateCopiesCount(movieId[i],availableCopiesOfMovie - 1 );
+							userRentedMovies = userRentedMovies + 1;
+							System.out.println("Updating rented Movies in user table to " + userRentedMovies);
+							userDAO.updateRentedMoviesForUser(membershipId, userRentedMovies);
+						}
+						cartDAO.deleteCart(membershipId);
+					} else {
+						System.out.println("Currently stock unavailable. Please try later or add some other movie");
 					}
 				}
-				System.out.println(totalAmount + " = total Amount");
-				System.out.println(membershipId + " = memId");
-				int transactionId = cartDAO.recordPaymentTransaction(totalAmount, membershipId);
-				for (int i = 0; i < movieId.length; i++) {
-					cartDAO.recordMovieTransaction(movieId[i], transactionId);
-					movieDAO.updateCopiesCount(movieId[i]);
-				}
-				cartDAO.deleteCart(membershipId);
-			}
-
+			} 
 			commitTransaction(dbTransaction);
 			cache.invalidate("viewCart"+membershipId);
 			processComplete = true;
@@ -175,15 +204,43 @@ public class Service {
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
-		}
+		} 
 
 		return processComplete;
 	}
 
 	// Return Movie
 
-	public void returnMovie () {
-
+	public boolean returnMovie (int membershipId, int movieId) {
+		String dbTransaction = null;
+		int numOfCopies = 0;
+		int rentedMovies = 0;
+		boolean isMovieReturned = false;
+		try {
+			dbTransaction = startTransaction();
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO(dbTransaction);
+			BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
+			cartDAO.updateReturnDate(movieId, membershipId);
+			System.out.println("Updated return date in rentmovietransactions");
+			numOfCopies = movieDAO.getAvailableCopies(movieId) + 1;
+			System.out.println("Updating available Movies in movie table to " + numOfCopies);
+			movieDAO.updateCopiesCount(movieId, numOfCopies);
+			User user = userDAO.queryMembershipTypeForRentedMovies(membershipId);
+			rentedMovies = user.getRentedMovies() - 1;
+			System.out.println("Updating rented Movies in user table to " + rentedMovies);
+			userDAO.updateRentedMoviesForUser(membershipId, rentedMovies);
+			isMovieReturned = true;
+			commitTransaction(dbTransaction);	
+		} catch (InternalServerException e) {
+			e.printStackTrace();
+			try {
+				rollbackTransaction(dbTransaction);
+			} catch (InternalServerException e1) {
+				e.printStackTrace();
+			}
+		}
+		return isMovieReturned;
 	}
 
 	public String signUpUser (String userId, String password, String memType,String firstName, String lastName, 
@@ -500,6 +557,7 @@ public class Service {
 				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
 			} catch (NoUserFoundException e) {
 				System.out.println(e.getMessage());
+				e.printStackTrace();
 			} catch (InternalServerException e) {
 				e.printStackTrace();
 			} finally {

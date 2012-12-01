@@ -91,6 +91,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
+
 			if (!rs.isBeforeFirst()){
 				System.out.println("No items in cart"); 
 			} 
@@ -98,7 +99,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 				ItemOnCart item = new ItemOnCart();
 				item.setMovieId(rs.getInt("movieId"));
 				item.setMovieName(rs.getString("movieName"));
-				item.setMovieBanner(rs.getString("movieBanner"));
+				item.setMovieBanner(rs.getString("movieBanner"));			
 				item.setRentAmount(rs.getDouble("amount"));
 				cartItems.add(item);
 			}
@@ -125,8 +126,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 		String paymentQuery = "INSERT INTO videolibrary.paymenttransaction (rentDate, totalDueAmount, membershipId) VALUES ('"+rentDate+"',"+totalAmount+","+membershipId+")";
 
 		try {
-
-			int rowCount = stmt.executeUpdate(paymentQuery);
+			int rowCount = stmt.executeUpdate(paymentQuery, Statement.RETURN_GENERATED_KEYS);
 			if (rowCount > 0) {
 				System.out.println("Inserted transaction successfully in payment tx");
 				ResultSet rs = stmt.getGeneratedKeys();
@@ -142,9 +142,9 @@ public class SimpleCartDAO extends BaseCartDAO {
 		return transactionId;
 	}
 
-	public void recordMovieTransaction(int movieId, int transactionId) throws InternalServerException {
-
-		String movieTransactionQuery = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId) VALUES ("+movieId+","+transactionId+")";
+	public void recordMovieTransaction(int movieId, int transactionId, int membershipId) throws InternalServerException {
+		
+		String movieTransactionQuery = "INSERT INTO videolibrary.rentmovietransaction (movieId, transactionId, membershipId) VALUES ("+movieId+","+transactionId+"," + membershipId +")";
 		try {
 
 			stmt.executeUpdate(movieTransactionQuery);
@@ -152,10 +152,10 @@ public class SimpleCartDAO extends BaseCartDAO {
 			throw new InternalServerException("DB error", e);
 		}
 	}
-
-	public void updateReturnDate(int movieId, int transactionId) throws InternalServerException {
-
-		String query = "UPDATE videolibrary.rentmovietransaction SET returnDate = NOW() WHERE movieId = "+movieId+" AND transactionId = "+transactionId;
+	
+	public void updateReturnDate(int movieId, int membershipId) throws InternalServerException {
+		
+		String query = "UPDATE videolibrary.rentmovietransaction SET returnDate = NOW() WHERE movieId = "+ movieId +" AND membershipId = "+ membershipId;
 		try {
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {

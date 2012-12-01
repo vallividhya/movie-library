@@ -19,9 +19,9 @@ public abstract class BaseCartDAO extends VideoLibraryDAO {
 	
 	public abstract int recordPaymentTransaction (double totalAmount, int membershipId) throws InternalServerException;	
 	
-	public abstract void recordMovieTransaction(int movieId, int transactionId) throws InternalServerException;
+	public abstract void recordMovieTransaction(int movieId, int transactionId, int membershipId) throws InternalServerException;
 	
-	public abstract void updateReturnDate(int movieId, int transactionId) throws InternalServerException;
+	public abstract void updateReturnDate(int movieId, int membershipId) throws InternalServerException;
 	
 	public abstract void deleteCart(int membershipId) throws InternalServerException;
 }

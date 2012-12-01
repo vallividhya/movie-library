@@ -57,6 +57,7 @@ CREATE TABLE VideoLibrary.RentMovieTransaction
 movieId INTEGER NOT NULL,
 transactionId INTEGER NOT NULL,
 returnDate DATE,
+membershipId INT(9) NOT NULL,
 FOREIGN KEY(movieId) REFERENCES Movie(movieId),
 FOREIGN KEY(transactionId) REFERENCES PaymentTransaction(transactionId),
 PRIMARY KEY (transactionId,movieId)
@@ -108,7 +109,14 @@ amount DOUBLE NOT NULL
 );
 
 ALTER TABLE videolibrary.user AUTO_INCREMENT = 111111111;
+ALTER TABLE `videolibrary`.`user` ADD COLUMN `rentedMovies` INT(1) UNSIGNED ZEROFILL AFTER `latestPaymentDate`;
 
-
+CREATE TABLE `videolibrary`.`rentMovietransaction` (
+  `movieId` INTEGER UNSIGNED NOT NULL,
+  `transactionId` INTEGER UNSIGNED NOT NULL,
+  `membershipId` INT(9) UNSIGNED NOT NULL,
+  `returnDate` DATE NOT NULL,
+  PRIMARY KEY (`transactionId`, `movieId`)
+)
 
 

@@ -58,7 +58,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 
 	public String returnMovie(int membershipId, String movieId) {
 		
-		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE M_Id = "+movieId; 
+		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE movieId = "+movieId; 
 		try {
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {
@@ -193,38 +193,22 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
-	public String updateCopiesCount(int movieId) {
+	public void updateCopiesCount(int movieId, int numOfCopies) throws InternalServerException {
 		System.out.println("Movie Id for updating = " + movieId);
 		int availableCopies = getAvailableCopies(movieId);
-		String isCopiesUpdated = "false";
 		System.out.println(availableCopies
 				+ " are available for movie with movieId = " + movieId);
 		try {
-			if (availableCopies > 0) {
-				availableCopies = availableCopies - 1;
-				System.out.println("Available copies after renting out = "
-						+ availableCopies);
-				String query = "UPDATE videolibrary.movie SET availableCopies = "
-						+ availableCopies + " WHERE movieId = " + movieId;
-				System.out.println("Start time of update tx "
-						+ (System.currentTimeMillis() / 1000) + " seconds");
-				int rowCount = stmt.executeUpdate(query);
-				System.out.println("Stop time of update tx "
-						+ (System.currentTimeMillis() / 1000) + " seconds");
+			String query = "UPDATE videolibrary.movie SET availableCopies = "
+						+ numOfCopies + " WHERE movieId = " + movieId;
+				
+				int rowCount = stmt.executeUpdate(query);				
 				if (rowCount > 0) {
-					isCopiesUpdated = "true";
 					System.out.println("Update of availableCopies Successful");
 				}
-			} else {
-				System.out
-						.println("All copies rented out. Nothing available now");
-			}
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			}  catch (SQLException e) {
+				throw new InternalServerException ("Update of available movies failed", e);
 		}
-		return isCopiesUpdated;
 	}
 
 	public int getAvailableCopies(int movieId) {

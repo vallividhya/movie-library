@@ -16,6 +16,7 @@ public class User {
 	private String CreditCardNumber;
 	private String latestPaymentDate;
 	private String movieList[];
+	private int rentedMovies;
 	
 	public String getStartDate() {
 		return StartDate;
@@ -103,6 +104,12 @@ public class User {
 	}
 	public void setMembershipId(int membershipId) {
 		this.membershipId = membershipId;
+	}
+	public void setRentedMovies(int rentedMovies) {
+		this.rentedMovies = rentedMovies;
+	}
+	public int getRentedMovies() {
+		return rentedMovies;
 	} 
 	
 	

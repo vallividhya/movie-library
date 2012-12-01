@@ -1,10 +1,9 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.LinkedList;
 
-import edu.sjsu.videolibrary.exception.NoUserFoundException;
+import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
@@ -40,5 +39,12 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 
 	public abstract LinkedList<StatementInfo> viewStatement (int membershipId,int month,int year) throws Exception;
 	
+	public abstract User queryMembershipTypeForRentedMovies (int membershipId) ;
 	
-}
+	public abstract void updateRentedMoviesForUser (int membershipId, int rentedMovies) throws InternalServerException;
+	}
+
+
+
+	
+

@@ -209,7 +209,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		}
 		catch(Exception e){
 			e.getMessage();
-			result = null;
+			result = "false";
 		}
 		return result;
 	}
@@ -561,9 +561,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 			return admins; 
 			
-		}
-		
-
+		}	
 }
 	
 	

@@ -1,18 +1,12 @@
 package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
-import edu.sjsu.videolibrary.exception.NoUserFoundException;
-import edu.sjsu.videolibrary.model.Movie;
+import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.util.Utils;
@@ -77,7 +71,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 			user.setLastName(rs.getString("lastName"));
 			user.setAddress(rs.getString("address"));
 			user.setCity(rs.getString("city"));
-			user.setCreditCardNumber(rs.getString("creditCardNumber"));
+			String ccNumber = rs.getString("creditCardNumber");
+			if (ccNumber != null) {
+				user.setCreditCardNumber(ccNumber);
+			}
 			user.setMembershipType(rs.getString("membershipType"));
 			user.setState(rs.getString("state"));
 			user.setZip(rs.getString("zip"));
@@ -292,5 +289,43 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return statementRows;
 	}
 
+	public User queryMembershipTypeForRentedMovies (int membershipId) {
+		String query = "SELECT membershipType, rentedMovies FROM videolibrary.user WHERE membershipId = " + membershipId;
+		Statement stmt = null;
+		User user = new User();
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while (rs.next()) {
+				user.setMembershipType(rs.getString("membershipType"));
+				user.setRentedMovies(rs.getInt("rentedMovies"));
+				
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	public void updateRentedMoviesForUser (int membershipId, int rentedMovies) throws InternalServerException {
+		String query = "UPDATE videoLibrary.user SET rentedMovies = " + rentedMovies + " WHERE membershipId = " + membershipId;
+		System.out.println("Update query for updateRentedMovies = " + query);
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+			int rowCount = stmt.executeUpdate(query);
+			if (rowCount > 0) {
+				System.out.println ("Update of rentedMovies in user table successful");
+			} else {
+				throw new InternalServerException ("Unsuccessful Update for rented movies for this user");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
+	
+	
 }

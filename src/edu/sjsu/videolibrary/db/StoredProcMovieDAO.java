@@ -141,10 +141,12 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 		return 0;
 	}
 
+	
 	@Override
-	public String updateCopiesCount(int movieId) {
+	public void updateCopiesCount(int movieId, int numOfCopies)
+			throws InternalServerException {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }

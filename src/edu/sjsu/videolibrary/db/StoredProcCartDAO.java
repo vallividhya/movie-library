@@ -75,13 +75,7 @@ public class StoredProcCartDAO extends BaseCartDAO {
 		return 0;
 	}
 
-	@Override
-	public void recordMovieTransaction(int movieId, int transactionId)
-			throws InternalServerException {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void updateReturnDate(int movieId, int transactionId)
 			throws InternalServerException {
@@ -93,6 +87,13 @@ public class StoredProcCartDAO extends BaseCartDAO {
 	public void deleteCart(int membershipId) throws InternalServerException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void recordMovieTransaction(int movieId, int transactionId,
+			int membershipId) throws InternalServerException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
