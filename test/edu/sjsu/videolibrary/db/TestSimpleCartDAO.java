@@ -29,24 +29,22 @@ import junit.framework.TestCase;
 
 public class TestSimpleCartDAO extends BaseTestCase {
 
-	String transactionId = null;
-
+	SimpleCartDAO dao = null;
+	
 	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
-		transactionId = TransactionManager.INSTANCE.startTransaction();
+		dao = new SimpleCartDAO();
 	}
 
 	@After
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		TransactionManager.INSTANCE.rollbackTransaction(transactionId);
 	}
 
 
 	@Test
 	public void testAddToCartCorrectInput() throws Exception {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -67,7 +65,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testDeleteFromCartCorrectInput() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -86,7 +83,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testDeleteFromCartThrowException() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -107,7 +103,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testListCartItemsCorrectInput() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -130,7 +125,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testListCartItemsWrongInput() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -146,7 +140,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testListCartItemsThrowException() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toThrow(new SQLException());
@@ -177,7 +170,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	
 	@Test
 	public void testRecordPaymentTransactionThrowException() throws SQLException,InternalServerException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());
 		stub(rs.next()).toReturn(true).toReturn(false);
@@ -197,13 +189,12 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	
 	@Test
 	public void testRecordMovieTransactionThrowException() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());
 		stub(rs.next()).toReturn(true);
 		
 		try {
-			 dao.recordMovieTransaction(1, 1);
+			 dao.recordMovieTransaction(1, 1, 0);
 			fail("Exception not thrown");
 		} catch(Exception e) {
 			
@@ -212,21 +203,18 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	
 	@Test
 	public void testRecordMovieTransactionCorrectInput() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 		stub(stmt.executeUpdate(anyString())).toReturn(1);
 		
 		try {
-			 dao.recordMovieTransaction(1, 1);			
+			 dao.recordMovieTransaction(1, 1, 0);			
 		} catch(Exception e) {
 			
 		}		
 	}
 
 	@Test
-	public void testUpdateReturnDateCorrectInput() throws SQLException {
-	
-			SimpleCartDAO dao = new SimpleCartDAO(transactionId);
+	public void testUpdateReturnDateCorrectInput() throws SQLException {	
 			setupConnection(dao);
 			stub(stmt.executeUpdate(anyString())).toReturn(1);			
 			try {
@@ -239,7 +227,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	@Test
 	public void testUpdateReturnDateThrowsException() throws SQLException {
 	
-			SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 			setupConnection(dao);
 			stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());		
 			try {
@@ -253,7 +240,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	@Test
 	public void testDeleteCartCorrectInput() throws SQLException {
 		
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 		stub(stmt.executeUpdate(anyString())).toReturn(1);			
 		try {
@@ -267,7 +253,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	@Test
 	public void testDeleteCartThrowException() throws SQLException {
 		
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());		
 		try {
@@ -281,7 +266,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 
 	@Test
 	public void testGetMovieByIdCorrectInput() throws SQLException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
@@ -301,7 +285,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 	
 	@Test
 	public void testGetMovieByIdWrongInputThrowException() throws SQLException, InternalServerException {
-		SimpleCartDAO dao = new SimpleCartDAO(transactionId);
 		setupConnection(dao);
 
 		stub(stmt.executeQuery(anyString())).toReturn(rs);

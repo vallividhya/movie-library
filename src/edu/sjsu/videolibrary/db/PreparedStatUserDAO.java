@@ -14,8 +14,8 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 		super();
 	}
 
-	public PreparedStatUserDAO(String transactionId) {
-		super(transactionId);
+	public PreparedStatUserDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public String signUpUser(String userId, String password, String memType,
@@ -75,11 +75,11 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 			throws SQLException {
 		User user = new User();
 		String encryptedPasswrd = Utils.encryptPassword(password);
-		String sql = "SELECT userId, password FROM user WHERE userId = ? AND password = ?";
+		String sql = "SELECT * FROM user WHERE userId = ? AND password = ?";
 		PreparedStatement pst = con.prepareStatement(sql);
 		pst.setString(1, userId);
 		pst.setString(2,encryptedPasswrd);
-		rs = pst.executeQuery(sql);
+		rs = pst.executeQuery();
 		if (rs.next()){
 			user.setMembershipId(rs.getInt("membershipId"));
 			user.setFirstName(rs.getString("firstName"));
@@ -89,7 +89,7 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 			user.setCreditCardNumber(rs.getString("creditCardNumber"));
 			user.setMembershipType(rs.getString("membershipType"));
 			user.setState(rs.getString("state"));
-			user.setZip(rs.getString("zipCode"));
+			user.setZip(rs.getString("zip"));
 			Date startDate = rs.getDate("startDate");
 			if(startDate !=null){
 				user.setStartDate(startDate.toString());

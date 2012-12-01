@@ -14,8 +14,8 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 		super();
 	}
 
-	public BaseUserDAO(String transactionId) {
-		super(transactionId);
+	public BaseUserDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public abstract String signUpUser(String userId, String password, String memType,String firstName, String lastName, 

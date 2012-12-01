@@ -11,8 +11,8 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		super();
 	}
 
-	public SimpleMovieDAO(String transactionId) {
-		super(transactionId);
+	public SimpleMovieDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
@@ -117,7 +117,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e){
-			throw new InternalServerException("Internal erro has occurred.");
+			throw new InternalServerException("Internal error has occurred." + e.getMessage());
 		}
 		Movie[] array= list.toArray(new Movie[list.size()]);
 		return array;
@@ -154,7 +154,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 
 	
 	
-	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate){
+	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate, int start, int stop){
 		ArrayList<Movie> list = new ArrayList<Movie>();		
 //		String str = "%"+userInput.replace(' ','%')+"%";
 		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId ";
@@ -170,6 +170,8 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			String rDate= "%"+releaseDate+"%";
 			query = query +"and m.releaseDate like '"+rDate+"'";
 		}
+		
+		query = query + " LIMIT " + start + "," + stop;
 
 		try{
 			stmt.executeQuery(query);

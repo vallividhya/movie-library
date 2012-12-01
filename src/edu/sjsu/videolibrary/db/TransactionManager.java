@@ -15,14 +15,13 @@ public enum TransactionManager {
 
 	private TransactionManager() {};
 
-	public String startTransaction() throws Exception {
+	public String startTransaction(Connection con) throws Exception {
 		String transactionId;
 		do {
 			transactionId = UUID.randomUUID().toString();
-			System.out.println(transactionId);
+//			System.out.println(transactionId);
 		} while(transactions.containsKey(transactionId));
 
-		Connection con = ConnectionPool.getInstance().getConnection();
 		con.setAutoCommit(false);
 
 		transactions.put(transactionId, con);

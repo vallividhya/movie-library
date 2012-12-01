@@ -16,10 +16,6 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 		super();
 	}
 
-	public BaseAdminDAO(String transactionId) {
-		super(transactionId);
-	}
-
 	public abstract User displayUserInformation(int membershipId);
 
 	public abstract Movie displayMovieInformation (int movieId);
@@ -42,10 +38,18 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
 	public abstract List <Admin> listAdmins(); 
 	
+	public User[] searchUser(String membershipId, String userId,
+			String membershipType, String startDate, String firstName,
+			String lastName, String address, String city, String state,
+			String zipCode) throws NoUserFoundException {
+		return searchUser(membershipId, userId, membershipType, startDate, firstName,
+				lastName, address, city, state, zipCode, 0, DEFAULT_BATCH_SIZE );
+	}
+	
 	public abstract User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException;
+			String zipCode, int start, int stop) throws NoUserFoundException;
 	
 	abstract public Admin displayAdminInformation (String adminId) throws SQLException;
 	

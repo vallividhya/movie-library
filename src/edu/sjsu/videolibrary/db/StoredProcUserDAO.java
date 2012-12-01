@@ -14,6 +14,14 @@ import edu.sjsu.videolibrary.util.Utils;
 
 public class StoredProcUserDAO extends BaseUserDAO {
 
+	public StoredProcUserDAO(VideoLibraryDAO dao) {
+		super(dao);
+	}
+
+	public StoredProcUserDAO() {
+		super();
+	}
+
 	@Override
 	public String signUpUser(String userId, String password, String memType,
 			String firstName, String lastName, String address, String city,
@@ -46,7 +54,7 @@ public class StoredProcUserDAO extends BaseUserDAO {
 			user.setCreditCardNumber(rs.getString("creditCardNumber"));
 			user.setMembershipType(rs.getString("membershipType"));
 			user.setState(rs.getString("state"));
-			user.setZip(rs.getString("zipCode"));
+			user.setZip(rs.getString("zip"));
 			Date startDate = rs.getDate("startDate");
 			if(startDate !=null){
 				user.setStartDate(startDate.toString());

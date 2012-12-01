@@ -17,8 +17,8 @@ public class SimpleUserDAO extends BaseUserDAO {
 		super();
 	}
 
-	public SimpleUserDAO(String transactionId) {
-		super(transactionId);
+	public SimpleUserDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public String signUpUser(String userId, String password, String memType,

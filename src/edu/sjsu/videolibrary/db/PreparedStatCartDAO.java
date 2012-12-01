@@ -14,9 +14,6 @@ import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public class PreparedStatCartDAO extends BaseCartDAO{
-	public PreparedStatCartDAO(String transactionId) {
-		super(transactionId);
-	}
 
 	// Add items to cart
 	public String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
@@ -96,7 +93,7 @@ public class PreparedStatCartDAO extends BaseCartDAO{
 		try {
 			preparedStmt = con.prepareStatement(query);
 			preparedStmt.setInt(1, membershipId);
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = preparedStmt.executeQuery();
 			if (!rs.isBeforeFirst()){
 				System.out.println("No items in cart"); 
 			} 

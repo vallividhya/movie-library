@@ -7,9 +7,6 @@ import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public abstract class BaseCartDAO extends VideoLibraryDAO {
-	public BaseCartDAO(String transactionId) {
-		super(transactionId);
-	}
 
 	public abstract String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException;
 	

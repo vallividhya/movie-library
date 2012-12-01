@@ -37,7 +37,9 @@
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:creditCardNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="returnMovie" qname="operNS:returnMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" soapAction="" >
+      <operation name="returnMovie" qname="operNS:returnMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:returnMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
       <operation name="signUpUser" qname="operNS:signUpUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>

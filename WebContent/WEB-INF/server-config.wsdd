@@ -7,8 +7,8 @@
   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
   <ns1:parameter name="sendXMLDeclaration" value="true"/>
-  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:parameter name="sendXsiTypes" value="true"/>
+  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
     <ns1:parameter name="scope" value="session"/>
@@ -39,7 +39,10 @@
    <ns1:parameter qname="ns6:membershipId" type="xsd:int"/>
    <ns1:parameter qname="ns6:creditCardNumber" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="returnMovie" qname="ns7:returnMovie" soapAction="" xmlns:ns7="http://service.videolibrary.sjsu.edu"/>
+  <ns1:operation name="returnMovie" qname="ns7:returnMovie" returnQName="ns7:returnMovieReturn" returnType="xsd:boolean" soapAction="" xmlns:ns7="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns7:membershipId" type="xsd:int"/>
+   <ns1:parameter qname="ns7:movieId" type="xsd:int"/>
+  </ns1:operation>
   <ns1:operation name="signUpUser" qname="ns8:signUpUser" returnQName="ns8:signUpUserReturn" returnType="xsd:string" soapAction="" xmlns:ns8="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
    <ns1:parameter qname="ns8:userId" type="xsd:string"/>
    <ns1:parameter qname="ns8:password" type="xsd:string"/>

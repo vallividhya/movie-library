@@ -12,8 +12,8 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 		super();
 	}
 
-	public BaseMovieDAO(String transactionId) {
-		super(transactionId);
+	public BaseMovieDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public abstract String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId);
@@ -33,7 +33,7 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 
 	//List movies by chosen category
 	public Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException {
-		return listMoviesByCategory(categoryName,0,100);
+		return listMoviesByCategory(categoryName,0, DEFAULT_BATCH_SIZE);
 	}
 	
 	public abstract Movie[] listMoviesByCategory(String categoryName, int start, int stop) throws NoMovieInCategoryException, InternalServerException;
@@ -46,7 +46,11 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	
 	public abstract int getAvailableCopies (int movieId);
 	
-	public abstract Movie[] searchMovie(String movieName,String movieBanner, String releaseDate) throws Exception;
+	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate) throws Exception {
+		return searchMovie(movieName, movieBanner, releaseDate, 0 , DEFAULT_BATCH_SIZE );
+	}
+	
+	public abstract Movie[] searchMovie(String movieName,String movieBanner, String releaseDate, int start, int stop) throws Exception;
 }
 
 

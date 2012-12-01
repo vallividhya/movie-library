@@ -16,8 +16,8 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 		super();
 	}
 
-	public PreparedStatMovieDAO(String transactionId) {
-		super(transactionId);
+	public PreparedStatMovieDAO(VideoLibraryDAO dao) {
+		super(dao);
 	}
 
 	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
@@ -111,11 +111,12 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 		ArrayList<Movie> list = new ArrayList<Movie>();
 		PreparedStatement pst = null;
 		try{
-			String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName=? limit ?,?)";
+			String query = "Select movieId,movieName,movieBanner,releaseDate,availableCopies from Movie where categoryId=(select categoryId from Category where categoryName=? ) limit ?,?";
 			pst = con.prepareStatement(query);
 			pst.setString(1, categoryName);
 			pst.setInt(2, start);
 			pst.setInt(3, stop);
+			pst.execute();
 			rs=pst.getResultSet();
 			if(!rs.isBeforeFirst())
 				throw new NoMovieInCategoryException("There are no movies in this category.");
@@ -167,7 +168,7 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 	}
 
 	
-	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate){
+	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate, int start, int stop){
 		ArrayList<Movie> list = new ArrayList<Movie>();		
 		PreparedStatement pst = null;
 		String mName = null;
@@ -187,15 +188,23 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 			 rDate= "%"+releaseDate+"%";
 			query = query +"and m.releaseDate like ?";
 		}
+		
+		query = query + " LIMIT " + start + "," + stop;
 
 		try{
 			pst = con.prepareStatement(query);
-			pst.setString(1, mName);
-			pst.setString(2, mBanner);
-			pst.setString(3, rDate);
+			int index = 1;
+			if(movieName!=null){
+				pst.setString(index++, mName);
+			}
+			if(movieBanner!=null){
+				pst.setString(index++, mBanner);
+			}
+			if(releaseDate!=null){
+				pst.setString(index++, rDate);
+			}
+			pst.executeQuery();
 			rs=pst.getResultSet();
-			stmt.executeQuery(query);
-			rs=stmt.getResultSet();
 			while(rs.next()){
 				Movie movie = new Movie();
 				movie.setMovieId(rs.getInt(1));

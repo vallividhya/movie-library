@@ -15,10 +15,6 @@ import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public class SimpleCartDAO extends BaseCartDAO {
 
-	public SimpleCartDAO(String transactionId) {
-		super(transactionId);
-	}
-
 	// Add items to cart
 	public String addToCart (int movieId, int membershipId) throws ItemAlreadyInCartException, InternalServerException {
 		String result = null;
@@ -83,8 +79,8 @@ public class SimpleCartDAO extends BaseCartDAO {
 
 	public List<ItemOnCart> listCartItems (int membershipId) throws InternalServerException {
 		String query = "SELECT mc.movieId, m.movieId, m.movieName, m.movieBanner, u.membershipType, a.amount FROM videolibrary.moviecart mc, videolibrary.movie m, videolibrary.user u, videolibrary.amountdetails a WHERE mc.membershipId = "+ membershipId+" AND mc.movieId = m.movieId AND mc.membershipId = u.membershipId AND u.membershipType = a.membershipType;";
-		System.out.println("MembershipId" + membershipId);
-		System.out.println("Query" + query);
+//		System.out.println("MembershipId" + membershipId);
+//		System.out.println("Query" + query);
 		List<ItemOnCart> cartItems = new ArrayList<ItemOnCart>();
 
 		Statement stmt = null;
@@ -93,7 +89,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 			rs = stmt.executeQuery(query);
 
 			if (!rs.isBeforeFirst()){
-				System.out.println("No items in cart"); 
+//				System.out.println("No items in cart"); 
 			} 
 			while (rs.next()) {
 				ItemOnCart item = new ItemOnCart();
@@ -103,7 +99,7 @@ public class SimpleCartDAO extends BaseCartDAO {
 				item.setRentAmount(rs.getDouble("amount"));
 				cartItems.add(item);
 			}
-			System.out.println("Num of items in cart = " + cartItems.size());
+//			System.out.println("Num of items in cart = " + cartItems.size());
 		} catch (SQLException e) {
 			throw new InternalServerException("DB error", e);
 		} finally {

@@ -75,10 +75,19 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </complexType>
    </element>
    <element name="returnMovie">
-    <complexType/>
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+      <element name="movieId" type="xsd:int"/>
+     </sequence>
+    </complexType>
    </element>
    <element name="returnMovieResponse">
-    <complexType/>
+    <complexType>
+     <sequence>
+      <element name="returnMovieReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
    </element>
    <element name="signUpUser">
     <complexType>
@@ -564,6 +573,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="membershipType" nillable="true" type="xsd:string"/>
      <element name="movieList" nillable="true" type="impl:ArrayOf_xsd_string"/>
      <element name="password" nillable="true" type="xsd:string"/>
+     <element name="rentedMovies" type="xsd:int"/>
      <element name="startDate" nillable="true" type="xsd:string"/>
      <element name="state" nillable="true" type="xsd:string"/>
      <element name="userId" nillable="true" type="xsd:string"/>
