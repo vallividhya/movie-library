@@ -104,7 +104,7 @@ public class StoredProcAdminDAO extends BaseAdminDAO {
 				if (paymentDate != null) {
 					user.setLatestPaymentDate(paymentDate.toString()); 
 				}
-				System.out.println(user.getMembershipId());
+				//System.out.println(user.getMembershipId());
 				searchList.add(user);
 			}
 			rs.close();

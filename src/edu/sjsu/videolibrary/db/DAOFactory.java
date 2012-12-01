@@ -6,13 +6,13 @@ public class DAOFactory {
 		
 	}
 	
-	enum DAOObjectType {
+	public static enum DAOObjectType {
 		Simple,
 		Prepared,
 		StoredProc
 	};
 	
-	static final DAOObjectType currentObj = DAOObjectType.Prepared;
+	static final DAOObjectType currentObj = edu.sjsu.videolibrary.util.Config.currentObject;
 
 	public static BaseAdminDAO getAdminDAO() {
 		if( currentObj.equals(DAOObjectType.Simple)) {

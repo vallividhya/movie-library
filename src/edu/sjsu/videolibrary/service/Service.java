@@ -65,7 +65,7 @@ public class Service {
 
 		return isAddedToCart;
 	}
-	
+
 	// Delete item from cart
 	public boolean deleteMovieFromCart (int movieId, int membershipId) {
 		boolean isDeletedFromCart = false;
@@ -91,7 +91,7 @@ public class Service {
 
 		return isDeletedFromCart;
 	}
-	
+
 	private ItemOnCart[] viewCart(int membershipId, BaseCartDAO cartDAO){
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
@@ -111,17 +111,19 @@ public class Service {
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
 				e.printStackTrace();
-			} finally {
-				cartDAO.release();
 			}
 		}
 		return cartItems;
 	}
-	
+
 	// View Cart 
 	public ItemOnCart[] viewCart(int membershipId) {
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
-		return viewCart(membershipId, cartDAO);
+		try {
+			return viewCart(membershipId, cartDAO);
+		} finally {
+			cartDAO.release();
+		}
 	}
 	/* OLD CODE FOR VIEW CART (With rent amount for membershiptype handled)
 	 public ItemOnCart[] viewCart(int membershipId) {
@@ -190,10 +192,10 @@ public class Service {
 		BaseUserDAO userDAO = DAOFactory.getUserDAO(cartDAO);
 		try {
 			cartDAO.startTransaction();
-			
+
 			User user = userDAO.queryMembershipType(membershipId);
 			String membershipType = user.getMembershipType();
-			
+
 			// Checking movie Limit with membership type
 			if (membershipType.equals("Simple")) {
 				limitOfMovies = 2;
@@ -206,9 +208,9 @@ public class Service {
 				cardNumber = userDAO.queryCreditCardNumber(membershipId);
 				System.out.println("Credit card number for this premium user = " + cardNumber);
 			}
-			
+
 			// Check credit card
-			
+
 			boolean isCardValid = false;			
 			isCardValid = validateCreditCard(cardNumber);
 			if (isCardValid) {
@@ -622,7 +624,6 @@ public class Service {
 			finally{
 				movieDAO.release();
 			}
-			
 		}
 		return categoryName;
 	}
@@ -646,7 +647,6 @@ public class Service {
 			finally{
 				movieDAO.release();
 			}
-			
 		}
 		return array;
 	}
@@ -670,7 +670,7 @@ public class Service {
 			finally{
 				movieDAO.release();
 			}
-			
+
 		}
 		return array;
 	}
@@ -691,24 +691,16 @@ public class Service {
 		if(users == null){
 			BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 			try {
-				adminDAO.startTransaction();
 				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
 				// System.out.println("Users : ");
-				for (User i:users) {
-					//	System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
-				}
+				//				for (User i:users) {
+				//					System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
+				//				}
 				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
 			} catch (NoUserFoundException e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();
-			} catch (InternalServerException e) {
-				e.printStackTrace();
 			} finally {
-				try {
-					adminDAO.commitTransaction();
-				} catch (InternalServerException e) {
-					e.printStackTrace();
-				}
 				adminDAO.release();
 			}
 		}

@@ -192,10 +192,10 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 
 			if(rowcount>0){
 				result = "true";
-				System.out.println("Update Successful");
+//				System.out.println("Update Successful");
 			}
 			else{
-				System.out.println("Update unsuccessful.");
+//				System.out.println("Update unsuccessful.");
 				result = "false";
 			}
 		}
@@ -319,7 +319,7 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 			//if (Integer.parseInt(userId) != 1) {	
 			try {
 				String sql = "DELETE FROM admin WHERE userId = " + userId;
-				System.out.println(sql);
+//				System.out.println(sql);
 				//PreparedStatement pst = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 				//pst.setString(1, userId); 
 				//pst.execute();

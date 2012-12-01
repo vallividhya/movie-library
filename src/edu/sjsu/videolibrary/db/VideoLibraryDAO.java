@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 import edu.sjsu.videolibrary.exception.InternalServerException;
 
 
@@ -21,9 +23,12 @@ public abstract class VideoLibraryDAO {
 
 	public VideoLibraryDAO() {
 		try {
-			this.con = ConnectionPool.getInstance().getConnection();
+			IConnectionPool pool = ConnectionPool.getInstance();
+//			Thread.currentThread().dumpStack();
+//			pool.printStatus();
+			this.con = pool.getConnection();
+//			pool.printStatus();
 			this.stmt = con.createStatement();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			e.getMessage();
@@ -45,10 +50,10 @@ public abstract class VideoLibraryDAO {
 
 	public void release() {
 		try {
-			stmt.close();
-			if (transactionId == null) {
-				ConnectionPool.getInstance().releaseConnection(con);
+			if( stmt != null ) {
+				stmt.close();
 			}
+			ConnectionPool.getInstance().releaseConnection(con);
 		} catch (Exception e) {
 			System.err.println("Release connection failed for " + this.getClass().getCanonicalName());
 			e.printStackTrace();
