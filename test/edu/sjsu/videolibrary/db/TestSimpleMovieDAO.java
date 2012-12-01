@@ -337,15 +337,36 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 		}
 	}
 
-//	@Test
-//	public final void testGetAvailableCopies() throws Exception{
-//		SimpleMovieDAO dao = new SimpleMovieDAO();
-//		setupConnection(dao);
-//		
-//		stub(stmt.executeQuery(anyString())).toReturn(rs);
-//		stub(rs.next()).toReturn(true);
-//		
-//	}
+	@Test
+	public final void testGetAvailableCopiesCorrectInput() throws Exception{
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(true).toReturn(true).toReturn(false);
+		stub(rs.getInt(anyString())).toReturn(0);
+		
+		try{
+			int i = dao.getAvailableCopies(1);
+			assertEquals(anyInt(),i);
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public final void testGetAvailableCopiesSQLExceptions() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toThrow(new SQLException());
+		
+		try{
+			int i = dao.getAvailableCopies(1);
+			assertEquals(0,i);
+		}catch(Exception e){};
+	}
 
 //	@Test
 //	public final void testSearchMovie() {
