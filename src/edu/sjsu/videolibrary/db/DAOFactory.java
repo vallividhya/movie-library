@@ -12,41 +12,41 @@ public class DAOFactory {
 		StoredProc
 	};
 	
-	static final DAOObjectType currentObj = DAOObjectType.Simple;
+	static final DAOObjectType currentObj = DAOObjectType.StoredProc;
 
 	public static BaseAdminDAO getAdminDAO() {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleAdminDAO();
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleAdminDAO();
+		
+			return new PreparedStatAdminDAO();
 		} else {
-			// TODO: Need to change this
-			return new SimpleAdminDAO();
+			
+			return new StoredProcAdminDAO();
 		}
 	}
 
-	public static BaseAdminDAO getAdminDAO(String transactionId) {
-		if( currentObj.equals(DAOObjectType.Simple)) {
-			return new SimpleAdminDAO(transactionId);
-		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleAdminDAO(transactionId);
-		} else {
-			// TODO: Need to change this
-			return new SimpleAdminDAO(transactionId);
-		}
-	}
+//	public static BaseAdminDAO getAdminDAO(String transactionId) {
+//		if( currentObj.equals(DAOObjectType.Simple)) {
+//			return new SimpleAdminDAO(transactionId);
+//		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+//			// TODO: Need to change this
+//			return new SimpleAdminDAO(transactionId);
+//		} else {
+//			// TODO: Need to change this
+//			return new SimpleAdminDAO(transactionId);
+//		}
+//	}
 
-	public static BaseCartDAO getCartDAO(String transactionId) {
+	public static BaseCartDAO getCartDAO() {
 		if(currentObj.equals(DAOObjectType.Simple)) {
-			return new SimpleCartDAO(transactionId);
+			return new SimpleCartDAO();
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleCartDAO(transactionId);
+		
+			return new PreparedStatCartDAO();
 		} else {
-			// TODO: Need to change this
-			return new SimpleCartDAO(transactionId);
+			
+			return new StoredProcCartDAO();
 		}
 	}
 	
@@ -54,32 +54,28 @@ public class DAOFactory {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleUserDAO();
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleUserDAO();
+			
+			return new PreparedStatUserDAO();
 		} else {
-			// TODO: Need to change this
-			return new SimpleUserDAO();
+			return new StoredProcUserDAO();
 		}
 	}
 	
-	public static BaseUserDAO getUserDAO(String transactionId) {
-		if( currentObj.equals(DAOObjectType.Simple)) {
-			return new SimpleUserDAO(transactionId);
-		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleUserDAO(transactionId);
-		} else {
-			// TODO: Need to change this
-			return new SimpleUserDAO(transactionId);
-		}
-	}
+//	public static BaseUserDAO getUserDAO(String transactionId) {
+//		if( currentObj.equals(DAOObjectType.Simple)) {
+//			return new SimpleUserDAO(transactionId);
+//		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+//			return new PreparedStatUserDAO(transactionId);
+//		} else {
+//			return new StoredProcUserDAO(transactionId);
+//		}
+//	}
 
 	public static BaseMovieDAO getMovieDAO() {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleMovieDAO();
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleMovieDAO();
+			return new PreparedStatMovieDAO();
 		} else {
 			return new StoredProcMovieDAO();
 		}
@@ -89,11 +85,9 @@ public class DAOFactory {
 		if( currentObj.equals(DAOObjectType.Simple)) {
 			return new SimpleMovieDAO(transactionId);
 		} else if( currentObj.equals(DAOObjectType.Prepared)) {
-			// TODO: Need to change this
-			return new SimpleMovieDAO(transactionId);
+			return new PreparedStatMovieDAO(transactionId);
 		} else {
-			// TODO: Need to change this
-			return new SimpleMovieDAO(transactionId);
+			return new StoredProcMovieDAO();
 		}
 	}
 }

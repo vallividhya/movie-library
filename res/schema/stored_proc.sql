@@ -33,7 +33,7 @@ END;
 $$
 
 DELIMITER $$
-CREATE PROCEDURE `videolibrary`.`searchMovie` (movieName varchar(50),movieBanner varchar(20),releaseDate varchar(20))
+CREATE PROCEDURE `videolibrary`.`searchMovie` (movieName varchar(50),movieBanner varchar(20),releaseDate varchar(20), start int, stop int)
 BEGIN
   DECLARE queryStr varchar(2000);
   set @queryStr=' Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Videolibrary.Movie m, Videolibrary.Category c where m.categoryId=c.categoryId ';
@@ -69,7 +69,7 @@ DELIMITER $$
 CREATE PROCEDURE `videolibrary`.`searchUser` ( membershipId varchar(9), userId varchar(20),
 			membershipType varchar(20),startDate varchar(20),firstName varchar(20),
 			lastName varchar(20),address varchar(20),city varchar(20), state varchar(2),
-			zipCode varchar(10))
+			zipCode varchar(10), start int, stop int)
 BEGIN
 DECLARE queryStr varchar(2500);
 
@@ -114,6 +114,8 @@ if zipCode is not null then
 			set @queryStr = concat(@queryStr, ' and zipCode like ''%', zipCode, '%''');
 		end if;
 
+	set @queryStr = concat( @queryStr, ' LIMIT ', start, ',' , stop );
+
 	PREPARE stmt1 FROM @queryStr; 
 	EXECUTE stmt1; 
 	DEALLOCATE PREPARE stmt1; 
@@ -134,15 +136,15 @@ $$
 DELIMITER $$
 CREATE PROCEDURE `videolibrary`.`signInUser` (puserId varchar(20),p_password varchar(32))
 BEGIN
-	SELECT userId, password FROM user WHERE userId = puserId  AND password = p_password;
+	SELECT * FROM user WHERE userId = puserId  AND password = p_password;
 END;
 $$
 
-call videolibrary.signInUser("sr@yahoo.com","sr123");
+-- call videolibrary.signInUser("sr@yahoo.com","sr123");
 -- call videolibrary.listCartItems(1);
 -- call videolibrary.searchUser('1',null,null,null,null,null,null,null,'CA',null);
 -- call videolibrary.test();
--- call videolibrary.searchMovie('Gan',null,null);
+-- call videolibrary.searchMovie('Gan',null,null, 0, 100);
 
 -- call videolibrary.listMoviesByCategory('Drama',0,10);
 

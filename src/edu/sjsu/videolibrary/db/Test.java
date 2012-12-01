@@ -22,12 +22,12 @@ public class Test {
 	}
 
 	public static void listCartItems() throws Exception {
-		String transId = TransactionManager.INSTANCE.startTransaction();
-		StoredProcCartDAO cartDAO = new StoredProcCartDAO(transId);
-		for( ItemOnCart cartItem : cartDAO.listCartItems(1) ) {
-			System.out.println(cartItem.getMovieName());
-		}
-		TransactionManager.INSTANCE.commitTransaction(transId);
+//		String transId = TransactionManager.INSTANCE.startTransaction();
+//		StoredProcCartDAO cartDAO = new StoredProcCartDAO(transId);
+//		for( ItemOnCart cartItem : cartDAO.listCartItems(1) ) {
+//			System.out.println(cartItem.getMovieName());
+//		}
+//		TransactionManager.INSTANCE.commitTransaction(transId);
 	}
 	
 	public static void test() {

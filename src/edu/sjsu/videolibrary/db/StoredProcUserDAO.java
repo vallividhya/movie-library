@@ -48,7 +48,7 @@ public class StoredProcUserDAO extends BaseUserDAO {
 			user.setCreditCardNumber(rs.getString("creditCardNumber"));
 			user.setMembershipType(rs.getString("membershipType"));
 			user.setState(rs.getString("state"));
-			user.setZip(rs.getString("zipCode"));
+			user.setZip(rs.getString("zip"));
 			Date startDate = rs.getDate("startDate");
 			if(startDate !=null){
 				user.setStartDate(startDate.toString());

@@ -286,24 +286,24 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 		PaymentForPremiumMemInfo pymnt = new PaymentForPremiumMemInfo();
 		try{
 			String query1 = "select * from  VideoLibrary.PaymentTransaction pymnt where pymnt.membershipId = "+
-		membershipId+" AND pymnt.transactionId not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
-		
-		ResultSet result = stmt.executeQuery(query1);
-		
-		if(result.next()){
-			Date paymentDate = result.getDate("rentDate");
-			if(paymentDate == null){
-				pymnt.setPaymentDate("None");				
+					membershipId+" AND pymnt.transactionId not in( select rnt.transactionid from VideoLibrary.RentMovieTransaction rnt group by rnt.transactionid )";
+
+			ResultSet result = stmt.executeQuery(query1);
+
+			if(result.next()){
+				Date paymentDate = result.getDate("rentDate");
+				if(paymentDate == null){
+					pymnt.setPaymentDate("None");				
+				}
+				else{
+					pymnt.setPaymentDate(paymentDate.toString());
+				}
+				pymnt.setMonthlyPaymentAmount(result.getDouble("totalDueAmount"));
+				pymnt.setPaymentStatus("Payment Received");
 			}
 			else{
-				pymnt.setPaymentDate(paymentDate.toString());
+				pymnt.setPaymentStatus("Payment not received");
 			}
-			pymnt.setMonthlyPaymentAmount(result.getDouble("totalDueAmount"));
-			pymnt.setPaymentStatus("Payment Received");
-		}
-		else{
-			pymnt.setPaymentStatus("Payment not received");
-		}
 		}
 		catch(SQLException e){
 			e.getMessage();
@@ -371,46 +371,46 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 		//System.out.println(test.getFirstName());
 		return members;
 	}
-	
-	
-	
+
+
+
 	public User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException {
+			String zipCode, int start, int stop) throws NoUserFoundException {
 
 		ArrayList<User> searchList = new ArrayList<User>();
 		User[] userArray = null;
 		Map<String, String> queryParameters = new HashMap<String, String>();
 		if (membershipId != null) {
-			queryParameters.put("membershipId", "?");
+			queryParameters.put("membershipId", membershipId);
 		}
 		if (userId != null) {
-			queryParameters.put("userId", "?");
+			queryParameters.put("userId", userId);
 		}
 		if (membershipType != null) {
-			queryParameters.put("membershipType", "?");
+			queryParameters.put("membershipType", membershipType);
 		}
 		if (startDate != null) {
-			queryParameters.put("startDate","?");
+			queryParameters.put("startDate",startDate);
 		}
 		if (firstName != null) {
-			queryParameters.put("firstName","?");
+			queryParameters.put("firstName",firstName);
 		}
 		if (lastName != null) {
-			queryParameters.put("lastName","?");
+			queryParameters.put("lastName",lastName);
 		}
 		if (address != null) {
-			queryParameters.put("address","?");
+			queryParameters.put("address",address);
 		}
 		if (city != null) {
-			queryParameters.put("city","?");
+			queryParameters.put("city",city);
 		}
 		if (state != null) {
-			queryParameters.put("state","?");
+			queryParameters.put("state",state);
 		}
 		if (zipCode != null) {
-			queryParameters.put("zipCode","?");
+			queryParameters.put("zipCode",zipCode);
 		}
 
 		StringBuilder query = new StringBuilder("SELECT membershipId, userId, password, membershipType, startDate, firstName, lastName, address, city, state, zip, creditCardNumber, latestPaymentDate FROM videolibrary.user WHERE ");
@@ -426,9 +426,10 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 		}
 
 		Statement stmt = null;
-		System.out.println(" My search Query : " + query);
+		// System.out.println(" My search Query : " + query);
 		try {
-			 pst = con.prepareStatement(query.toString());
+			query.append(" LIMIT " + start + "," + stop);
+			pst = con.prepareStatement(query.toString());
 			rs = pst.executeQuery();
 			if (!rs.isBeforeFirst()) {
 				throw new NoUserFoundException(
@@ -452,121 +453,118 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 				if (paymentDate != null) {
 					user.setLatestPaymentDate(paymentDate.toString()); 
 				}
-				System.out.println(user.getMembershipId());
 				searchList.add(user);
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		userArray = searchList.toArray(new User[searchList.size()]);
 		return userArray;
 	}
-	
+
 	//Added recently
-		public String updateAdminInfo(String adminId,String firstName, String lastName, String password){
-			String result = "false";
-			try {
-				String query1 = "UPDATE VideoLibrary.admin SET firstName = '"+firstName+"' ,lastName = '"+lastName +"' WHERE userId = '" + adminId + "'";
-				System.out.println(query1);
-				int rowcount = stmt.executeUpdate(query1);
+	public String updateAdminInfo(String adminId,String firstName, String lastName, String password){
+		String result = "false";
+		try {
+			String query1 = "UPDATE VideoLibrary.admin SET firstName = '"+firstName+"' ,lastName = '"+lastName +"' WHERE userId = '" + adminId + "'";
+			System.out.println(query1);
+			int rowcount = stmt.executeUpdate(query1);
 
-				if(rowcount>0){
-					result = "true";
-				}
+			if(rowcount>0){
+				result = "true";
 			}
-			catch(Exception e){ e.printStackTrace(); }
-			return result;
 		}
-		
-		public Admin displayAdminInformation (String adminId) {
-			Admin admin = new Admin();
-			try {
-				String query = "SELECT admin.firstName, admin.lastName, admin.password FROM admin WHERE userId = '" + adminId + "'";
-				ResultSet rs = stmt.executeQuery(query);
-				
-				while(rs.next()){
-					admin.setAdminId(adminId);
-					admin.setFirstName(rs.getString("firstName"));
-					admin.setLastName(rs.getString("lastName"));
-					admin.setPassword(rs.getString("password"));
-				}
-			} catch (SQLException e) { 
-				return null;
-			}
-			
-			return admin; 
-		}
-		
-		public String updateUserPassword(int membershipId,String newPassword){
-			String result = null;
+		catch(Exception e){ e.printStackTrace(); }
+		return result;
+	}
 
-			try{
-				String query1 = "UPDATE VideoLibrary.User SET password = '"+Utils.encryptPassword(newPassword) + "' WHERE membershipId = "+membershipId;
+	public Admin displayAdminInformation (String adminId) {
+		Admin admin = new Admin();
+		try {
+			String query = "SELECT admin.firstName, admin.lastName, admin.password FROM admin WHERE userId = '" + adminId + "'";
+			ResultSet rs = stmt.executeQuery(query);
 
-				int rowcount = stmt.executeUpdate(query1);
+			while(rs.next()){
+				admin.setAdminId(adminId);
+				admin.setFirstName(rs.getString("firstName"));
+				admin.setLastName(rs.getString("lastName"));
+				admin.setPassword(rs.getString("password"));
+			}
+		} catch (SQLException e) { 
+			return null;
+		}
 
-				if(rowcount > 0){
-					result = "true";
-	 			}
-				else{
-	 				result = "invalidID";
-				}
-			}
-			catch(Exception e){
-	 			result = "false";
-			}
-			return result;		
-		}
-		
-		public Admin signInAdminObject (String userId, String password)  {
-			Admin bean = new Admin(); 
-			bean.setAdminId(userId);
-			bean.setPassword(password);
-			String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
-			System.out.println(sql);
-			try { 
-			
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(sql);
-				if(rs.next())
-				{
-			        String firstName = rs.getString("firstName");
-			        String lastName = rs.getString("lastName");
-					
-					bean.setFirstName(firstName);
-					bean.setLastName(lastName);
- 
-					bean.setValid(true);
-					return bean;
-				} else {
-					System.out.println("else");
-					bean.setValid(false);
-				}
-			} catch (SQLException e) { } 
-			return bean;
-		}
-		
-		public List <Admin> listAdmins () {
-			List <Admin> admins = new ArrayList<Admin>();
-			String query = "SELECT admin.userId, admin.firstName, admin.lastName FROM admin ORDER BY userId";
-			try {
-				ResultSet rs = stmt.executeQuery(query);
-				while (rs.next()) {
-					Admin admin = new Admin();
-					admin.setAdminId(rs.getString("userId"));
-					admin.setFirstName(rs.getString("firstName"));
-					admin.setLastName(rs.getString("lastName"));
-					admins.add(admin);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		return admin; 
+	}
 
-			return admins; 
-			
+	public String updateUserPassword(int membershipId,String newPassword){
+		String result = null;
+
+		try{
+			String query1 = "UPDATE VideoLibrary.User SET password = '"+Utils.encryptPassword(newPassword) + "' WHERE membershipId = "+membershipId;
+
+			int rowcount = stmt.executeUpdate(query1);
+
+			if(rowcount > 0){
+				result = "true";
+			}
+			else{
+				result = "invalidID";
+			}
 		}
-		
+		catch(Exception e){
+			result = "false";
+		}
+		return result;		
+	}
+
+	public Admin signInAdminObject (String userId, String password)  {
+		Admin bean = new Admin(); 
+		bean.setAdminId(userId);
+		bean.setPassword(password);
+		String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
+		System.out.println(sql);
+		try { 
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				String firstName = rs.getString("firstName");
+				String lastName = rs.getString("lastName");
+
+				bean.setFirstName(firstName);
+				bean.setLastName(lastName);
+
+				bean.setValid(true);
+				return bean;
+			} else {
+				System.out.println("else");
+				bean.setValid(false);
+			}
+		} catch (SQLException e) { } 
+		return bean;
+	}
+
+	public List <Admin> listAdmins () {
+		List <Admin> admins = new ArrayList<Admin>();
+		String query = "SELECT admin.userId, admin.firstName, admin.lastName FROM admin ORDER BY userId";
+		try {
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				Admin admin = new Admin();
+				admin.setAdminId(rs.getString("userId"));
+				admin.setFirstName(rs.getString("firstName"));
+				admin.setLastName(rs.getString("lastName"));
+				admins.add(admin);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return admins; 
+
+	}
+
 
 }

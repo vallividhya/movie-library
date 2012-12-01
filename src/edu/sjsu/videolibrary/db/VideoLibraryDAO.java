@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import edu.sjsu.videolibrary.exception.InternalServerException;
+
 
 public abstract class VideoLibraryDAO {
 	protected Connection con = null;
 	static ResultSet rs;
 	Statement stmt = null;
 	PreparedStatement pst = null;
+	final int DEFAULT_BATCH_SIZE = 100;
 
 	protected String transactionId;
 
@@ -52,6 +55,31 @@ public abstract class VideoLibraryDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void startTransaction() throws InternalServerException {
+		try {
+			this.transactionId = TransactionManager.INSTANCE.startTransaction( con );
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public void commitTransaction() throws InternalServerException {
+		try {
+			TransactionManager.INSTANCE.commitTransaction(this.transactionId);
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public void rollbackTransaction() throws InternalServerException {
+		try {
+			TransactionManager.INSTANCE.rollbackTransaction(this.transactionId);
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
 	
 	/**
 	 * This function is just for testing

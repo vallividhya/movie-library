@@ -18,7 +18,7 @@ public class StoredProcAdminDAO extends BaseAdminDAO {
 	public User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException {
+			String zipCode, int start, int stop) throws NoUserFoundException {
 
 		ArrayList<User> searchList = new ArrayList<User>();
 		User[] userArray = null;
@@ -74,6 +74,7 @@ public class StoredProcAdminDAO extends BaseAdminDAO {
 		} else {
 			query += "'" + zipCode + "'";
 		}
+		query = query + "," + start + "," + stop;
 		query += ")";
 		System.out.println(query);
 		

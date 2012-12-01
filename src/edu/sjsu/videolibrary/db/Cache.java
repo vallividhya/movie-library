@@ -9,7 +9,7 @@ public class Cache {
 
 	ICacheStorage cacheStorage = null;
 	static Cache INSTANCE = null;
-	static boolean cacheEnabled = true;
+	static boolean cacheEnabled = false;
 	
 	private Cache(){
 		if( cacheEnabled ) {

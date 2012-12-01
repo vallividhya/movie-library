@@ -12,10 +12,6 @@ import edu.sjsu.videolibrary.model.ItemOnCart;
 
 public class StoredProcCartDAO extends BaseCartDAO {
 
-	public StoredProcCartDAO(String transactionId) {
-		super(transactionId);
-	}
-
 	// check this function tomorrow
 	@Override
 	public String addToCart(int movieId, int membershipId)

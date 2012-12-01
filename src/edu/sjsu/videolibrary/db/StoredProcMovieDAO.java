@@ -81,7 +81,8 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
-	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate){
+	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate,
+			int start, int stop){
 		ArrayList<Movie> list = new ArrayList<Movie>();		
 
 		String query = "call videolibrary.searchMovie(";
@@ -101,6 +102,7 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 			query += "'" + movieBanner + "'";
 		}
 		
+		query = query + "," + start + "," + stop;
 		query += ")";
 
 		System.out.println(query);

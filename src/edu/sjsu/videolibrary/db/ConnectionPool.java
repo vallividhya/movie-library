@@ -7,8 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionPool {
-	static final int poolSize = 5;
-	static final boolean poolEnabled = false;
+	static final int poolSize = 20;
+	static final boolean poolEnabled = true;
 	static ConnectionPool INSTANCE = null;
 	static final int MAX_BLOCK_TIME = 10;
 	static final TimeUnit BLOCK_TIME_UNIT = TimeUnit.MILLISECONDS;
@@ -35,6 +35,7 @@ public class ConnectionPool {
 		if( poolEnabled ) {
 			Connection connection = null;
 			do {
+			//	System.err.println("Available Pool " + availablePool.size());
 				connection = availablePool.poll(MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
 			} while(connection == null );
 			return connection;
@@ -45,6 +46,7 @@ public class ConnectionPool {
 
 	public boolean releaseConnection(Connection connection) throws Exception {
 		if(poolEnabled){
+			//System.err.println("Release Connection " + availablePool.size());
 			return availablePool.offer(connection, MAX_BLOCK_TIME, BLOCK_TIME_UNIT);
 		}
 		connection.close();

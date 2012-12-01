@@ -372,7 +372,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	public User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException {
+			String zipCode, int start, int stop) throws NoUserFoundException {
 
 		ArrayList<User> searchList = new ArrayList<User>();
 		User[] userArray = null;
@@ -421,8 +421,9 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		}
 
 		Statement stmt = null;
-		System.out.println(" My search Query : " + query);
+	//	System.out.println(" My search Query : " + query);
 		try {
+			query.append( " LIMIT " + start + "," + stop);
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query.toString());
 			if (!rs.isBeforeFirst()) {
@@ -447,7 +448,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				if (paymentDate != null) {
 					user.setLatestPaymentDate(paymentDate.toString()); 
 				}
-				System.out.println(user.getMembershipId());
+			//	System.out.println(user.getMembershipId());
 				searchList.add(user);
 			}
 			rs.close();
@@ -464,7 +465,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			String result = "false";
 			try {
 				String query1 = "UPDATE VideoLibrary.admin SET firstName = '"+firstName+"' ,lastName = '"+lastName +"' WHERE userId = '" + adminId + "'";
-				System.out.println(query1);
+			//	System.out.println(query1);
 				int rowcount = stmt.executeUpdate(query1);
 
 				if(rowcount>0){

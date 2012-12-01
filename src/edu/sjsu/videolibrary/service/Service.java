@@ -1,13 +1,9 @@
 package edu.sjsu.videolibrary.service;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.jws.WebService;
-
 import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
@@ -22,7 +18,6 @@ import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.Cache;
 import edu.sjsu.videolibrary.db.DAOFactory;
-import edu.sjsu.videolibrary.db.TransactionManager;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
@@ -39,31 +34,33 @@ public class Service {
 	public boolean addItemsToCart(int membershipId, int movieId) {
 		boolean isAddedToCart = false;
 
-		String dbTransaction = null;
-		try {				
-			dbTransaction = startTransaction();
-			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+		try {
+			cartDAO.startTransaction();
 
 			cartDAO.addToCart(movieId, membershipId);
 			System.out.println("Added to cart successfully");
-			commitTransaction(dbTransaction);
+			cartDAO.commitTransaction();
 
 			isAddedToCart = true;
 			cache.invalidate("viewCart"+membershipId);
 		} catch (ItemAlreadyInCartException e) {
 			System.out.println(e.getMessage());
 			try {
-				commitTransaction(dbTransaction);
+				cartDAO.commitTransaction();
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
 		} catch (InternalServerException e) {
 			e.printStackTrace();
 			try {
-				rollbackTransaction(dbTransaction);
+				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
+		}
+		finally{
+			cartDAO.release();
 		}
 
 		return isAddedToCart;
@@ -72,21 +69,23 @@ public class Service {
 	public boolean deleteMovieFromCart (int movieId, int membershipId) {
 		boolean isDeletedFromCart = false;
 
-		String dbTransaction = null;
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {
-			dbTransaction = startTransaction();
-			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+			cartDAO.startTransaction();
 			cartDAO.deleteFromCart(movieId, membershipId);
-			commitTransaction(dbTransaction);
+			cartDAO.commitTransaction();
 
 			isDeletedFromCart = true;
 		} catch (InternalServerException e) {
 			e.printStackTrace();
 			try {
-				rollbackTransaction(dbTransaction);
+				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
+		}
+		finally{
+			cartDAO.release();
 		}
 
 		return isDeletedFromCart;
@@ -98,32 +97,32 @@ public class Service {
 
 		cartItems = (ItemOnCart[])cache.get("viewCart" + membershipId);
 		if(cartItems == null){
-			String dbTransaction = null;
+			BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 			try {
-				dbTransaction = startTransaction();
-				BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+				cartDAO.startTransaction();
 				cartItemsList	= cartDAO.listCartItems(membershipId);
 				cartItems = new ItemOnCart[cartItemsList.size()];
 
-				System.out.println("I've got " + cartItems.length + " items with me!");
+				//System.out.println("I've got " + cartItems.length + " items with me!");
 
 				for (int i = 0; i < cartItemsList.size(); i++) {
 					cartItems[i] = cartItemsList.get(i);
-					System.out.println(cartItems[i].getMovieName());
+					//System.out.println(cartItems[i].getMovieName());
 				}	
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
 				e.printStackTrace();
 			} finally {
 				try {
-					commitTransaction(dbTransaction);
+					cartDAO.commitTransaction();
 				} catch (InternalServerException e) {
 					e.printStackTrace();
 				}
+				cartDAO.release();
 			}
 		}
 
-		System.out.println("I'm done");
+		//System.out.println("I'm done");
 		return cartItems;
 	}
 
@@ -138,10 +137,11 @@ public class Service {
 		double totalAmount = 0;
 		boolean processComplete = false;
 		String dbTransaction = null;
+		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
+		BaseMovieDAO movieDAO = null;
 		try {
-			dbTransaction = startTransaction();
-			BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
-			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO(dbTransaction);
+			cartDAO.startTransaction();
+			movieDAO = DAOFactory.getMovieDAO(dbTransaction);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
 				System.out.println("Num of movies on Cart for this member = " + cartItems.length);
@@ -165,16 +165,23 @@ public class Service {
 				cartDAO.deleteCart(membershipId);
 			}
 
-			commitTransaction(dbTransaction);
+			cartDAO.commitTransaction();
 			cache.invalidate("viewCart"+membershipId);
 			processComplete = true;
 		} catch (InternalServerException e) {
 			e.printStackTrace();
 			try {
-				rollbackTransaction(dbTransaction);
+				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
+		}
+		finally{
+			cartDAO.release();
+			if( movieDAO != null ) {
+				movieDAO.release();
+			}
+
 		}
 
 		return processComplete;
@@ -203,38 +210,61 @@ public class Service {
 			result = "false";
 
 		}
+		finally{
+			userDAO.release();
+		}
 		return result;
 	}
 
 	public String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException
 	{
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		return userDAO.signUpAdmin(userId, password, firstName, lastName);
+		String result = null;
+		try {
+			result = userDAO.signUpAdmin(userId, password, firstName, lastName);
+		} finally {
+			userDAO.release();
+		}
+		return result;
 	}
+
 	public User signInUser(String userId, String password) throws SQLException
 	{
 		User user = new User();
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-		 user = (User)cache.get("signInUser"+userId+password);
-		if(user == null){		
-			user = userDAO.signInUser(userId, password);
-			if(user != null){
-				cache.put("signInUser"+userId+password, user);
+		try{
+			user = (User)cache.get("signInUser"+userId+password);
+			if(user == null){		
+				user = userDAO.signInUser(userId, password);
+				if(user != null){
+					cache.put("signInUser"+userId+password, user);
+				}
 			}
+		}
+		finally{
+			userDAO.release();
 		}
 		return user;
 	}
 	public Admin signInAdmin (String userId, String password) throws SQLException
 	{
 		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
-		return adminDAO.signInAdminObject(userId, password);
+		Admin admin = null;
+		try{
+			admin =  adminDAO.signInAdminObject(userId, password);
+		}
+		finally{
+			adminDAO.release();
+		}
+		return admin;
 	}
 
 	//List members
-	public User [] viewMembers (String type){	
+	public User [] viewMembers (String type) {	
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		List <User> memberList = adminDAO.listMembers(type);
 		User [] members = (User[]) memberList.toArray();
+		adminDAO.release();
 		return members;
 
 	}
@@ -243,6 +273,7 @@ public class Service {
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		List <Admin> memberList = adminDAO.listAdmins();
 		Admin [] admins = memberList.toArray(new Admin[0]);
+		adminDAO.release();
 		return admins;
 	}
 
@@ -257,6 +288,9 @@ public class Service {
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
 		}
+		finally{
+			adminDAO.release();
+		}
 		return isDeleted; 
 	}
 
@@ -268,6 +302,9 @@ public class Service {
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
+		}
+		finally{
+			adminDAO.release();
 		}
 		return isDeleted; 
 	}	
@@ -286,7 +323,10 @@ public class Service {
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
-		}		
+		}	
+		finally{
+			movieDAO.release();
+		}
 		return isCreated;
 	}
 
@@ -298,6 +338,9 @@ public class Service {
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 			e.printStackTrace();			
+		}		
+		finally{
+			movieDAO.release();
 		}
 		return isDeleted; 
 	}
@@ -305,12 +348,14 @@ public class Service {
 	public User displayUserInformation (int membershipId){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		User user = adminDAO.displayUserInformation(membershipId);
+		adminDAO.release();
 		return user;
 	}
 
 	public Movie displayMovieInformation (int movieId){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		Movie movie = adminDAO.displayMovieInformation(movieId);
+		adminDAO.release();
 		return movie;
 	}
 
@@ -323,7 +368,12 @@ public class Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally{
+			userDAO.release();
+		}
 		Transaction[] trans = ac.toArray(new Transaction[0]);
+
+
 		return trans;
 	}
 
@@ -335,6 +385,9 @@ public class Service {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally{
+			userDAO.release();
 		}
 		return result;
 	}
@@ -348,8 +401,11 @@ public class Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cache.invalidatePrefix("signInUser"+userId);
-		cache.invalidatePrefix("searchUser");
+		finally{
+			cache.invalidatePrefix("signInUser"+userId);
+			cache.invalidatePrefix("searchUser");
+			userDAO.release();
+		}
 		return result;
 	}
 
@@ -362,13 +418,18 @@ public class Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cache.invalidatePrefix("signInUser"); //invalidates caching for all users
+		finally{
+			cache.invalidatePrefix("signInUser"); //invalidates caching for all users
+			userDAO.release();
+		}
+
 		return result;
 	}
 
 	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
+		adminDAO.release();
 		return result;
 	}
 
@@ -380,6 +441,9 @@ public class Service {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally{
+			adminDAO.release();
 		}
 		return result;
 	}
@@ -393,24 +457,30 @@ public class Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally{
+			userDAO.release();
+		}
 		return stmnt;
 	}
 
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		PaymentForPremiumMemInfo pymnt = adminDAO.generateMonthlyBillForPremiumMember(membershipId, month, year);
+		adminDAO.release();
 		return pymnt;
 	}
 
 	public double getRentAmountforMovie(){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		double movieRentAmount = adminDAO.getRentAmountforMovie();
+		adminDAO.release();
 		return movieRentAmount;
 	}
 
 	public double getMonthlyFeesForPremiumMember(){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
+		adminDAO.release();
 		return monthlyFees;
 	}
 
@@ -430,6 +500,10 @@ public class Service {
 				e.getLocalizedMessage();
 				e.printStackTrace();
 			}
+			finally{
+				movieDAO.release();
+			}
+			
 		}
 		return categoryName;
 	}
@@ -450,6 +524,10 @@ public class Service {
 				e.getLocalizedMessage();
 				e.printStackTrace();
 			}
+			finally{
+				movieDAO.release();
+			}
+			
 		}
 		return array;
 	}
@@ -470,12 +548,16 @@ public class Service {
 				e.getLocalizedMessage();
 				e.printStackTrace();
 			}
+			finally{
+				movieDAO.release();
+			}
+			
 		}
 		return array;
 	}
 
 	//search movies by name
-	
+
 
 	// Search User by any attribute 
 
@@ -486,16 +568,15 @@ public class Service {
 
 
 		User[] users = null;
-		String dbTransaction = null;
 		users = (User[])cache.get("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode);
 		if(users == null){
-			try {				
-				dbTransaction = startTransaction();
-				BaseAdminDAO adminDAO = DAOFactory.getAdminDAO(dbTransaction);
+			BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
+			try {
+				adminDAO.startTransaction();
 				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
-				System.out.println("Users : ");
+				// System.out.println("Users : ");
 				for (User i:users) {
-					System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
+					//	System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
 				}
 				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
 			} catch (NoUserFoundException e) {
@@ -504,15 +585,16 @@ public class Service {
 				e.printStackTrace();
 			} finally {
 				try {
-					commitTransaction(dbTransaction);
+					adminDAO.commitTransaction();
 				} catch (InternalServerException e) {
 					e.printStackTrace();
 				}
+				adminDAO.release();
 			}
 		}
 		return users;
 	}
-	
+
 
 	public Admin displayAdminInformation (String adminId) {
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
@@ -522,6 +604,9 @@ public class Service {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally{
+			adminDAO.release();
 		}
 		return admin; 
 	}
@@ -534,6 +619,9 @@ public class Service {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally{
+			adminDAO.release();
 		}
 		return result;
 	}
@@ -549,6 +637,9 @@ public class Service {
 
 			e.printStackTrace();
 		}
+		finally{
+			adminDAO.release();
+		}
 		return result;		
 	}
 
@@ -556,31 +647,6 @@ public class Service {
 		States states = new States();
 		return states.getStates();
 	}
-
-	private String startTransaction() throws InternalServerException {
-		try {
-			return TransactionManager.INSTANCE.startTransaction();
-		} catch (Exception e) {
-			throw new InternalServerException(e.getMessage());
-		}
-	}
-
-	private void commitTransaction(String dbTransaction) throws InternalServerException {
-		try {
-			TransactionManager.INSTANCE.commitTransaction(dbTransaction);
-		} catch (Exception e) {
-			throw new InternalServerException(e.getMessage());
-		}
-	}
-
-	private void rollbackTransaction(String dbTransaction) throws InternalServerException {
-		try {
-			TransactionManager.INSTANCE.rollbackTransaction(dbTransaction);
-		} catch (Exception e) {
-			throw new InternalServerException(e.getMessage());
-		}
-	}
-
 
 	public Movie[] searchMovie(String movieName, String movieBanner, String releaseDate){
 		Movie[] array = null;
@@ -592,6 +658,9 @@ public class Service {
 				cache.put("searchMovie" + movieName + movieBanner + releaseDate, array);
 			} catch (Exception e) {			
 				e.printStackTrace();
+			}
+			finally{
+				movieDAO.release();
 			}
 		}
 		return array;
