@@ -47,7 +47,7 @@ public class ConnectionPool {
 				INSTANCE = (IConnectionPool) Config.connectionPoolImpl.newInstance();
 				INSTANCE.setUp();
 			} else {
-				INSTANCE = new DisabledConnectionPoolImpl();
+				INSTANCE = new ConnectionPoolDisabledImpl();
 			}
 		}
 		return INSTANCE;
