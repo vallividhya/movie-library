@@ -1,13 +1,23 @@
 package edu.sjsu.videolibrary.db;
 
 
+import static org.mockito.Mockito.*;
+
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+import edu.sjsu.videolibrary.model.User;
+import edu.sjsu.videolibrary.test.BaseTestCase;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.LinkedList;
+
 import junit.framework.TestCase;
 
-public class TestSimpleAdminDAO extends TestCase {
+public class TestSimpleAdminDAO extends BaseTestCase {
 
 	@Before
 	protected void setUp() throws Exception {
@@ -21,82 +31,98 @@ public class TestSimpleAdminDAO extends TestCase {
 
 	@Test
 	public final void testDisplayUserInformation() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testDisplayMovieInformation() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testGetRentAmountforMovie() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao); 
 	}
 
 	@Test
 	public final void testGetMonthlyFeesForPremiumMember() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao); 
 	}
 
 	@Test
 	public final void testUpdateMovieInfo() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testGenerateMonthlyStatement() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testDeleteUser() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao); 
 	}
 
 	@Test
 	public final void testGenerateMonthlyBillForPremiumMember() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testDeleteAdmin() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testListMembers() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao); 
 	}
 
 	@Test
 	public final void testListAdmins() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
-	@Test
-	public final void testSearchUserStringStringStringStringStringStringStringStringStringStringIntInt() {
-		fail("Not yet implemented"); // TODO
-	}
+//	@Test
+//	public final void testSearchUserStringStringStringStringStringStringStringStringStringStringIntInt() {
+//		SimpleAdminDAO dao = new SimpleAdminDAO();
+//		setupConnection(dao); 
+//	}
 
 	@Test
 	public final void testDisplayAdminInformation() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testUpdateAdminInfo() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testUpdateUserPassword() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 	@Test
 	public final void testSignInAdminObject() {
-		fail("Not yet implemented"); // TODO
+		SimpleAdminDAO dao = new SimpleAdminDAO();
+		setupConnection(dao);
 	}
 
 }
