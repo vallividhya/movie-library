@@ -274,9 +274,9 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 	}
 
 	@Override
-	public void updateCopiesCount(int movieId, int numOfCopies)
+	public String updateCopiesCount(int movieId, int numOfCopies)
 			throws InternalServerException {
-		// TODO Auto-generated method stub
+		return null;
 		
 	}
 }

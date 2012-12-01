@@ -19,7 +19,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		String s =null;
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
-					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"','"+availableCopies+"','"+categoryId+"')";
+					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"',"+availableCopies+","+categoryId+")";
 			
 			stmt.executeUpdate(sql);
 			rs = stmt.getGeneratedKeys();
@@ -37,10 +37,8 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 
 	public String deleteMovie (String movieId) {
 		//PreparedStatement preparedStmt = null;
-
-		//String query = "DELETE FROM videolibrary.movie WHERE movieId = ?"; 
 		String query = "DELETE FROM videolibrary.movie WHERE movieId = " + Integer.parseInt(movieId); 
-
+		String result = null;
 		try {
 
 			int rowcount = stmt.executeUpdate(query);
@@ -48,31 +46,32 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			//preparedStmt.setInt(1, Integer.parseInt(movieId));
 			//preparedStmt.executeUpdate();
 			if (rowcount > 0) {
-				return "true"; 
+				result= "true"; 
 			}
+			else
+				result = "";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return ""; 
+		return result; 
+
 	}
 
 	public String returnMovie(int membershipId, String movieId) {
-		
-		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE movieId = "+movieId; 
+		String result = null;
+		String query = "DELETE FROM videolibrary.RentMovieTransaction WHERE M_Id = "+movieId; 
 		try {
-			stmt.executeUpdate(query);
+			int rc = stmt.executeUpdate(query);
+			if(rc>0)
+				result =  "true";
+			else
+				result = "false";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "true"; 
+		return result;
 	}
 
-	/* Main method for testing 
-	public static void main (String [] args) { 
-		MovieDAO m = new MovieDAO();
-		m.deleteMovie("10");
-	}
-	 */
 	//List categories on home page
 	public String[] listCategories() throws NoCategoryFoundException, InternalServerException{
 		ArrayList<String> list= new ArrayList<String>();
@@ -195,8 +194,9 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
-	public void updateCopiesCount(int movieId, int numOfCopies) throws InternalServerException {
+	public String updateCopiesCount(int movieId, int numOfCopies) throws InternalServerException {
 		System.out.println("Movie Id for updating = " + movieId);
+		String result;
 		int availableCopies = getAvailableCopies(movieId);
 		System.out.println(availableCopies
 				+ " are available for movie with movieId = " + movieId);
@@ -207,10 +207,14 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 				int rowCount = stmt.executeUpdate(query);				
 				if (rowCount > 0) {
 					System.out.println("Update of availableCopies Successful");
+					result="true";
 				}
+				else
+					result="false";
 			}  catch (SQLException e) {
 				throw new InternalServerException ("Update of available movies failed", e);
 		}
+		return result;
 	}
 
 	public int getAvailableCopies(int movieId) {
