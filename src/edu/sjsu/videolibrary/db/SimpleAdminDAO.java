@@ -272,20 +272,20 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 	//Moved from UserDAO 
 	public String deleteUser (String userId) {
-		String result = null;
+		String result = ""; 
 		try {
 			String sql = "DELETE from user WHERE membershipId  ="+userId;
+  			int rowcount = stmt.executeUpdate(sql);
 
-			stmt.executeUpdate(sql);
-			rs = stmt.getGeneratedKeys();
-			if (rs.next())
-			{
-				Integer memID = rs.getInt(1);
-				result = memID.toString();
-			}   
-			else
-				result = null;
-		} catch (SQLException e) { e.printStackTrace(); } 
+			if(rowcount>0){
+				result = "delete true";
+				System.out.println("Delete Successful");
+			}
+			else{
+				System.out.println("Delete unsuccessful.");
+				result = "delete false";
+			}
+		} catch (SQLException e) { result = "error"; } 
 		return result;		
 	}
 
@@ -325,29 +325,23 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 	public String deleteAdmin (String userId) {
-		String result = null;
+
 		//SuperAdmin should not be removed from the Database
 		if (!userId.equals("Admin")) {
 			//if (Integer.parseInt(userId) != 1) {	
 			try {
-				String sql = "DELETE FROM admin WHERE userId = " + userId;
+				String sql = "DELETE FROM admin WHERE userId = '" + userId + "'";
 				System.out.println(sql);
 				
 				int rowcount = stmt.executeUpdate(sql);
 				if (rowcount > 0) {
-					Integer memID = rs.getInt(1);
-					result = memID.toString();
+					return "delete true";
 				}    
-				else
-					result = "false";
-			} catch (SQLException e) {
-				result = null;
-				e.printStackTrace();
-			} 
+			} catch (SQLException e) { e.printStackTrace(); } 
 		} else { 
-
+			return "superadmin"; 
 		}
-		return result;		
+		return "false";		
 	}
 
 

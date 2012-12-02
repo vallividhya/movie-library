@@ -45,9 +45,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 	public String signUpAdmin(String userId, String password, String firstName,
 			String lastName) throws SQLException {
 		String result = null;
+				
 		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+firstName+"','"+lastName+"')";
 		int rc = stmt.executeUpdate(sql);
-
+		
 		if (rc>0) {
 			result = "true";
 		} else {

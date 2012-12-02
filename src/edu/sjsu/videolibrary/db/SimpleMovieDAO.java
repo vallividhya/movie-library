@@ -20,18 +20,15 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
 					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"',"+availableCopies+","+categoryId+")";
-			
-			stmt.executeUpdate(sql);
-			rs = stmt.getGeneratedKeys();
-
-			if (rs.next()) {
-				Integer movieID = rs.getInt(1);
-				s= movieID.toString();
-			} 
-			else
-				s="";
-
-		} catch (SQLException e) { } 
+			int rc = stmt.executeUpdate(sql);
+			System.out.println(sql);
+			if (rc > 0) {
+				return "true";		
+			}
+			else{
+				return  "false";
+			}
+		} catch (SQLException e) {  return "error";  } 
 		return s; 
 	}	
 
