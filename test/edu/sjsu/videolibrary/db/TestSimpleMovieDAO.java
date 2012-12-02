@@ -5,8 +5,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,10 +32,10 @@ public class TestSimpleMovieDAO extends BaseTestCase{
 		
 		stub(stmt.executeUpdate(anyString())).toReturn(0);
 		stub( stmt.getGeneratedKeys()).toReturn(rs);
-		if(rs.next()){
-			 
-			result = anyString();}
 		
+		if(rs.next()){			 
+			result = anyString();
+			}		
 		try{
 			String result = dao.createNewMovie("aa", "bb", "2012", 1, 1);
 			assertEquals("", result);
@@ -76,7 +74,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	
 	try{
 		String result = dao.createNewMovie("aa", "bb", "2012",5,1);
-		assertNotNull(result);
+		assertEquals(anyString(), result);
 	}catch(Exception e){
 		fail(e.getMessage());
 	}
@@ -95,36 +93,36 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testDeleteMovieWrongInput() throws Exception {
+	public  void testDeleteMovieWrongInput() throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
 		stub(stmt.executeUpdate(anyString())).toReturn(0);
 		try{
-			result = dao.deleteMovie("23");
+			result = dao.deleteMovie("235436547");
 			assertEquals("",result);
 		}catch(Exception e){
 			fail(e.getMessage());
 		}
 	}
 	
-//	@Test
-//	public final void testDeleteMovieNullValueInput() throws Exception {
-//		SimpleMovieDAO dao = new SimpleMovieDAO();
-//		setupConnection(dao);
-//		
-//		stub(stmt.executeUpdate(anyString())).toReturn(0);
-//		try{
-//			result = dao.deleteMovie(null);
-//			assertEquals("",result);
-//		}catch(Exception e){
-//			fail(e.getMessage());
-//		}
-//	}
+	@Test
+	public  void testDeleteMovieNullValueInput() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeUpdate(anyString())).toReturn(0);
+		try{
+			result = dao.deleteMovie(null);
+			assertEquals("",result);
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+	}
 
 	
 	@Test
-	public final void testDeleteMovieCorrectInput() throws Exception {
+	public  void testDeleteMovieCorrectInput() throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -138,7 +136,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testDeleteMovieSQLException() throws Exception {
+	public  void testDeleteMovieSQLException() throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -152,7 +150,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 
 	@Test
-	public final void testReturnMovieWrongInput() throws Exception{
+	public  void testReturnMovieWrongInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -167,7 +165,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testReturnMovieNullValueInput() throws Exception{
+	public  void testReturnMovieNullValueInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -182,7 +180,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testReturnMovieCorrectInput() throws Exception{
+	public  void testReturnMovieCorrectInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -197,7 +195,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testReturnMovieSQLException() throws Exception{
+	public  void testReturnMovieSQLException() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -212,7 +210,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}	
 
 	@Test
-	public final void testListCategoriesSQLException()  throws Exception {
+	public  void testListCategoriesSQLException()  throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -223,49 +221,80 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 		}catch(Exception e){};
 	}
 
-//	@Test
-//	public final void testListMoviesByCategoryCorrectInput() throws Exception {
-//		SimpleMovieDAO dao = new SimpleMovieDAO();
-//		setupConnection(dao);
-//		
-//		stub(stmt.executeQuery(anyString())).toReturn(rs);
-//		stub(rs.next()).toReturn(true).toReturn(true).toReturn(false);
-//		stub(rs.getInt(1)).toReturn(112);
-//		stub(rs.getString(2)).toReturn("aa");
-//		stub(rs.getString(3)).toReturn("bb");
-//		stub(rs.getString(4)).toReturn("12-23-2011");
-//		stub(rs.getInt(5)).toReturn(anyInt());
-//		
-//		try{
-//			Movie[] m = dao.listMoviesByCategory("Fantasy",10,10);
-//			assertEquals(anyInt(),m.length);
-//			assertEquals(anyInt(),m[0].getMovieId());
-//			assertEquals(anyString(),m[0].getMovieName());
-//			assertEquals(anyString(),m[0].getMovieBanner());
-//			assertEquals(anyString(),m[0].getReleaseDate());
-//			assertEquals(anyInt(),m[0].getAvailableCopies());
-//		}catch(Exception e){
-//			fail(e.getMessage());
-//		}
-//	}
-
-//	@Test
-//	public final void testListMoviesByCategorySQLException() throws Exception {
-//		SimpleMovieDAO dao = new SimpleMovieDAO();
-//		setupConnection(dao);
-//		
-//		stub(stmt.executeQuery(anyString())).toThrow(new SQLException());
-//		
-//		try{
-//			Movie[] m = dao.listMoviesByCategory("Drama",10,10);
-//			assertEquals(anyInt(),m.length);
-//		}catch(Exception e){
-//			fail(e.getMessage());
-//		}
-//	}
 	
 	@Test
-	public final void testListAllMoviesSQLExceptions() throws Exception {
+	public  void testListMoviesByCategoryWrongInput() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(false);
+		
+		
+		try{
+			Movie[] m = dao.listMoviesByCategory("Drama",10,10);
+			assertNull(m);
+			
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public  void testListMoviesByCategoryCorrectInput() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(true);
+		
+		
+		try{
+			Movie[] m = dao.listMoviesByCategory("Drama",10,10);
+			assertNotNull(m);
+			
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public  void testListMoviesByCategoryNullValueInput() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(false);
+		
+		
+		try{
+			Movie[] m = dao.listMoviesByCategory(null,10,10);
+			assertNull(m);
+			
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public  void testListMoviesByCategorySQLException() throws Exception {
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toThrow(new SQLException());	
+		
+		
+		try{
+			Movie[] m = dao.listMoviesByCategory("xyz",10,10);
+			assertNull(m);
+			
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public  void testListAllMoviesSQLExceptions() throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -278,7 +307,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 
 	@Test
-	public final void testUpdateCopiesCountWrongInput() throws Exception{
+	public  void testUpdateCopiesCountWrongInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -293,7 +322,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testUpdateCopiesCountNullValueInput() throws Exception{
+	public  void testUpdateCopiesCountNullValueInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -308,7 +337,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testUpdateCopiesCountCorrectInput() throws Exception{
+	public  void testUpdateCopiesCountCorrectInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -323,7 +352,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testUpdateCopiesCountSQLException() throws Exception{
+	public  void testUpdateCopiesCountSQLException() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -338,17 +367,17 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 
 	@Test
-	public final void testGetAvailableCopiesCorrectInput() throws Exception{
+	public  void testGetAvailableCopiesWrongInput() throws Exception{
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
 		stub(stmt.executeQuery(anyString())).toReturn(rs);
-		stub(rs.next()).toReturn(true).toReturn(true).toReturn(false);
-		stub(rs.getInt(anyString())).toReturn(0);
+		stub(rs.next()).toReturn(false);
+		
 		
 		try{
-			int i = dao.getAvailableCopies(1);
-			assertEquals(anyInt(),i);
+			int i = dao.getAvailableCopies(100);
+			assertEquals(0,i);
 		}catch(Exception e){
 			fail(e.getMessage());
 		}
@@ -356,7 +385,25 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	}
 	
 	@Test
-	public final void testGetAvailableCopiesSQLExceptions() throws Exception {
+	public  void testGetAvailableCopiesCorrectInput() throws Exception{
+		SimpleMovieDAO dao = new SimpleMovieDAO();
+		setupConnection(dao);
+		
+		stub(stmt.executeQuery(anyString())).toReturn(rs);
+		stub(rs.next()).toReturn(true);
+		
+		
+		try{
+			int i = dao.getAvailableCopies(1);
+			assertEquals(12,i);
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void testGetAvailableCopiesSQLExceptions() throws Exception {
 		SimpleMovieDAO dao = new SimpleMovieDAO();
 		setupConnection(dao);
 		
@@ -365,11 +412,13 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 		try{
 			int i = dao.getAvailableCopies(1);
 			assertEquals(0,i);
-		}catch(Exception e){};
+		}catch(Exception e){
+			fail(e.getMessage());
+		};
 	}
 
 //	@Test
-//	public final void testSearchMovie() {
+//	public  void testSearchMovie() {
 //		fail("Not yet implemented"); // TODO
 //	}
 //

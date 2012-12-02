@@ -35,8 +35,8 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 			rs = stmt.executeQuery(query1);
 			User user = new User();
-
-			while(rs.next()){
+			
+			if(rs.next()){
 				user.setFirstName(rs.getString("FirstName"));
 				user.setLastName(rs.getString("LastName"));
 				user.setUserId(rs.getString("UserId"));
@@ -55,20 +55,25 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				else{
 					user.setLatestPaymentDate(null);
 				}
+			
+
+				String query2 = "select Movie.MovieName from VideoLibrary.RentMovieTransaction rm,VideoLibrary.Movie, VideoLibrary.PaymentTransaction pymnt "+
+						"where pymnt.TransactionId = rm.TransactionId and ReturnDate is null and rm.MovieId = Movie.MovieId and MembershipId = "+membershipId;
+				ResultSet result2 = stmt.executeQuery(query2);
+	
+				LinkedList<String> movies = new LinkedList<String>();
+	
+				while(result2.next()){				
+					movies.add(result2.getString("MovieName"));
+				}	
+				String movies1[] = movies.toArray(new String[0]);
+				user.setMovieList(movies1);
+				return user;
 			}
-
-			String query2 = "select Movie.MovieName from VideoLibrary.RentMovieTransaction rm,VideoLibrary.Movie, VideoLibrary.PaymentTransaction pymnt "+
-					"where pymnt.TransactionId = rm.TransactionId and ReturnDate is null and rm.MovieId = Movie.MovieId and MembershipId = "+membershipId;
-			ResultSet result2 = stmt.executeQuery(query2);
-
-			LinkedList<String> movies = new LinkedList<String>();
-
-			while(result2.next()){				
-				movies.add(result2.getString("MovieName"));
-			}	
-			String movies1[] = movies.toArray(new String[0]);
-			user.setMovieList(movies1);
-			return user;
+			else{
+				user = null;
+				return user;
+			}
 
 		}
 		catch(SQLException e){
@@ -92,7 +97,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			ResultSet result1 = stmt.executeQuery(query1);
 			Movie movie = new Movie();
 
-			while(result1.next()){
+			if(result1.next()){
 				movie.setMovieId(result1.getInt("MovieId"));
 				movie.setMovieName(result1.getString("MovieName"));
 				movie.setMovieBanner(result1.getString("MovieBanner"));
@@ -100,25 +105,29 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				movie.setCatagory(result1.getString("CategoryName"));
 				movie.setAvailableCopies(result1.getInt("AvailableCopies"));
 				movie.setRentAmount(rentAmount);
+			
+
+				String query2 = "select User.FirstName,User.LastName from VideoLibrary.User,VideoLibrary.PaymentTransaction,"+
+						" VideoLibrary.RentMovieTransaction where RentMovieTransaction.MovieId = 1 and  RentMovieTransaction.ReturnDate "+
+						"is null and  RentMovieTransaction.TransactionId = PaymentTransaction.TransactionId"+
+						" and PaymentTransaction.MembershipId = User.MembershipId";
+	
+				ResultSet result2 = stmt.executeQuery(query2);
+				LinkedList<String> buyerList = new LinkedList<String>();
+	
+				while(result2.next()){
+					String fName = result2.getString("FirstName");
+					String lName = result2.getString("LastName");
+					String fullName = fName+" "+lName;				
+					buyerList.add(fullName);				
+				}
+	
+				String buyerList1[] = buyerList.toArray(new String[0]);
+				movie.setBuyerList(buyerList1);
+				
 			}
-
-			String query2 = "select User.FirstName,User.LastName from VideoLibrary.User,VideoLibrary.PaymentTransaction,"+
-					" VideoLibrary.RentMovieTransaction where RentMovieTransaction.MovieId = 1 and  RentMovieTransaction.ReturnDate "+
-					"is null and  RentMovieTransaction.TransactionId = PaymentTransaction.TransactionId"+
-					" and PaymentTransaction.MembershipId = User.MembershipId";
-
-			ResultSet result2 = stmt.executeQuery(query2);
-			LinkedList<String> buyerList = new LinkedList<String>();
-
-			while(result2.next()){
-				String fName = result2.getString("FirstName");
-				String lName = result2.getString("LastName");
-				String fullName = fName+" "+lName;				
-				buyerList.add(fullName);				
-			}
-
-			String buyerList1[] = buyerList.toArray(new String[0]);
-			movie.setBuyerList(buyerList1);
+			else
+				movie=null;
 			return movie;
 		}
 		catch(SQLException e){
@@ -132,7 +141,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 	public double getRentAmountforMovie(){
-		double rentAmount = 0;
+		double rentAmount = 0.0;
 		try{
 
 			String query1 = "select amount from VideoLibrary.AmountDetails where membershipType = 'simple' "+
@@ -140,25 +149,26 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 			ResultSet result1 = stmt.executeQuery(query1);
 
-			while(result1.next()){
+			if(result1.next()){
 				rentAmount = result1.getDouble("amount");
 			}
+			
 		}
 		catch(SQLException e){
 			e.getMessage();
-			rentAmount = -1;
+			rentAmount = -1.0;
 		}
 
 		catch(Exception e){
 			e.getMessage();
-			rentAmount = -1;
+			rentAmount = -1.0;
 		}
 		return rentAmount;
 	}
 
 	public double getMonthlyFeesForPremiumMember(){
 
-		double monthlyFees = 0;
+		double monthlyFees = 0.0;
 		try{
 
 			String query1 = "select amount from VideoLibrary.AmountDetails where membershipType = 'premium' "+
@@ -166,18 +176,18 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 			ResultSet result1 = stmt.executeQuery(query1);
 
-			while(result1.next()){
+			if(result1.next()){
 				monthlyFees = result1.getDouble("amount");
 			}
 		}
 		catch(SQLException e){
 			e.getMessage();
-			monthlyFees = -1;
+			monthlyFees = -1.0;
 		}
 
 		catch(Exception e){
 			e.getMessage();
-			monthlyFees = -1;
+			monthlyFees = -1.0;
 		}
 		return monthlyFees;
 	}
@@ -262,18 +272,21 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 	//Moved from UserDAO 
 	public String deleteUser (String userId) {
+		String result = null;
 		try {
 			String sql = "DELETE from user WHERE membershipId  ="+userId;
 
-			stmt.executeQuery(sql);
+			stmt.executeUpdate(sql);
 			rs = stmt.getGeneratedKeys();
 			if (rs.next())
 			{
 				Integer memID = rs.getInt(1);
-				return memID.toString();
-			}    
+				result = memID.toString();
+			}   
+			else
+				result = null;
 		} catch (SQLException e) { e.printStackTrace(); } 
-		return "";		
+		return result;		
 	}
 
 	public PaymentForPremiumMemInfo generateMonthlyBillForPremiumMember(int membershipId,int month,int year){
@@ -297,6 +310,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		}
 		else{
 			pymnt.setPaymentStatus("Payment not received");
+			pymnt = null;
 		}
 		}
 		catch(SQLException e){
@@ -311,7 +325,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 	public String deleteAdmin (String userId) {
-
+		String result = null;
 		//SuperAdmin should not be removed from the Database
 		if (!userId.equals("Admin")) {
 			//if (Integer.parseInt(userId) != 1) {	
@@ -322,19 +336,25 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				int rowcount = stmt.executeUpdate(sql);
 				if (rowcount > 0) {
 					Integer memID = rs.getInt(1);
-					return memID.toString();
+					result = memID.toString();
 				}    
-			} catch (SQLException e) { e.printStackTrace(); } 
+				else
+					result = "false";
+			} catch (SQLException e) {
+				result = null;
+				e.printStackTrace();
+			} 
 		} else { 
 
 		}
-		return "false";		
+		return result;		
 	}
 
 
 	public List <User> listMembers (String type){		
 		
 		List <User> members = new ArrayList<User>();
+		
 		String query = ""; 
 
 		if (type.equals("all")) {
@@ -356,6 +376,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				members.add(member);
 			}
 		} catch (SQLException e) {
+			members = null;
 			e.printStackTrace();
 		}
 		//User test = (User) members.toArray()[0];
@@ -478,14 +499,16 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				String query = "SELECT admin.firstName, admin.lastName, admin.password FROM admin WHERE userId = '" + adminId + "'";
 				ResultSet rs = stmt.executeQuery(query);
 				
-				while(rs.next()){
+				if(rs.next()){
 					admin.setAdminId(adminId);
 					admin.setFirstName(rs.getString("firstName"));
 					admin.setLastName(rs.getString("lastName"));
 					admin.setPassword(rs.getString("password"));
 				}
+				else
+					admin = null;
 			} catch (SQLException e) { 
-				return null;
+				admin= null;
 			}
 			
 			return admin; 
@@ -535,8 +558,9 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				} else {
 					System.out.println("else");
 					bean.setValid(false);
+					bean=null;
 				}
-			} catch (SQLException e) { } 
+			} catch (SQLException e) { bean = null;} 
 			return bean;
 		}
 		
@@ -553,6 +577,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 					admins.add(admin);
 				}
 			} catch (SQLException e) {
+				admins=null;
 				e.printStackTrace();
 			}
 

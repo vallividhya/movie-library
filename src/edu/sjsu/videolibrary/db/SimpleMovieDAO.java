@@ -218,18 +218,22 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 	}
 
 	public int getAvailableCopies(int movieId) {
+		int availableCopies=0;
 		String query = "SELECT availableCopies FROM videolibrary.movie WHERE movieId = "
 				+ movieId;
 		Movie movie = new Movie();
 		try {
 			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				movie.setAvailableCopies(rs.getInt("availableCopies"));
+			if (rs.next()) {				
+				availableCopies = rs.getInt("availableCopies");
+				movie.setAvailableCopies(availableCopies);
 			}
+			else
+				availableCopies = 0;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return movie.getAvailableCopies();
+		return availableCopies;
 	}
 }
 
