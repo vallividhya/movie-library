@@ -384,7 +384,7 @@ public class Service {
 	public User [] viewMembers (String type) {	
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		List <User> memberList = adminDAO.listMembers(type);
-		User [] members = (User[]) memberList.toArray();
+		User [] members = memberList.toArray(new User[0]);
 		adminDAO.release();
 		return members;
 
@@ -725,7 +725,7 @@ public class Service {
 
 	public String updateAdminInfo (String adminId,String firstName, String lastName, String password){
 		BaseAdminDAO adminDAO  = DAOFactory.getAdminDAO();
-		String result = null;
+		String result = "false";
 		try {
 			result = adminDAO.updateAdminInfo(adminId, firstName, lastName, password);
 		} catch (SQLException e) {
