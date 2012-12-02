@@ -76,7 +76,7 @@ public void testCreateNewMovieCorrectInput() throws Exception {
 	
 	try{
 		String result = dao.createNewMovie("aa", "bb", "2012",5,1);
-		assertEquals(anyString(), result);
+		assertNotNull(result);
 	}catch(Exception e){
 		fail(e.getMessage());
 	}
