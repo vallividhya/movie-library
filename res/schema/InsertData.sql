@@ -28,5 +28,9 @@ VALUES ('Space','NASA',NOW(),5,5);
 insert into videolibrary.user(userId,password,membershipType,startDate,firstName,lastName,address,city,state,zip)
 values('sr@yahoo.com','sr123','simple','2012-11-17','Shri','Ram','Newark Street','SanJose','CA','96587');
 
+INSERT INTO VideoLibrary.Admin(userId,password,firstName,lastName)
+VALUES ('admin@admin.com','admin','Admin','A');
 
+INSERT INTO VideoLibrary.Admin(userId,password,firstName,lastName)
+VALUES ('a@gmail.com','admin','A','A');
 

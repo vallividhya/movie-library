@@ -3,14 +3,15 @@ package edu.sjsu.videolibrary.data;
 import java.util.Random;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
+import edu.sjsu.videolibrary.util.Utils;
 
 public class PremiumMemberData {
 	
-	static void insertPremiumMemberData() throws Exception {
+	public static void insertPremiumMemberData() throws Exception {
 		String userData[][] = {
-				{"jg@yahoo.com","jg*","James","George","Premium","Scott Blvd","SanJose","CA","94325"},
-				{"sm2yahoo.com","sm*","Stacy","Mayer","Premium","Keily Blvd","SantaClara","CA","23456"},
-				{"rs@gmail.com","rs#","Ram","Sheth","Premium","Newark Street","SunnyVale","IL","67956"},
+				{"jg@yahoo.com","jg","James","George","Premium","Scott Blvd","SanJose","CA","94325"},
+				{"sm2yahoo.com","sm2","Stacy","Mayer","Premium","Keily Blvd","SantaClara","CA","23456"},
+				{"rs@gmail.com","rs","Ram","Sheth","Premium","Newark Street","SunnyVale","IL","67956"},
 				{"mk@hotmail.com","mk","Michael","Kaleta","Premium","7th and Santa Clara","Newyork","NY","89654"},
 				{"sp@yahoo.com","sp","Sean","Parker","Premium","4th and Santa Clara","NewJersey","NJ","78956"},
 				{"bh@gmail.com","bh","Bobby","Hill","Premium","Boston Drive","Seatle","WA","80876"},
@@ -24,7 +25,7 @@ public class PremiumMemberData {
 		for( int i = 1; i < 1001; i++) {
 			for(String[] user : userData) {
 								
-				userDAO.signUpUser(i+user[0].trim(),user[1].trim()+i,user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),getCC());
+				userDAO.signUpUser(i+user[0].trim(),Utils.encryptPassword(user[1].trim()+i),user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),getCC());
 				
 			}
 			userDAO.release();

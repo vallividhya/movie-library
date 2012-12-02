@@ -3,16 +3,17 @@ package edu.sjsu.videolibrary.data;
 import java.util.Random;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.DAOFactory;
+import edu.sjsu.videolibrary.util.Utils;
 
 public class SimpleCustomerData {
 	
-	static void insertsimpleMemberData() throws Exception {
+	public static void insertsimpleMemberData() throws Exception {
 		String userData[][] = {
-				{"js@yahoo.com","js*","Jack","Smith","Simple","Scott Blvd","SanJose","CA","94325"},
-				{"jm2yahoo.com","jm*","John","Mayer","Simple","Keily Blvd","SantaClara","CA","23456"},
-				{"mm@gmail.com","mm#","Mike","McLinn","Simple","Newark Street","SunnyVale","IL","67956"},
+				{"js@yahoo.com","js","Jack","Smith","Simple","Scott Blvd","SanJose","CA","94325"},
+				{"jm2yahoo.com","jm2","John","Mayer","Simple","Keily Blvd","SantaClara","CA","23456"},
+				{"mm@gmail.com","mm","Mike","McLinn","Simple","Newark Street","SunnyVale","IL","67956"},
 				{"mh@hotmail.com","mh","Matt","Huleka","Simple","7th and Santa Clara","Newyork","NY","89654"},
-				{"ws@yahoo.com","wh","Will","Shane","Simple","4th and Santa Clara","NewJersey","NJ","78956"},
+				{"ws@yahoo.com","ws","Will","Shane","Simple","4th and Santa Clara","NewJersey","NJ","78956"},
 				{"bs@gmail.com","bs","Bob","Smith","Simple","Boston Drive","Seatle","WA","80876"},
 				{"ry@yahoo.com","ry","Rob","Yang","Simple","Pebble Dr","Anaheim","MO","54637"},
 				{"rh@gmail.com","rh","Ryan","Hung","Simple","Idaho Dr","Gilroy","CA","93487"},
@@ -24,7 +25,7 @@ public class SimpleCustomerData {
 		for( int i = 1; i < 1001; i++) {
 			for(String[] user : userData) {
 								
-				userDAO.signUpUser(i+user[0].trim(),user[1].trim()+i,user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),null);
+				userDAO.signUpUser(i+user[0].trim(),Utils.encryptPassword(user[1].trim()+i),user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),null);
 				
 			}
 			userDAO.release();
@@ -47,6 +48,4 @@ public class SimpleCustomerData {
 		}
 		return builder.toString();
 	}
-	
-
 }

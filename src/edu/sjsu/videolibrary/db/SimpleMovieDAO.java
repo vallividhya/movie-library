@@ -28,8 +28,10 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			else{
 				return  "false";
 			}
-		} catch (SQLException e) {  return "error";  } 
-		return s; 
+		} catch (SQLException e) 
+		{  
+			return "error";  
+		} 
 	}	
 
 	public String deleteMovie (String movieId) {
@@ -148,11 +150,11 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		return array;
 	}
 
-	
-	
+
+
 	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate, int start, int stop){
 		ArrayList<Movie> list = new ArrayList<Movie>();		
-//		String str = "%"+userInput.replace(' ','%')+"%";
+		//		String str = "%"+userInput.replace(' ','%')+"%";
 		String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId ";
 		if(movieName!=null){
 			String mName= "%"+movieName+"%";
@@ -166,7 +168,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			String rDate= "%"+releaseDate+"%";
 			query = query +"and m.releaseDate like '"+rDate+"'";
 		}
-		
+
 		query = query + " LIMIT " + start + "," + stop;
 
 		try{
@@ -199,17 +201,17 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 				+ " are available for movie with movieId = " + movieId);
 		try {
 			String query = "UPDATE videolibrary.movie SET availableCopies = "
-						+ numOfCopies + " WHERE movieId = " + movieId;
-				
-				int rowCount = stmt.executeUpdate(query);				
-				if (rowCount > 0) {
-					System.out.println("Update of availableCopies Successful");
-					result="true";
-				}
-				else
-					result="false";
-			}  catch (SQLException e) {
-				throw new InternalServerException ("Update of available movies failed", e);
+					+ numOfCopies + " WHERE movieId = " + movieId;
+
+			int rowCount = stmt.executeUpdate(query);				
+			if (rowCount > 0) {
+				System.out.println("Update of availableCopies Successful");
+				result="true";
+			}
+			else
+				result="false";
+		}  catch (SQLException e) {
+			throw new InternalServerException ("Update of available movies failed", e);
 		}
 		return result;
 	}
