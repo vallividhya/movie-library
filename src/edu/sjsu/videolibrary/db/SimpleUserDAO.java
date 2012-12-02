@@ -4,10 +4,13 @@ import java.sql.*;
 import java.util.Date;
 import java.util.LinkedList;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
+import edu.sjsu.videolibrary.exception.UserAlreadyExistsException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.util.Utils;
@@ -24,47 +27,78 @@ public class SimpleUserDAO extends BaseUserDAO {
 
 	public String signUpUser(String userId, String password, String memType,
 			String firstName, String lastName, String address, String city,
-			String state, String zipCode, String ccNumber) throws SQLException {
-
-		String result = null;
+			String state, String zipCode, String ccNumber) throws SQLException, UserAlreadyExistsException {
+		System.out.println("In signUp of userDAO");
+		String result = "false";
 		// System.out.println("State:"+state);
-
-		String sql = "INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName,"
-				+ "address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+memType+"',NOW(),'"+firstName+"','"+lastName+"','"+address+"','"+city+"','"+state+"','"+zipCode+"','"+ccNumber+"',"+null+")";
-		int rc = stmt.executeUpdate(sql);
-
-		if (rc>0) {
-			result = "true";		
-		}
-		else{
-			result = "false";
-		}
-		return result;
-	}
-
-	public String signUpAdmin(String userId, String password, String firstName,
-			String lastName) throws SQLException {
-		String result = null;
-				
-		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES ('"+userId+"','"+Utils.encryptPassword(password)+"','"+firstName+"','"+lastName+"')";
-		int rc = stmt.executeUpdate(sql);
+		//boolean userExists = checkUserId(userId);
+		System.out.println("Returned from checkUserId");
 		
-		if (rc>0) {
-			result = "true";
-		} else {
-			result = "false";
+			System.out.println("User does not exist. So creating new");
+			String sql = "INSERT INTO user (userId,password,membershipType,startDate,firstName,lastName,"
+				+ "address,city,state,zip,creditCardNumber,latestPaymentDate) VALUES ('"
+				+ userId
+				+ "','"
+				+ Utils.encryptPassword(password)
+				+ "','"
+				+ memType
+				+ "',NOW(),'"
+				+ firstName
+				+ "','"
+				+ lastName
+				+ "','"
+				+ address
+				+ "','"
+				+ city
+				+ "','"
+				+ state
+				+ "','"
+				+ zipCode
+				+ "','" + ccNumber + "'," + null + ")";
+
+		try {
+			int rc = stmt.executeUpdate(sql);
+
+			if (rc > 0) {
+				result = "true";
+			} 
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			throw new UserAlreadyExistsException("User already exists");
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+	
+	public String signUpAdmin(String userId, String password, String firstName,
+			String lastName) throws SQLException, UserAlreadyExistsException {
+		String result = null;
+		String sql = "INSERT INTO admin (userId,password,firstName,lastName) VALUES ('"
+				+ userId
+				+ "','"
+				+ Utils.encryptPassword(password)
+				+ "','"
+				+ firstName + "','" + lastName + "')";
+		try {
+			int rc = stmt.executeUpdate(sql);
+			if (rc > 0) {
+				result = "true";
+			} else {
+				result = "false";
+			}
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			throw new UserAlreadyExistsException("Admin user already exists");
 		}
 		return result;
 	}
 
-	public User signInUser(String userId, String password)
-			throws SQLException {
+	public User signInUser(String userId, String password) throws SQLException {
 
 		User user = new User();
 		String encryptedPasswrd = Utils.encryptPassword(password);
 		String sql = "SELECT membershipId,firstName,lastName,address,city,creditCardNumber,membershipType,state,zip,startDate,latestPaymentDate,userId, password FROM user WHERE userId = '"
-				+ userId + "'" + " AND password = '"
-				+ encryptedPasswrd + "'";
+				+ userId + "'" + " AND password = '" + encryptedPasswrd + "'";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		if (rs.next()) {
@@ -81,23 +115,20 @@ public class SimpleUserDAO extends BaseUserDAO {
 			user.setState(rs.getString("state"));
 			user.setZip(rs.getString("zip"));
 			Date startDate = rs.getDate("startDate");
-			if(startDate !=null){
+			if (startDate != null) {
 				user.setStartDate(startDate.toString());
-			}
-			else{
+			} else {
 				user.setStartDate(null);
 			}
 			Date latestPaymentDate = rs.getDate("latestPaymentDate");
-			if(latestPaymentDate !=null){
+			if (latestPaymentDate != null) {
 				user.setStartDate(latestPaymentDate.toString());
-			}
-			else{
+			} else {
 				user.setLatestPaymentDate(null);
-			}			
+			}
 			user.setUserId(rs.getString("userId"));
 			user.setPassword(rs.getString("password"));
-		} 
-		else{
+		} else {
 			user = null;
 		}
 		return user;
@@ -119,7 +150,8 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return result;
 	}
 
-	public LinkedList<Transaction> viewAccountTransactions(int membershipId) throws Exception {
+	public LinkedList<Transaction> viewAccountTransactions(int membershipId)
+			throws Exception {
 		LinkedList<Transaction> ac = new LinkedList<Transaction>();
 
 		String query1 = "select Movie.MovieName,pymnt.RentDate,rnt.ReturnDate,User.MembershipType from "
@@ -169,11 +201,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 
 		String query2 = "INSERT INTO VideoLibrary.PaymentTransaction(rentDate,totalDueAmount,membershipId)"
-				+ " VALUES (NOW(),"
-				+ monthlyFees
-				+ ","
-				+ membershipId
-				+ ")";
+				+ " VALUES (NOW()," + monthlyFees + "," + membershipId + ")";
 		int rowcount2 = stmt.executeUpdate(query2);
 
 		if (rowcount2 > 0) {
@@ -195,12 +223,11 @@ public class SimpleUserDAO extends BaseUserDAO {
 		String result = null;
 
 		String query1 = "update VideoLibrary.User set userId = '" + userId
-				+ "' ,membershipType = '" + membershipType
-				+ " ',firstName = '" + firstName + "' ,lastName = '"
-				+ lastName + "',address = '" + address + "',city = '"
-				+ city + "',state = '" + state + "',zip = '" + 98567
-				+ "' ,creditCardNumber = '" + creditCardNumber
-				+ " ' where membershipId = " + membershipId;
+				+ "' ,membershipType = '" + membershipType + " ',firstName = '"
+				+ firstName + "' ,lastName = '" + lastName + "',address = '"
+				+ address + "',city = '" + city + "',state = '" + state
+				+ "',zip = '" + 98567 + "' ,creditCardNumber = '"
+				+ creditCardNumber + " ' where membershipId = " + membershipId;
 
 		int rowcount = stmt.executeUpdate(query1);
 
@@ -212,15 +239,13 @@ public class SimpleUserDAO extends BaseUserDAO {
 			result = "false";
 		}
 
-
 		return result;
 
 	}
 
 	public String updatePassword(int membershipId, String oldPassword,
-			String newPassword) throws Exception{
+			String newPassword) throws Exception {
 		String result = null;
-
 
 		String query1 = "UPDATE VideoLibrary.User SET password = '"
 				+ Utils.encryptPassword(newPassword)
@@ -291,14 +316,15 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return statementRows;
 	}
 
-	public User queryMembershipType (int membershipId) {
-		String query = "SELECT membershipType, rentedMovies,creditCardNumber FROM videolibrary.user WHERE membershipId = " + membershipId;
+	public User queryMembershipType(int membershipId) {
+		String query = "SELECT membershipType, rentedMovies,creditCardNumber FROM videolibrary.user WHERE membershipId = "
+				+ membershipId;
 		Statement stmt = null;
 		User user = new User();
 		try {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			while (rs.next()) {
 				user.setMembershipType(rs.getString("membershipType"));
 				user.setRentedMovies(rs.getInt("rentedMovies"));
@@ -310,25 +336,30 @@ public class SimpleUserDAO extends BaseUserDAO {
 		}
 		return user;
 	}
-	
-	public void updateRentedMoviesForUser (int membershipId, int rentedMovies) throws InternalServerException {
-		String query = "UPDATE videoLibrary.user SET rentedMovies = " + rentedMovies + " WHERE membershipId = " + membershipId;
+
+	public void updateRentedMoviesForUser(int membershipId, int rentedMovies)
+			throws InternalServerException {
+		String query = "UPDATE videoLibrary.user SET rentedMovies = "
+				+ rentedMovies + " WHERE membershipId = " + membershipId;
 		System.out.println("Update query for updateRentedMovies = " + query);
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			int rowCount = stmt.executeUpdate(query);
 			if (rowCount > 0) {
-				System.out.println ("Update of rentedMovies in user table successful");
+				System.out
+						.println("Update of rentedMovies in user table successful");
 			} else {
-				throw new InternalServerException ("Unsuccessful Update for rented movies for this user");
+				throw new InternalServerException(
+						"Unsuccessful Update for rented movies for this user");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public String queryCreditCardNumber (int membershipId) throws InvalidCreditCardException {
+
+	public String queryCreditCardNumber(int membershipId)
+			throws InvalidCreditCardException {
 		User user = queryMembershipType(membershipId);
 		if (user.getMembershipType().equals("Premium")) {
 			user.getCreditCardNumber();
@@ -338,6 +369,5 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return user.getCreditCardNumber();
 	}
 
-	
-	
 }
+>>>>>>> Added Indexes.sql, Exceptions for user & admin signUp

@@ -28,7 +28,7 @@ public class ConnectionPool {
 	static {
 		passwordHash = new HashMap<String,String>();
 		// Add you mysql passwords here with your hostname
-		passwordHash.put("rohinimodi-PC", "ruh12ruh");
+		passwordHash.put("Valli", "1248");
 	}
 
 	// This is the default mysql password

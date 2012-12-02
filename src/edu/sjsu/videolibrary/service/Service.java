@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
@@ -26,6 +29,7 @@ import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
 import edu.sjsu.videolibrary.exception.NoUserFoundException;
+import edu.sjsu.videolibrary.exception.UserAlreadyExistsException;
 @WebService
 
 public class Service {
@@ -102,12 +106,8 @@ public class Service {
 			try {
 				cartItemsList	= cartDAO.listCartItems(membershipId);
 				cartItems = new ItemOnCart[cartItemsList.size()];
-
-				//System.out.println("I've got " + cartItems.length + " items with me!");
-
 				for (int i = 0; i < cartItemsList.size(); i++) {
 					cartItems[i] = cartItemsList.get(i);
-					//System.out.println(cartItems[i].getMovieName());
 				}	
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
@@ -216,10 +216,8 @@ public class Service {
 			isCardValid = validateCreditCard(cardNumber);
 			if (isCardValid) {
 				ItemOnCart[] cartItems = viewCart(membershipId); 
-				System.out.println("Num of movies on Cart for this member = " + cartItems.length);
 				// Get membership type and check the limit for movies. 				
 				userRentedMovies = user.getRentedMovies();
-				System.out.println("Already rented movies by this user= " + userRentedMovies);
 				if (cartItems.length > limitOfMovies && userRentedMovies >= limitOfMovies) {
 					System.out.println("Exceeded limit of movies. Please delete some items from cart.");
 				} else {
@@ -229,7 +227,6 @@ public class Service {
 						if (cartItems[i] != null) {
 							movieId[i] = cartItems[i].getMovieId();
 							availableCopiesOfMovie = movieDAO.getAvailableCopies(movieId[i]);
-							System.out.println("Available Copies for Movie Id " + movieId[i] + " = " + availableCopiesOfMovie);
 							if (membershipType.equals("Simple")) {
 								rentAmount[i] = cartItems[i].getRentAmount();
 								totalAmount = totalAmount + rentAmount[i];
@@ -239,15 +236,12 @@ public class Service {
 							System.out.println("Movie Id [" + i + "] = " + movieId[i] );
 						}
 					}
-					System.out.println(totalAmount + " = total Amount");
-					System.out.println(membershipId + " = memId");
 					if (availableCopiesOfMovie != 0) {
 						int transactionId = cartDAO.recordPaymentTransaction(totalAmount, membershipId);
 						for (int i = 0; i < movieId.length; i++) {
 							cartDAO.recordMovieTransaction(movieId[i], transactionId, membershipId);
 							movieDAO.updateCopiesCount(movieId[i],availableCopiesOfMovie - 1 );
 							userRentedMovies = userRentedMovies + 1;
-							System.out.println("Updating rented Movies in user table to " + userRentedMovies);
 							userDAO.updateRentedMoviesForUser(membershipId, userRentedMovies);
 						}
 						cartDAO.deleteCart(membershipId);
@@ -275,10 +269,7 @@ public class Service {
 			if( movieDAO != null ) {
 				movieDAO.release();
 			}
-
 		}
-
-
 		return processComplete;
 	}
 
@@ -294,13 +285,10 @@ public class Service {
 			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 			BaseUserDAO userDAO = DAOFactory.getUserDAO();
 			cartDAO.updateReturnDate(movieId, membershipId);
-			System.out.println("Updated return date in rentmovietransactions");
 			numOfCopies = movieDAO.getAvailableCopies(movieId) + 1;
-			System.out.println("Updating available Movies in movie table to " + numOfCopies);
 			movieDAO.updateCopiesCount(movieId, numOfCopies);
 			User user = userDAO.queryMembershipType(membershipId);
 			rentedMovies = user.getRentedMovies() - 1;
-			System.out.println("Updating rented Movies in user table to " + rentedMovies);
 			userDAO.updateRentedMoviesForUser(membershipId, rentedMovies);
 			isMovieReturned = true;
 			cartDAO.commitTransaction();	
@@ -322,16 +310,15 @@ public class Service {
 
 		try{
 			result = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
+			
 		}
+		catch(UserAlreadyExistsException e){
+			System.out.println(e.getLocalizedMessage());		
+		} 
 		catch(SQLException e){
-			e.getMessage();
+			System.out.println(e.getMessage());
 			result = "false";
-		}
-		catch(Exception e){
-			e.getMessage();
-			result = "false";
-
-		}
+		} 
 		finally{
 			userDAO.release();
 		}
@@ -344,7 +331,12 @@ public class Service {
 		String result = null;
 		try {
 			result = userDAO.signUpAdmin(userId, password, firstName, lastName);
-		} finally {
+		} catch(UserAlreadyExistsException e){
+			System.out.println(e.getLocalizedMessage());		
+		} catch(SQLException e){
+			System.out.println(e.getMessage());
+			result = "false";
+		}  finally {
 			userDAO.release();
 		}
 		return result;
@@ -362,6 +354,9 @@ public class Service {
 					cache.put("signInUser"+userId+password, user);
 				}
 			}
+		} catch (Exception e) {
+			System.out.println("In exception");
+			e.printStackTrace();
 		}
 		finally{
 			userDAO.release();
