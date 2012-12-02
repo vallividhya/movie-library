@@ -16,7 +16,7 @@ public abstract class VideoLibraryDAO {
 	static ResultSet rs;
 	Statement stmt = null;
 	PreparedStatement pst = null;
-	final int DEFAULT_BATCH_SIZE = 100;
+	public static final int DEFAULT_BATCH_SIZE = 100;
 
 	protected String transactionId = null;
 	boolean inheritedTransaction = false;

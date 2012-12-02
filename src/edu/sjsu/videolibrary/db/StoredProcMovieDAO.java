@@ -139,7 +139,7 @@ public class StoredProcMovieDAO extends BaseMovieDAO {
 
 
 	@Override
-	public Movie[] listAllMovies() throws NoMovieFoundException,
+	public Movie[] listAllMovies(int start, int stop) throws NoMovieFoundException,
 	InternalServerException {
 		// TODO Auto-generated method stub
 		return null;

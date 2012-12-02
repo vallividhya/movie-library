@@ -168,6 +168,11 @@
       </operation>
       <operation name="listCategories" qname="operNS:listCategories" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listCategoriesReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
       </operation>
+      <operation name="listMoviesByCategoryByPage" qname="operNS:listMoviesByCategoryByPage" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listMoviesByCategoryByPageReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:categoryName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:start" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stop" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="displayAdminInformation" qname="operNS:displayAdminInformation" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:displayAdminInformationReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Admin" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:adminId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
@@ -181,7 +186,11 @@
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:newPassword" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins searchMovie listAllMovies getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
+      <operation name="listAllMoviesByPage" qname="operNS:listAllMoviesByPage" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listAllMoviesByPageReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:start" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stop" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins listAllMoviesByPage searchMovie listAllMovies getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie listMoviesByCategoryByPage getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
 
       <typeMapping
         xmlns:ns="http://model.videolibrary.sjsu.edu"

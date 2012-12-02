@@ -503,6 +503,22 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="listMoviesByCategoryByPage">
+    <complexType>
+     <sequence>
+      <element name="categoryName" type="xsd:string"/>
+      <element name="start" type="xsd:int"/>
+      <element name="stop" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="listMoviesByCategoryByPageResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="listMoviesByCategoryByPageReturn" type="tns1:Movie"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="displayAdminInformation">
     <complexType>
      <sequence>
@@ -546,6 +562,21 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element name="updateUserPasswordReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="listAllMoviesByPage">
+    <complexType>
+     <sequence>
+      <element name="start" type="xsd:int"/>
+      <element name="stop" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="listAllMoviesByPageResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="listAllMoviesByPageReturn" type="tns1:Movie"/>
      </sequence>
     </complexType>
    </element>
@@ -706,6 +737,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="deleteMovieRequest">
 
       <wsdl:part element="impl:deleteMovie" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMoviesByCategoryByPageRequest">
+
+      <wsdl:part element="impl:listMoviesByCategoryByPage" name="parameters">
 
       </wsdl:part>
 
@@ -895,6 +934,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="listAllMoviesByPageRequest">
+
+      <wsdl:part element="impl:listAllMoviesByPage" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="displayAdminInformationResponse">
 
       <wsdl:part element="impl:displayAdminInformationResponse" name="parameters">
@@ -946,6 +993,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="listCategoriesResponse">
 
       <wsdl:part element="impl:listCategoriesResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMoviesByCategoryByPageResponse">
+
+      <wsdl:part element="impl:listMoviesByCategoryByPageResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1050,6 +1105,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="viewCartRequest">
 
       <wsdl:part element="impl:viewCart" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="listAllMoviesByPageResponse">
+
+      <wsdl:part element="impl:listAllMoviesByPageResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1605,6 +1668,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="listMoviesByCategoryByPage">
+
+         <wsdl:input message="impl:listMoviesByCategoryByPageRequest" name="listMoviesByCategoryByPageRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:listMoviesByCategoryByPageResponse" name="listMoviesByCategoryByPageResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="displayAdminInformation">
 
          <wsdl:input message="impl:displayAdminInformationRequest" name="displayAdminInformationRequest">
@@ -1636,6 +1711,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:updateUserPasswordResponse" name="updateUserPasswordResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listAllMoviesByPage">
+
+         <wsdl:input message="impl:listAllMoviesByPageRequest" name="listAllMoviesByPageRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:listAllMoviesByPageResponse" name="listAllMoviesByPageResponse">
 
        </wsdl:output>
 
@@ -2241,6 +2328,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="listMoviesByCategoryByPage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listMoviesByCategoryByPageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listMoviesByCategoryByPageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="displayAdminInformation">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2288,6 +2393,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="updateUserPasswordResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listAllMoviesByPage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listAllMoviesByPageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listAllMoviesByPageResponse">
 
             <wsdlsoap:body use="literal"/>
 

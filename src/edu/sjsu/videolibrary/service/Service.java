@@ -18,6 +18,7 @@ import edu.sjsu.videolibrary.db.BaseMovieDAO;
 import edu.sjsu.videolibrary.db.BaseUserDAO;
 import edu.sjsu.videolibrary.db.Cache;
 import edu.sjsu.videolibrary.db.DAOFactory;
+import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
 import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
@@ -630,13 +631,18 @@ public class Service {
 
 	//List movies by chosen category
 	public Movie[] listMoviesByCategory(String categoryName) {
+		return listMoviesByCategoryByPage(categoryName, 0, VideoLibraryDAO.DEFAULT_BATCH_SIZE);
+	}
+	
+	//List movies by chosen category
+	public Movie[] listMoviesByCategoryByPage(String categoryName,int start,int stop) {
 		Movie[] array = null;
-		array = (Movie[]) cache.get("listMoviesByCategory" + categoryName);
+		array = (Movie[]) cache.get("listMoviesByCategory" + categoryName + start + stop);
 		if( array == null ) {
 			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 			try {
-				array = movieDAO.listMoviesByCategory(categoryName);
-				cache.put("listMoviesByCategory" + categoryName, array);
+				array = movieDAO.listMoviesByCategory(categoryName,start,stop);
+				cache.put("listMoviesByCategory" + categoryName + start + stop, array);
 			} catch (NoMovieInCategoryException e) {
 				e.getLocalizedMessage();
 				e.printStackTrace();
@@ -653,13 +659,17 @@ public class Service {
 
 	//Display all Movies
 	public Movie[] listAllMovies(){
+		return listAllMoviesByPage(0, VideoLibraryDAO.DEFAULT_BATCH_SIZE);
+	}
+	
+	public Movie[] listAllMoviesByPage(int start, int stop){
 		Movie[] array=null;
-		array = (Movie[]) cache.get("listAllMovies");
+		array = (Movie[]) cache.get("listAllMovies" +start + stop);
 		if( array == null ) {
 			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 			try {
-				array = movieDAO.listAllMovies();
-				cache.put("listAllMovies", array);
+				array = movieDAO.listAllMovies(start,stop);
+				cache.put("listAllMovies" +start + stop, array);
 			} catch (NoMovieFoundException e) {
 				e.getLocalizedMessage();
 				e.printStackTrace();
@@ -674,6 +684,7 @@ public class Service {
 		}
 		return array;
 	}
+
 
 	//search movies by name
 

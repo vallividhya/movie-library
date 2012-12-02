@@ -139,10 +139,11 @@ public class PreparedStatMovieDAO extends BaseMovieDAO{
 	}
 
 	//Display all Movies
-	public Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException{
+	public Movie[] listAllMovies(int start,int stop) throws NoMovieFoundException,InternalServerException{
 		ArrayList<Movie> list = new ArrayList<Movie>();		
 		try{
-			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId";
+			String query = "Select m.movieId,m.movieName,m.movieBanner,m.releaseDate,m.availableCopies,c.categoryName from Movie m, Category c where m.categoryId=c.categoryId LIMIT "+
+			start + "," + stop;
 			stmt.executeQuery(query);
 			rs=stmt.getResultSet();
 			if(!rs.isBeforeFirst()){

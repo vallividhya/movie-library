@@ -30,16 +30,15 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	 */
 	//List categories on home page
 	public abstract String[] listCategories() throws NoCategoryFoundException, InternalServerException;
-
-	//List movies by chosen category
-	public Movie[] listMoviesByCategory(String categoryName) throws NoMovieInCategoryException, InternalServerException {
-		return listMoviesByCategory(categoryName,0, DEFAULT_BATCH_SIZE);
-	}
 	
 	public abstract Movie[] listMoviesByCategory(String categoryName, int start, int stop) throws NoMovieInCategoryException, InternalServerException;
 
 	//Display all Movies
-	public abstract Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException;
+	public Movie[] listAllMovies() throws NoMovieFoundException,InternalServerException{
+		return listAllMovies(0,DEFAULT_BATCH_SIZE);
+	}
+	
+	public abstract Movie[] listAllMovies(int start,int stop) throws NoMovieFoundException,InternalServerException;
 
 	
 	public abstract String updateCopiesCount(int movieId, int numOfCopies) throws InternalServerException ;

@@ -158,6 +158,11 @@
       </operation>
       <operation xmlns:operNS="http://service.videolibrary.sjsu.edu" xmlns:retNS="http://service.videolibrary.sjsu.edu" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="listCategories" qname="operNS:listCategories" returnQName="retNS:listCategoriesReturn" returnType="rtns:string" soapAction="">
       </operation>
+      <operation xmlns:operNS="http://service.videolibrary.sjsu.edu" xmlns:retNS="http://service.videolibrary.sjsu.edu" xmlns:rtns="http://model.videolibrary.sjsu.edu" name="listMoviesByCategoryByPage" qname="operNS:listMoviesByCategoryByPage" returnQName="retNS:listMoviesByCategoryByPageReturn" returnType="rtns:Movie" soapAction="">
+        <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:categoryName" type="tns:string"/>
+        <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:start" type="tns:int"/>
+        <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:stop" type="tns:int"/>
+      </operation>
       <operation xmlns:operNS="http://service.videolibrary.sjsu.edu" xmlns:retNS="http://service.videolibrary.sjsu.edu" xmlns:rtns="http://model.videolibrary.sjsu.edu" name="displayAdminInformation" qname="operNS:displayAdminInformation" returnQName="retNS:displayAdminInformationReturn" returnType="rtns:Admin" soapAction="">
         <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:adminId" type="tns:string"/>
       </operation>
@@ -171,7 +176,11 @@
         <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:membershipId" type="tns:int"/>
         <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:newPassword" type="tns:string"/>
       </operation>
-      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins searchMovie listAllMovies getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
+      <operation xmlns:operNS="http://service.videolibrary.sjsu.edu" xmlns:retNS="http://service.videolibrary.sjsu.edu" xmlns:rtns="http://model.videolibrary.sjsu.edu" name="listAllMoviesByPage" qname="operNS:listAllMoviesByPage" returnQName="retNS:listAllMoviesByPageReturn" returnType="rtns:Movie" soapAction="">
+        <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:start" type="tns:int"/>
+        <parameter xmlns:pns="http://service.videolibrary.sjsu.edu" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:stop" type="tns:int"/>
+      </operation>
+      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins listAllMoviesByPage searchMovie listAllMovies getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie listMoviesByCategoryByPage getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
 
       <typeMapping xmlns:ns="http://model.videolibrary.sjsu.edu" qname="ns:Admin" type="java:edu.sjsu.videolibrary.model.Admin" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://model.videolibrary.sjsu.edu" qname="ns:User" type="java:edu.sjsu.videolibrary.model.User" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
