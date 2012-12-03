@@ -58,7 +58,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			
 
 				String query2 = "select Movie.MovieName from VideoLibrary.RentMovieTransaction rm,VideoLibrary.Movie, VideoLibrary.PaymentTransaction pymnt "+
-						"where pymnt.TransactionId = rm.TransactionId and ReturnDate is null and rm.MovieId = Movie.MovieId and MembershipId = "+membershipId;
+						"where pymnt.TransactionId = rm.TransactionId and ReturnDate is null and rm.MovieId = Movie.MovieId and rm.MembershipId = "+membershipId;
 				ResultSet result2 = stmt.executeQuery(query2);
 	
 				LinkedList<String> movies = new LinkedList<String>();
