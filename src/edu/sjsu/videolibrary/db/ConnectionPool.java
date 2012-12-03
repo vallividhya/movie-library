@@ -27,7 +27,12 @@ public class ConnectionPool {
 
 	static {
 		passwordHash = new HashMap<String,String>();
-		// Add you mysql passwords here with your hostname
+		//
+		// DONT REMOVE ANY LINES FROM THE LIST BELOW
+		//
+		// FIND YOUR COMPUTERS HOSTNAME AND ADD ANOTHER LINE
+		// READ: http://kb.iu.edu/data/avza.html
+		passwordHash.put("rohinimodi-PC", "ruh12ruh");
 		passwordHash.put("Valli", "1248");
 	}
 

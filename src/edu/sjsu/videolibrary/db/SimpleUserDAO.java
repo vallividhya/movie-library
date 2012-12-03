@@ -370,4 +370,3 @@ public class SimpleUserDAO extends BaseUserDAO {
 	}
 
 }
->>>>>>> Added Indexes.sql, Exceptions for user & admin signUp
