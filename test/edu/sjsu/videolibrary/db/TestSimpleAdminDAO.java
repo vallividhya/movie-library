@@ -456,7 +456,7 @@ public class TestSimpleAdminDAO extends BaseTestCase {
 		stub(rs.next()).toReturn(true);
 		
 		try{
-			members = dao.listMembers("all");
+			members = dao.listMembers("all",0,100);
 			assertNotNull(members);
 		}catch(Exception e){
 			fail(e.getMessage());
@@ -473,7 +473,7 @@ public class TestSimpleAdminDAO extends BaseTestCase {
 		stub(stmt.executeQuery(anyString())).toThrow(new SQLException());
 				
 		try{
-			members = dao.listMembers("all");
+			members = dao.listMembers("all",0,100);
 			assertNull(members);
 		}catch(Exception e){
 			fail(e.getMessage());
