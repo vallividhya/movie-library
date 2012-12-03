@@ -139,4 +139,11 @@ public class StoredProcUserDAO extends BaseUserDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public LinkedList<Transaction> viewMoviesToReturn(int membershipId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

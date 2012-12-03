@@ -7,6 +7,7 @@ public class Transaction {
 	private String movieName;
 	private String returnDate;
 	private int transactionId;
+	private int movieId;
 	
 	public String getPurchaseDate() {
 		return purchaseDate;
@@ -37,6 +38,14 @@ public class Transaction {
 	}
 	public void setTransactionId(int transactionId) {
 		this.transactionId = transactionId;
+	}
+	
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
+	}
+	
+	public int getMovieId() {
+		return this.movieId;
 	}
 	
 

@@ -330,6 +330,20 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="moviesToReturn">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="moviesToReturnResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="moviesToReturnReturn" type="tns1:Transaction"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="makeMonthlyPayment">
     <complexType>
      <sequence>
@@ -636,6 +650,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </complexType>
    <complexType name="Transaction">
     <sequence>
+     <element name="movieId" type="xsd:int"/>
      <element name="movieName" nillable="true" type="xsd:string"/>
      <element name="perMovieAmount" type="xsd:double"/>
      <element name="purchaseDate" nillable="true" type="xsd:string"/>
@@ -790,6 +805,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="moviesToReturnRequest">
+
+      <wsdl:part element="impl:moviesToReturn" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="deleteUserAccountResponse">
 
       <wsdl:part element="impl:deleteUserAccountResponse" name="parameters">
@@ -873,6 +896,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="getStatesRequest">
 
       <wsdl:part element="impl:getStates" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="moviesToReturnResponse">
+
+      <wsdl:part element="impl:moviesToReturnResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1536,6 +1567,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="moviesToReturn">
+
+         <wsdl:input message="impl:moviesToReturnRequest" name="moviesToReturnRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:moviesToReturnResponse" name="moviesToReturnResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="makeMonthlyPayment">
 
          <wsdl:input message="impl:makeMonthlyPaymentRequest" name="makeMonthlyPaymentRequest">
@@ -2123,6 +2166,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="viewAccountTransactionsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="moviesToReturn">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="moviesToReturnRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="moviesToReturnResponse">
 
             <wsdlsoap:body use="literal"/>
 

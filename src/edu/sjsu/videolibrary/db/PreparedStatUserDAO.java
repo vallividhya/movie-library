@@ -353,5 +353,12 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 		return null;
 	}
 
+	@Override
+	public LinkedList<Transaction> viewMoviesToReturn(int membershipId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

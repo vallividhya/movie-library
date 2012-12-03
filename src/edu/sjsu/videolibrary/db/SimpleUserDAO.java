@@ -369,4 +369,42 @@ public class SimpleUserDAO extends BaseUserDAO {
 		return user.getCreditCardNumber();
 	}
 
+	@Override
+	public LinkedList<Transaction> viewMoviesToReturn(int membershipId)
+			throws Exception {
+		LinkedList<Transaction> ac = new LinkedList<Transaction>();
+
+		String query1 = "select rnt.MovieId, Movie.MovieName,pymnt.RentDate,rnt.ReturnDate,User.MembershipType from "
+				+ " VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt, "
+				+ " VideoLibrary.Movie,VideoLibrary.User  where User.MembershipId = "
+				+ membershipId
+				+ " and pymnt.TransactionId = rnt.TransactionId "
+				+ " and rnt.MovieId = Movie.MovieId and pymnt.MembershipId = User.MembershipId and rnt.returnDate is null";
+
+		ResultSet result1 = stmt.executeQuery(query1);
+
+		while (result1.next()) {
+			Transaction trans = new Transaction();
+			trans.setMovieName(result1.getString("MovieName"));
+			String membershipType = result1.getString("MembershipType");
+			if (membershipType.equalsIgnoreCase("Simple")) {
+				trans.setPerMovieAmount(1.5);
+			} else {
+				trans.setPerMovieAmount(0.0);
+			}
+			trans.setPurchaseDate((result1.getDate("RentDate").toString()));
+			Date returnDate = result1.getDate("ReturnDate");
+			if (returnDate != null) {
+				trans.setReturnDate((returnDate).toString());
+			} else {
+				trans.setReturnDate("Not Returned");
+			}
+			trans.setMovieId(result1.getInt("MovieId"));
+
+			ac.add(trans);
+		}
+
+		return ac;
+	}
+
 }

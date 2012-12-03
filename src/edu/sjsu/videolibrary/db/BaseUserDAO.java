@@ -32,6 +32,8 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 	public abstract String signInAdmin(String userId, String password) throws SQLException;
 
 	public abstract LinkedList<Transaction> viewAccountTransactions(int membershipId) throws Exception;
+	
+	public abstract LinkedList<Transaction> viewMoviesToReturn(int membershipId) throws Exception;
 
 	public abstract String makeMonthlyPayment(int membershipId) throws Exception;
 

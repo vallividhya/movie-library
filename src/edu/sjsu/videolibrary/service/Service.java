@@ -489,6 +489,23 @@ public class Service {
 
 		return trans;
 	}
+	
+	public Transaction[] moviesToReturn(int membershipId) {
+		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
+		LinkedList<Transaction> ac = null;
+		try {
+			ac = userDAO.viewMoviesToReturn(membershipId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			userDAO.release();
+		}
+		Transaction[] trans = ac.toArray(new Transaction[0]);
+
+		return trans;
+	}
 
 	public String makeMonthlyPayment(int membershipId){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
