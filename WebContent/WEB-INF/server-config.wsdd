@@ -170,22 +170,22 @@
    <ns1:parameter qname="ns48:start" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
    <ns1:parameter qname="ns48:stop" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="displayAdminInformation" qname="ns50:displayAdminInformation" returnQName="ns50:displayAdminInformationReturn" returnType="ns51:Admin" soapAction="" xmlns:ns50="http://service.videolibrary.sjsu.edu" xmlns:ns51="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns50:adminId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="listAllMoviesByPage" qname="ns50:listAllMoviesByPage" returnQName="ns50:listAllMoviesByPageReturn" returnType="ns51:Movie" soapAction="" xmlns:ns50="http://service.videolibrary.sjsu.edu" xmlns:ns51="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns50:start" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns50:stop" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="updateAdminInfo" qname="ns52:updateAdminInfo" returnQName="ns52:updateAdminInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns52="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns52:adminId" type="xsd:string"/>
-   <ns1:parameter qname="ns52:firstName" type="xsd:string"/>
-   <ns1:parameter qname="ns52:lastName" type="xsd:string"/>
-   <ns1:parameter qname="ns52:password" type="xsd:string"/>
+  <ns1:operation name="displayAdminInformation" qname="ns52:displayAdminInformation" returnQName="ns52:displayAdminInformationReturn" returnType="ns53:Admin" soapAction="" xmlns:ns52="http://service.videolibrary.sjsu.edu" xmlns:ns53="http://model.videolibrary.sjsu.edu">
+   <ns1:parameter qname="ns52:adminId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="updateUserPassword" qname="ns53:updateUserPassword" returnQName="ns53:updateUserPasswordReturn" returnType="xsd:string" soapAction="" xmlns:ns53="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns53:membershipId" type="xsd:int"/>
-   <ns1:parameter qname="ns53:newPassword" type="xsd:string"/>
+  <ns1:operation name="updateAdminInfo" qname="ns54:updateAdminInfo" returnQName="ns54:updateAdminInfoReturn" returnType="xsd:string" soapAction="" xmlns:ns54="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns54:adminId" type="xsd:string"/>
+   <ns1:parameter qname="ns54:firstName" type="xsd:string"/>
+   <ns1:parameter qname="ns54:lastName" type="xsd:string"/>
+   <ns1:parameter qname="ns54:password" type="xsd:string"/>
   </ns1:operation>
-  <ns1:operation name="listAllMoviesByPage" qname="ns54:listAllMoviesByPage" returnQName="ns54:listAllMoviesByPageReturn" returnType="ns55:Movie" soapAction="" xmlns:ns54="http://service.videolibrary.sjsu.edu" xmlns:ns55="http://model.videolibrary.sjsu.edu">
-   <ns1:parameter qname="ns54:start" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns54:stop" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="updateUserPassword" qname="ns55:updateUserPassword" returnQName="ns55:updateUserPasswordReturn" returnType="xsd:string" soapAction="" xmlns:ns55="http://service.videolibrary.sjsu.edu" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns55:membershipId" type="xsd:int"/>
+   <ns1:parameter qname="ns55:newPassword" type="xsd:string"/>
   </ns1:operation>
   <ns1:parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins listAllMoviesByPage searchMovie listAllMovies getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie listMoviesByCategoryByPage getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>

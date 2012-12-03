@@ -97,7 +97,7 @@ public class Service {
 		return isDeletedFromCart;
 	}
 
-	private ItemOnCart[] viewCart(int membershipId, BaseCartDAO cartDAO){
+	private ItemOnCart[] viewCartInternal(int membershipId, BaseCartDAO cartDAO){
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
 
@@ -121,7 +121,7 @@ public class Service {
 	public ItemOnCart[] viewCart(int membershipId) {
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {
-			return viewCart(membershipId, cartDAO);
+			return viewCartInternal(membershipId, cartDAO);
 		} finally {
 			cartDAO.release();
 		}
