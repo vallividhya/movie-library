@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
+import edu.sjsu.videolibrary.exception.InvalidUserInputException;
+import edu.sjsu.videolibrary.exception.NoUserFoundException;
 import edu.sjsu.videolibrary.exception.UserAlreadyExistsException;
 import edu.sjsu.videolibrary.model.StatementInfo;
 import edu.sjsu.videolibrary.model.Transaction;
@@ -22,12 +24,11 @@ public abstract class BaseUserDAO extends VideoLibraryDAO {
 
 	public abstract String signUpUser(String userId, String password, String memType,String firstName, String lastName, 
 			String address, String city, 
-			String state, String zipCode,String ccNumber) throws SQLException, UserAlreadyExistsException 
-			;
+			String state, String zipCode,String ccNumber) throws SQLException, UserAlreadyExistsException;
 
 	public abstract String signUpAdmin (String userId, String password, String firstName, String lastName) throws SQLException, UserAlreadyExistsException ;
 
-	public abstract User signInUser(String userId, String password) throws SQLException;
+	public abstract User signInUser(String userId, String password) throws SQLException, NoUserFoundException;
 
 	public abstract String signInAdmin(String userId, String password) throws SQLException;
 

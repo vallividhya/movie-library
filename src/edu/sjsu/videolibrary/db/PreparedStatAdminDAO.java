@@ -562,5 +562,11 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 
 	}
 
+	@Override
+	public List<User> listMembers(String type, int offset, int count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

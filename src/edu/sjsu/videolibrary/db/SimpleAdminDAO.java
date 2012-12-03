@@ -345,16 +345,16 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 
-	public List <User> listMembers (String type){		
+	public List <User> listMembers (String type, int offset, int count){		
 		
 		List <User> members = new ArrayList<User>();
 		
 		String query = ""; 
 
 		if (type.equals("all")) {
-			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user";
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user limit " + offset + "," + count;
 		} else { 
-			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "'"; 
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "' limit " + offset + "," + count; 
 		}
 
 		try {
@@ -512,7 +512,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			String result = null;
 
 			try{
-				String query1 = "UPDATE VideoLibrary.User SET password = '"+Utils.encryptPassword(newPassword) + "' WHERE membershipId = "+membershipId;
+				String query1 = "UPDATE VideoLibrary.User SET password = '"+ Utils.encryptPassword(newPassword) + "' WHERE membershipId = "+membershipId;
 
 				int rowcount = stmt.executeUpdate(query1);
 
@@ -529,12 +529,11 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			return result;		
 		}
 		
-		public Admin signInAdminObject (String userId, String password)  {
+		public Admin signInAdminObject (String userId, String password) throws NoUserFoundException {
 			Admin bean = new Admin(); 
 			bean.setAdminId(userId);
 			bean.setPassword(password);
 			String sql = "SELECT userId, password, firstName, lastName FROM admin WHERE userId = '" + userId + "'" + " AND password = '" + Utils.encryptPassword(password) + "'";
-			System.out.println(sql);
 			try { 
 			
 				Statement stmt = con.createStatement();
@@ -550,9 +549,9 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 					bean.setValid(true);
 					return bean;
 				} else {
-					System.out.println("else");
 					bean.setValid(false);
 					bean=null;
+					throw new NoUserFoundException("User credentials do not match");
 				}
 			} catch (SQLException e) { bean = null;} 
 			return bean;
@@ -577,7 +576,8 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 			return admins; 
 			
-		}	
+		}
+
 }
 	
 	

@@ -34,18 +34,11 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 
 	public abstract String deleteAdmin (String userId);
 
-	public abstract List <User> listMembers (String type);
+	public abstract List <User> listMembers(String type, int offset, int count);
 	
 	public abstract List <Admin> listAdmins(); 
 	
-	public User[] searchUser(String membershipId, String userId,
-			String membershipType, String startDate, String firstName,
-			String lastName, String address, String city, String state,
-			String zipCode) throws NoUserFoundException {
-		return searchUser(membershipId, userId, membershipType, startDate, firstName,
-				lastName, address, city, state, zipCode, 0, DEFAULT_BATCH_SIZE );
-	}
-	
+		
 	public abstract User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
 			String lastName, String address, String city, String state,
@@ -57,5 +50,5 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	
 	abstract public String updateUserPassword(int membershipId,String newPassword) throws SQLException;
 	
-	abstract public Admin signInAdminObject (String userId, String password) throws SQLException;
+	abstract public Admin signInAdminObject (String userId, String password) throws SQLException, NoUserFoundException;
 }

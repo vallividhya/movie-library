@@ -182,13 +182,15 @@ public class StoredProcAdminDAO extends BaseAdminDAO {
 		return null;
 	}
 
-	@Override
-	public List <User> listMembers (String type){
-		return null;
-	}
 	
 	@Override
 	public List <Admin> listAdmins(){
+		return null;
+	}
+
+	@Override
+	public List<User> listMembers(String type, int offset, int count) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

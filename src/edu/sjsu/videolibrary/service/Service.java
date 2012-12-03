@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.jws.WebService;
-
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
-
 import edu.sjsu.videolibrary.model.Admin;
 import edu.sjsu.videolibrary.model.Movie;
 import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
@@ -15,6 +12,7 @@ import edu.sjsu.videolibrary.model.States;
 import edu.sjsu.videolibrary.model.Transaction;
 import edu.sjsu.videolibrary.model.User;
 import edu.sjsu.videolibrary.model.ItemOnCart;
+import edu.sjsu.videolibrary.util.Utils;
 import edu.sjsu.videolibrary.db.BaseAdminDAO;
 import edu.sjsu.videolibrary.db.BaseCartDAO;
 import edu.sjsu.videolibrary.db.BaseMovieDAO;
@@ -33,7 +31,9 @@ import edu.sjsu.videolibrary.exception.UserAlreadyExistsException;
 @WebService
 
 public class Service {
-
+	private static final int MOVIE_LIMIT_FOR_SIMPLE_MEMBERS = 2;
+	private static final int MOVIE_LIMIT_FOR_PREMIUM_MEMBERS = 8;
+	
 	Cache cache = Cache.getInstance();
 
 	// Add movies to shopping cart	
@@ -176,7 +176,6 @@ public class Service {
 	// Check out cart
 	public boolean checkOutMovieCart(int membershipId, String creditCardNumber) {
 
-
 		double totalAmount = 0;
 		boolean processComplete = false;
 		int limitOfMovies;
@@ -193,15 +192,17 @@ public class Service {
 			String membershipType = user.getMembershipType();
 
 			// Checking movie Limit with membership type
+
 			cardNumber = creditCardNumber;
 			if (membershipType.equalsIgnoreCase("Simple")) {
-				limitOfMovies = 2;
+				limitOfMovies = MOVIE_LIMIT_FOR_SIMPLE_MEMBERS;
+
 				cardNumber = creditCardNumber;
 				if (cardNumber == null) {
 					System.out.println("Simple User must enter cc number");
 				}
 			} else {
-				limitOfMovies = 8;
+				limitOfMovies = MOVIE_LIMIT_FOR_PREMIUM_MEMBERS;
 				cardNumber = userDAO.queryCreditCardNumber(membershipId);
 				System.out.println("Credit card number for this premium user = " + cardNumber);
 			}
@@ -303,14 +304,20 @@ public class Service {
 			String address, String city,String state, String zipCode,String ccNumber){
 		String result = null;
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
-
+		boolean isValidEmail = Utils.isValidEMailAddress(userId);
 		try{
-			result = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
+			//if (isValidEmail) {
+				result = userDAO.signUpUser(userId, password, memType, firstName, lastName, address, city, state, zipCode, ccNumber);
+			//} else {
+			//	throw new InvalidUserInputException("Invalid Email input");
+			//}
 			
 		}
 		catch(UserAlreadyExistsException e){
 			System.out.println(e.getLocalizedMessage());		
-		} 
+		} /*catch(InvalidUserInputException e) {
+			System.out.println(e.getLocalizedMessage());
+		}*/
 		catch(SQLException e){
 			System.out.println(e.getMessage());
 			result = "false";
@@ -325,14 +332,21 @@ public class Service {
 	{
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = null;
+		boolean isValidEmail = Utils.isValidEMailAddress(userId);
 		try {
-			result = userDAO.signUpAdmin(userId, password, firstName, lastName);
+			//if (isValidEmail) {
+				result = userDAO.signUpAdmin(userId, password, firstName, lastName);
+			//} else {
+			//	throw new InvalidUserInputException("Invaild email id");
+			//}
 		} catch(UserAlreadyExistsException e){
 			System.out.println(e.getLocalizedMessage());		
 		} catch(SQLException e){
 			System.out.println(e.getMessage());
 			result = "false";
-		}  finally {
+		} /*catch (InvalidUserInputException e) {
+			System.out.println(e.getLocalizedMessage());
+		} */ finally {
 			userDAO.release();
 		}
 		return result;
@@ -350,9 +364,8 @@ public class Service {
 					cache.put("signInUser"+userId+password, user);
 				}
 			}
-		} catch (Exception e) {
-			System.out.println("In exception");
-			e.printStackTrace();
+		} catch (NoUserFoundException e) {
+			System.out.println(e.getMessage());
 		}
 		finally{
 			userDAO.release();
@@ -365,6 +378,8 @@ public class Service {
 		Admin admin = null;
 		try{
 			admin =  adminDAO.signInAdminObject(userId, password);
+		} catch (NoUserFoundException e) {
+			System.out.println(e.getMessage());
 		}
 		finally{
 			adminDAO.release();
@@ -374,14 +389,17 @@ public class Service {
 
 	//List members
 	public User [] viewMembers (String type) {	
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		List <User> memberList = adminDAO.listMembers(type);
-		User [] members = memberList.toArray(new User[0]);
-		adminDAO.release();
-		return members;
+		return viewMembersByPage (type, 0, VideoLibraryDAO.DEFAULT_BATCH_SIZE);
 
 	}
-
+	public User[] viewMembersByPage (String type, int offset, int count) {
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
+		List <User> memberList = adminDAO.listMembers(type, offset, count);
+		User [] members = memberList.toArray(new User[0]);
+		System.out.println(memberList.size() + " members listed");
+		adminDAO.release();
+		return members;
+	}	
 	public Admin [] viewAdmins () {	
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 		List <Admin> memberList = adminDAO.listAdmins();
@@ -704,17 +722,23 @@ public class Service {
 			String lastName, String address, String city, String state,
 			String zipCode) {
 
-
+		return searchUserByPage ( membershipId,  userId,
+				 membershipType,  startDate,  firstName,
+				 lastName, address,  city,  state,
+				 zipCode, 0, VideoLibraryDAO.DEFAULT_BATCH_SIZE);
+		
+	}
+	
+	public User[] searchUserByPage (String membershipId, String userId,
+			String membershipType, String startDate, String firstName,
+			String lastName, String address, String city, String state,
+			String zipCode, int offset, int count) {
 		User[] users = null;
 		users = (User[])cache.get("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode);
 		if(users == null){
 			BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
 			try {
-				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode);
-				// System.out.println("Users : ");
-				//				for (User i:users) {
-				//					System.out.println(i.getMembershipId() + " | " + i.getFirstName() + i.getLastName() +  " | " + i.getMembershipType() + " | " + i.getState() );
-				//				}
+				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode, offset, count);
 				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
 			} catch (NoUserFoundException e) {
 				System.out.println(e.getMessage());
@@ -724,8 +748,8 @@ public class Service {
 			}
 		}
 		return users;
+		
 	}
-
 
 	public Admin displayAdminInformation (String adminId) {
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
