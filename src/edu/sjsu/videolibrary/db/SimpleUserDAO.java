@@ -361,7 +361,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 	public String queryCreditCardNumber(int membershipId)
 			throws InvalidCreditCardException {
 		User user = queryMembershipType(membershipId);
-		if (user.getMembershipType().equals("Premium")) {
+		if (user.getMembershipType().equalsIgnoreCase("Premium")) {
 			user.getCreditCardNumber();
 		} else {
 			throw new InvalidCreditCardException("Invalid credit card");

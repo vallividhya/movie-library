@@ -169,12 +169,7 @@ public class Service {
 	private boolean validateCreditCard (String cc) {
 		boolean isValid = false;
 		if (cc != null && cc.length() == 16) {
-			try {
-				int c = Integer.parseInt(cc);
-				isValid = true;
-			} catch (NumberFormatException e) {
-				System.out.println("Invalid Credit card number");
-			}
+			isValid = true;
 		}
 		return isValid;
 	}
@@ -198,7 +193,8 @@ public class Service {
 			String membershipType = user.getMembershipType();
 
 			// Checking movie Limit with membership type
-			if (membershipType.equals("Simple")) {
+			cardNumber = creditCardNumber;
+			if (membershipType.equalsIgnoreCase("Simple")) {
 				limitOfMovies = 2;
 				cardNumber = creditCardNumber;
 				if (cardNumber == null) {
@@ -227,7 +223,7 @@ public class Service {
 						if (cartItems[i] != null) {
 							movieId[i] = cartItems[i].getMovieId();
 							availableCopiesOfMovie = movieDAO.getAvailableCopies(movieId[i]);
-							if (membershipType.equals("Simple")) {
+							if (membershipType.equalsIgnoreCase("Simple")) {
 								rentAmount[i] = cartItems[i].getRentAmount();
 								totalAmount = totalAmount + rentAmount[i];
 							} else {

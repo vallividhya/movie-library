@@ -115,7 +115,7 @@ CREATE TABLE `videolibrary`.`rentMovietransaction` (
   `movieId` INTEGER UNSIGNED NOT NULL,
   `transactionId` INTEGER UNSIGNED NOT NULL,
   `membershipId` INT(9) UNSIGNED NOT NULL,
-  `returnDate` DATE NOT NULL,
+  `returnDate` DATE,
   PRIMARY KEY (`transactionId`, `movieId`)
 )
 
