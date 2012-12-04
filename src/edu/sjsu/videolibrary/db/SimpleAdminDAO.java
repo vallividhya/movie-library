@@ -351,7 +351,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		
 		String query = ""; 
 
-		if (type.equals("all")) {
+		if (type.equalsIgnoreCase("all")) {
 			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user limit " + offset + "," + count;
 		} else { 
 			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "' limit " + offset + "," + count; 
