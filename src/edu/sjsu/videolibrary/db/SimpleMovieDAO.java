@@ -33,6 +33,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			s = "false";
 			throw new MovieAlreadyExistsException ("Movie Already exists. Cannot create new movie. Please update copy");
 		} catch (SQLException e) {  
+			System.out.println("In sql exception block");
 		} 
 		return s;
 	}	

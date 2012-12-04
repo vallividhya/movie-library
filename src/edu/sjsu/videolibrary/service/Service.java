@@ -22,6 +22,7 @@ import edu.sjsu.videolibrary.db.DAOFactory;
 import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
+import edu.sjsu.videolibrary.exception.InvalidUserInputException;
 import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
 import edu.sjsu.videolibrary.exception.MovieAlreadyExistsException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
@@ -451,11 +452,14 @@ public class Service {
 		cache.invalidatePrefix("listMoviesByCategory");
 		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
+			if (availableCopies < 0 || categoryId < 1) {
+				throw new InvalidUserInputException ("Invalid input from users");
+			} 
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		} catch (MovieAlreadyExistsException e) {
 			System.out.println(e.getLocalizedMessage());
-		}catch (Exception e) { 
-			System.out.println(e.getMessage());
+		}catch (InvalidUserInputException e) { 
+			System.out.println(e.getLocalizedMessage());
 		}	
 		finally{
 			movieDAO.release();
