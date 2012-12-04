@@ -34,6 +34,7 @@ public class ConnectionPool {
 		// READ: http://kb.iu.edu/data/avza.html
 		passwordHash.put("rohinimodi-PC", "ruh12ruh");
 		passwordHash.put("Valli", "1248");
+		passwordHash.put("Neha-HP","root");
 	}
 
 	// This is the default mysql password

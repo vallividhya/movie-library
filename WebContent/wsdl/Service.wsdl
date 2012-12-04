@@ -15,50 +15,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="addItemsToCart">
-    <complexType>
-     <sequence>
-      <element name="membershipId" type="xsd:int"/>
-      <element name="movieId" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="addItemsToCartResponse">
-    <complexType>
-     <sequence>
-      <element name="addItemsToCartReturn" type="xsd:boolean"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="viewCart">
-    <complexType>
-     <sequence>
-      <element name="membershipId" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="viewCartResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="viewCartReturn" type="tns1:ItemOnCart"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="deleteMovieFromCart">
-    <complexType>
-     <sequence>
-      <element name="movieId" type="xsd:int"/>
-      <element name="membershipId" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="deleteMovieFromCartResponse">
-    <complexType>
-     <sequence>
-      <element name="deleteMovieFromCartReturn" type="xsd:boolean"/>
-     </sequence>
-    </complexType>
-   </element>
    <element name="checkOutMovieCart">
     <complexType>
      <sequence>
@@ -74,7 +30,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="returnMovie">
+   <element name="addItemsToCart">
     <complexType>
      <sequence>
       <element name="membershipId" type="xsd:int"/>
@@ -82,99 +38,25 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="returnMovieResponse">
+   <element name="addItemsToCartResponse">
     <complexType>
      <sequence>
-      <element name="returnMovieReturn" type="xsd:boolean"/>
+      <element name="addItemsToCartReturn" type="xsd:boolean"/>
      </sequence>
     </complexType>
    </element>
-   <element name="signUpUser">
+   <element name="deleteMovieFromCart">
     <complexType>
      <sequence>
-      <element name="userId" type="xsd:string"/>
-      <element name="password" type="xsd:string"/>
-      <element name="memType" type="xsd:string"/>
-      <element name="firstName" type="xsd:string"/>
-      <element name="lastName" type="xsd:string"/>
-      <element name="address" type="xsd:string"/>
-      <element name="city" type="xsd:string"/>
-      <element name="state" type="xsd:string"/>
-      <element name="zipCode" type="xsd:string"/>
-      <element name="ccNumber" type="xsd:string"/>
+      <element name="movieId" type="xsd:int"/>
+      <element name="membershipId" type="xsd:int"/>
      </sequence>
     </complexType>
    </element>
-   <element name="signUpUserResponse">
+   <element name="deleteMovieFromCartResponse">
     <complexType>
      <sequence>
-      <element name="signUpUserReturn" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="signUpAdmin">
-    <complexType>
-     <sequence>
-      <element name="userId" type="xsd:string"/>
-      <element name="password" type="xsd:string"/>
-      <element name="firstName" type="xsd:string"/>
-      <element name="lastName" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="signUpAdminResponse">
-    <complexType>
-     <sequence>
-      <element name="signUpAdminReturn" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="signInUser">
-    <complexType>
-     <sequence>
-      <element name="userId" type="xsd:string"/>
-      <element name="password" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="signInUserResponse">
-    <complexType>
-     <sequence>
-      <element name="signInUserReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="ArrayOf_xsd_string">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <element name="signInAdmin">
-    <complexType>
-     <sequence>
-      <element name="userId" type="xsd:string"/>
-      <element name="password" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="signInAdminResponse">
-    <complexType>
-     <sequence>
-      <element name="signInAdminReturn" type="tns1:Admin"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="viewMembers">
-    <complexType>
-     <sequence>
-      <element name="type" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="viewMembersResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="viewMembersReturn" type="tns1:User"/>
+      <element name="deleteMovieFromCartReturn" type="xsd:boolean"/>
      </sequence>
     </complexType>
    </element>
@@ -194,16 +76,11 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="viewAdmins">
-    <complexType/>
-   </element>
-   <element name="viewAdminsResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="viewAdminsReturn" type="tns1:Admin"/>
-     </sequence>
-    </complexType>
-   </element>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
    <element name="deleteUserAccount">
     <complexType>
      <sequence>
@@ -260,22 +137,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="searchMovie">
-    <complexType>
-     <sequence>
-      <element name="movieName" type="xsd:string"/>
-      <element name="movieBanner" type="xsd:string"/>
-      <element name="releaseDate" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchMovieResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchMovieReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
    <element name="listMoviesByCategory">
     <complexType>
      <sequence>
@@ -287,20 +148,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element maxOccurs="unbounded" name="listMoviesByCategoryReturn" type="tns1:Movie"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="deleteMovie">
-    <complexType>
-     <sequence>
-      <element name="movieId" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="deleteMovieResponse">
-    <complexType>
-     <sequence>
-      <element name="deleteMovieReturn" type="xsd:string"/>
      </sequence>
     </complexType>
    </element>
@@ -397,29 +244,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="searchUser">
-    <complexType>
-     <sequence>
-      <element name="membershipId" type="xsd:string"/>
-      <element name="userId" type="xsd:string"/>
-      <element name="membershipType" type="xsd:string"/>
-      <element name="startDate" type="xsd:string"/>
-      <element name="firstName" type="xsd:string"/>
-      <element name="lastName" type="xsd:string"/>
-      <element name="address" type="xsd:string"/>
-      <element name="city" type="xsd:string"/>
-      <element name="state" type="xsd:string"/>
-      <element name="zipCode" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="searchUserResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="searchUserReturn" type="tns1:User"/>
-     </sequence>
-    </complexType>
-   </element>
    <element name="updatePassword">
     <complexType>
      <sequence>
@@ -487,22 +311,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="generateMonthlyBillForPremiumMember">
-    <complexType>
-     <sequence>
-      <element name="membershipId" type="xsd:int"/>
-      <element name="month" type="xsd:int"/>
-      <element name="year" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="generateMonthlyBillForPremiumMemberResponse">
-    <complexType>
-     <sequence>
-      <element name="generateMonthlyBillForPremiumMemberReturn" type="tns1:PaymentForPremiumMemInfo"/>
-     </sequence>
-    </complexType>
-   </element>
    <element name="getRentAmountforMovie">
     <complexType/>
    </element>
@@ -510,16 +318,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element name="getRentAmountforMovieReturn" type="xsd:double"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="getMonthlyFeesForPremiumMember">
-    <complexType/>
-   </element>
-   <element name="getMonthlyFeesForPremiumMemberResponse">
-    <complexType>
-     <sequence>
-      <element name="getMonthlyFeesForPremiumMemberReturn" type="xsd:double"/>
      </sequence>
     </complexType>
    </element>
@@ -653,18 +451,211 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="returnMovie">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+      <element name="movieId" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="returnMovieResponse">
+    <complexType>
+     <sequence>
+      <element name="returnMovieReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signUpUser">
+    <complexType>
+     <sequence>
+      <element name="userId" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+      <element name="memType" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+      <element name="address" type="xsd:string"/>
+      <element name="city" type="xsd:string"/>
+      <element name="state" type="xsd:string"/>
+      <element name="zipCode" type="xsd:string"/>
+      <element name="ccNumber" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signUpUserResponse">
+    <complexType>
+     <sequence>
+      <element name="signUpUserReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signUpAdmin">
+    <complexType>
+     <sequence>
+      <element name="userId" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signUpAdminResponse">
+    <complexType>
+     <sequence>
+      <element name="signUpAdminReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signInUser">
+    <complexType>
+     <sequence>
+      <element name="userId" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signInUserResponse">
+    <complexType>
+     <sequence>
+      <element name="signInUserReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signInAdmin">
+    <complexType>
+     <sequence>
+      <element name="userId" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="signInAdminResponse">
+    <complexType>
+     <sequence>
+      <element name="signInAdminReturn" type="tns1:Admin"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewMembers">
+    <complexType>
+     <sequence>
+      <element name="type" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewMembersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="viewMembersReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewAdmins">
+    <complexType/>
+   </element>
+   <element name="viewAdminsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="viewAdminsReturn" type="tns1:Admin"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchMovie">
+    <complexType>
+     <sequence>
+      <element name="movieName" type="xsd:string"/>
+      <element name="movieBanner" type="xsd:string"/>
+      <element name="releaseDate" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchMovieResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchMovieReturn" type="tns1:Movie"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deleteMovie">
+    <complexType>
+     <sequence>
+      <element name="movieId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deleteMovieResponse">
+    <complexType>
+     <sequence>
+      <element name="deleteMovieReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchUser">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:string"/>
+      <element name="userId" type="xsd:string"/>
+      <element name="membershipType" type="xsd:string"/>
+      <element name="startDate" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+      <element name="address" type="xsd:string"/>
+      <element name="city" type="xsd:string"/>
+      <element name="state" type="xsd:string"/>
+      <element name="zipCode" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchUserResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchUserReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewCart">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewCartResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="viewCartReturn" type="tns1:ItemOnCart"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="generateMonthlyBillForPremiumMember">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:int"/>
+      <element name="month" type="xsd:int"/>
+      <element name="year" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="generateMonthlyBillForPremiumMemberResponse">
+    <complexType>
+     <sequence>
+      <element name="generateMonthlyBillForPremiumMemberReturn" type="tns1:PaymentForPremiumMemInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getMonthlyFeesForPremiumMember">
+    <complexType/>
+   </element>
+   <element name="getMonthlyFeesForPremiumMemberResponse">
+    <complexType>
+     <sequence>
+      <element name="getMonthlyFeesForPremiumMemberReturn" type="xsd:double"/>
+     </sequence>
+    </complexType>
+   </element>
   </schema>
   <schema elementFormDefault="qualified" targetNamespace="http://model.videolibrary.sjsu.edu" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://service.videolibrary.sjsu.edu"/>
-   <complexType name="ItemOnCart">
-    <sequence>
-     <element name="category" nillable="true" type="xsd:string"/>
-     <element name="movieBanner" nillable="true" type="xsd:string"/>
-     <element name="movieId" type="xsd:int"/>
-     <element name="movieName" nillable="true" type="xsd:string"/>
-     <element name="rentAmount" type="xsd:double"/>
-    </sequence>
-   </complexType>
    <complexType name="User">
     <sequence>
      <element name="address" nillable="true" type="xsd:string"/>
@@ -682,15 +673,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="state" nillable="true" type="xsd:string"/>
      <element name="userId" nillable="true" type="xsd:string"/>
      <element name="zip" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <complexType name="Admin">
-    <sequence>
-     <element name="adminId" nillable="true" type="xsd:string"/>
-     <element name="firstName" nillable="true" type="xsd:string"/>
-     <element name="lastName" nillable="true" type="xsd:string"/>
-     <element name="password" nillable="true" type="xsd:string"/>
-     <element name="valid" type="xsd:boolean"/>
     </sequence>
    </complexType>
    <complexType name="Movie">
@@ -726,6 +708,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="totalDueAmount" type="xsd:double"/>
     </sequence>
    </complexType>
+   <complexType name="Admin">
+    <sequence>
+     <element name="adminId" nillable="true" type="xsd:string"/>
+     <element name="firstName" nillable="true" type="xsd:string"/>
+     <element name="lastName" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="valid" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <complexType name="ItemOnCart">
+    <sequence>
+     <element name="category" nillable="true" type="xsd:string"/>
+     <element name="movieBanner" nillable="true" type="xsd:string"/>
+     <element name="movieId" type="xsd:int"/>
+     <element name="movieName" nillable="true" type="xsd:string"/>
+     <element name="rentAmount" type="xsd:double"/>
+    </sequence>
+   </complexType>
    <complexType name="PaymentForPremiumMemInfo">
     <sequence>
      <element name="monthlyPaymentAmount" type="xsd:double"/>
@@ -739,14 +739,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="returnMovieResponse">
 
       <wsdl:part element="impl:returnMovieResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="searchMovieByPageRequest">
-
-      <wsdl:part element="impl:searchMovieByPage" name="parameters">
 
       </wsdl:part>
 
@@ -768,6 +760,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="searchMovieByPageRequest">
+
+      <wsdl:part element="impl:searchMovieByPage" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="listMoviesByCategoryResponse">
 
       <wsdl:part element="impl:listMoviesByCategoryResponse" name="parameters">
@@ -776,17 +776,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="searchMovieByPageResponse">
+   <wsdl:message name="getMonthlyFeesForPremiumMemberRequest">
 
-      <wsdl:part element="impl:searchMovieByPageResponse" name="parameters">
+      <wsdl:part element="impl:getMonthlyFeesForPremiumMember" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="getMonthlyFeesForPremiumMemberRequest">
+   <wsdl:message name="searchMovieByPageResponse">
 
-      <wsdl:part element="impl:getMonthlyFeesForPremiumMember" name="parameters">
+      <wsdl:part element="impl:searchMovieByPageResponse" name="parameters">
 
       </wsdl:part>
 
@@ -816,17 +816,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="deleteMovieFromCartRequest">
+   <wsdl:message name="deleteMovieRequest">
 
-      <wsdl:part element="impl:deleteMovieFromCart" name="parameters">
+      <wsdl:part element="impl:deleteMovie" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="deleteMovieRequest">
+   <wsdl:message name="deleteMovieFromCartRequest">
 
-      <wsdl:part element="impl:deleteMovie" name="parameters">
+      <wsdl:part element="impl:deleteMovieFromCart" name="parameters">
 
       </wsdl:part>
 
@@ -848,17 +848,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="viewMembersByPageResponse">
+   <wsdl:message name="returnMovieRequest">
 
-      <wsdl:part element="impl:viewMembersByPageResponse" name="parameters">
+      <wsdl:part element="impl:returnMovie" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="returnMovieRequest">
+   <wsdl:message name="viewMembersByPageResponse">
 
-      <wsdl:part element="impl:returnMovie" name="parameters">
+      <wsdl:part element="impl:viewMembersByPageResponse" name="parameters">
 
       </wsdl:part>
 
@@ -920,17 +920,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="generateMonthlyStatementRequest">
+   <wsdl:message name="signUpUserRequest">
 
-      <wsdl:part element="impl:generateMonthlyStatement" name="parameters">
+      <wsdl:part element="impl:signUpUser" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="signUpUserRequest">
+   <wsdl:message name="generateMonthlyStatementRequest">
 
-      <wsdl:part element="impl:signUpUser" name="parameters">
+      <wsdl:part element="impl:generateMonthlyStatement" name="parameters">
 
       </wsdl:part>
 
@@ -1024,17 +1024,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="updateAdminInfoRequest">
+   <wsdl:message name="getMonthlyFeesForPremiumMemberResponse">
 
-      <wsdl:part element="impl:updateAdminInfo" name="parameters">
+      <wsdl:part element="impl:getMonthlyFeesForPremiumMemberResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="getMonthlyFeesForPremiumMemberResponse">
+   <wsdl:message name="updateAdminInfoRequest">
 
-      <wsdl:part element="impl:getMonthlyFeesForPremiumMemberResponse" name="parameters">
+      <wsdl:part element="impl:updateAdminInfo" name="parameters">
 
       </wsdl:part>
 
@@ -1128,14 +1128,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="updatePasswordResponse">
-
-      <wsdl:part element="impl:updatePasswordResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="deleteAdminAccountResponse">
 
       <wsdl:part element="impl:deleteAdminAccountResponse" name="parameters">
@@ -1144,9 +1136,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getRentAmountforMovieResponse">
+   <wsdl:message name="updatePasswordResponse">
 
-      <wsdl:part element="impl:getRentAmountforMovieResponse" name="parameters">
+      <wsdl:part element="impl:updatePasswordResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1160,17 +1152,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="generateMonthlyBillForPremiumMemberResponse">
+   <wsdl:message name="getRentAmountforMovieResponse">
 
-      <wsdl:part element="impl:generateMonthlyBillForPremiumMemberResponse" name="parameters">
+      <wsdl:part element="impl:getRentAmountforMovieResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="generateMonthlyStatementResponse">
+   <wsdl:message name="generateMonthlyBillForPremiumMemberResponse">
 
-      <wsdl:part element="impl:generateMonthlyStatementResponse" name="parameters">
+      <wsdl:part element="impl:generateMonthlyBillForPremiumMemberResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1184,9 +1176,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="addItemsToCartRequest">
+   <wsdl:message name="generateMonthlyStatementResponse">
 
-      <wsdl:part element="impl:addItemsToCart" name="parameters">
+      <wsdl:part element="impl:generateMonthlyStatementResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1203,6 +1195,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="searchMovieResponse">
 
       <wsdl:part element="impl:searchMovieResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="addItemsToCartRequest">
+
+      <wsdl:part element="impl:addItemsToCart" name="parameters">
 
       </wsdl:part>
 
@@ -1288,14 +1288,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="viewStatementResponse">
-
-      <wsdl:part element="impl:viewStatementResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
    <wsdl:message name="updateUserInfoRequest">
 
       <wsdl:part element="impl:updateUserInfo" name="parameters">
@@ -1304,9 +1296,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getRentAmountforMovieRequest">
+   <wsdl:message name="viewStatementResponse">
 
-      <wsdl:part element="impl:getRentAmountforMovie" name="parameters">
+      <wsdl:part element="impl:viewStatementResponse" name="parameters">
 
       </wsdl:part>
 
@@ -1315,6 +1307,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="listMoviesByCategoryRequest">
 
       <wsdl:part element="impl:listMoviesByCategory" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRentAmountforMovieRequest">
+
+      <wsdl:part element="impl:getRentAmountforMovie" name="parameters">
 
       </wsdl:part>
 
@@ -1344,17 +1344,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="listCategoriesRequest">
+   <wsdl:message name="searchUserRequest">
 
-      <wsdl:part element="impl:listCategories" name="parameters">
+      <wsdl:part element="impl:searchUser" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="searchUserRequest">
+   <wsdl:message name="listCategoriesRequest">
 
-      <wsdl:part element="impl:searchUser" name="parameters">
+      <wsdl:part element="impl:listCategories" name="parameters">
 
       </wsdl:part>
 
@@ -1422,6 +1422,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="checkOutMovieCart">
+
+         <wsdl:input message="impl:checkOutMovieCartRequest" name="checkOutMovieCartRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:checkOutMovieCartResponse" name="checkOutMovieCartResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="addItemsToCart">
 
          <wsdl:input message="impl:addItemsToCartRequest" name="addItemsToCartRequest">
@@ -1429,18 +1441,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:addItemsToCartResponse" name="addItemsToCartResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewCart">
-
-         <wsdl:input message="impl:viewCartRequest" name="viewCartRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:viewCartResponse" name="viewCartResponse">
 
        </wsdl:output>
 
@@ -1458,90 +1458,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="checkOutMovieCart">
-
-         <wsdl:input message="impl:checkOutMovieCartRequest" name="checkOutMovieCartRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:checkOutMovieCartResponse" name="checkOutMovieCartResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="returnMovie">
-
-         <wsdl:input message="impl:returnMovieRequest" name="returnMovieRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:returnMovieResponse" name="returnMovieResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signUpUser">
-
-         <wsdl:input message="impl:signUpUserRequest" name="signUpUserRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:signUpUserResponse" name="signUpUserResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signUpAdmin">
-
-         <wsdl:input message="impl:signUpAdminRequest" name="signUpAdminRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:signUpAdminResponse" name="signUpAdminResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signInUser">
-
-         <wsdl:input message="impl:signInUserRequest" name="signInUserRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:signInUserResponse" name="signInUserResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signInAdmin">
-
-         <wsdl:input message="impl:signInAdminRequest" name="signInAdminRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:signInAdminResponse" name="signInAdminResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewMembers">
-
-         <wsdl:input message="impl:viewMembersRequest" name="viewMembersRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:viewMembersResponse" name="viewMembersResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="viewMembersByPage">
 
          <wsdl:input message="impl:viewMembersByPageRequest" name="viewMembersByPageRequest">
@@ -1549,18 +1465,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:viewMembersByPageResponse" name="viewMembersByPageResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewAdmins">
-
-         <wsdl:input message="impl:viewAdminsRequest" name="viewAdminsRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:viewAdminsResponse" name="viewAdminsResponse">
 
        </wsdl:output>
 
@@ -1614,18 +1518,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="searchMovie">
-
-         <wsdl:input message="impl:searchMovieRequest" name="searchMovieRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchMovieResponse" name="searchMovieResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="listMoviesByCategory">
 
          <wsdl:input message="impl:listMoviesByCategoryRequest" name="listMoviesByCategoryRequest">
@@ -1633,18 +1525,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:listMoviesByCategoryResponse" name="listMoviesByCategoryResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="deleteMovie">
-
-         <wsdl:input message="impl:deleteMovieRequest" name="deleteMovieRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:deleteMovieResponse" name="deleteMovieResponse">
 
        </wsdl:output>
 
@@ -1722,18 +1602,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="searchUser">
-
-         <wsdl:input message="impl:searchUserRequest" name="searchUserRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:searchUserResponse" name="searchUserResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="updatePassword">
 
          <wsdl:input message="impl:updatePasswordRequest" name="updatePasswordRequest">
@@ -1782,18 +1650,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="generateMonthlyBillForPremiumMember">
-
-         <wsdl:input message="impl:generateMonthlyBillForPremiumMemberRequest" name="generateMonthlyBillForPremiumMemberRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:generateMonthlyBillForPremiumMemberResponse" name="generateMonthlyBillForPremiumMemberResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="getRentAmountforMovie">
 
          <wsdl:input message="impl:getRentAmountforMovieRequest" name="getRentAmountforMovieRequest">
@@ -1801,18 +1657,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:getRentAmountforMovieResponse" name="getRentAmountforMovieResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="getMonthlyFeesForPremiumMember">
-
-         <wsdl:input message="impl:getMonthlyFeesForPremiumMemberRequest" name="getMonthlyFeesForPremiumMemberRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:getMonthlyFeesForPremiumMemberResponse" name="getMonthlyFeesForPremiumMemberResponse">
 
        </wsdl:output>
 
@@ -1914,6 +1758,162 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="returnMovie">
+
+         <wsdl:input message="impl:returnMovieRequest" name="returnMovieRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:returnMovieResponse" name="returnMovieResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signUpUser">
+
+         <wsdl:input message="impl:signUpUserRequest" name="signUpUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:signUpUserResponse" name="signUpUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signUpAdmin">
+
+         <wsdl:input message="impl:signUpAdminRequest" name="signUpAdminRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:signUpAdminResponse" name="signUpAdminResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signInUser">
+
+         <wsdl:input message="impl:signInUserRequest" name="signInUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:signInUserResponse" name="signInUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signInAdmin">
+
+         <wsdl:input message="impl:signInAdminRequest" name="signInAdminRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:signInAdminResponse" name="signInAdminResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewMembers">
+
+         <wsdl:input message="impl:viewMembersRequest" name="viewMembersRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:viewMembersResponse" name="viewMembersResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewAdmins">
+
+         <wsdl:input message="impl:viewAdminsRequest" name="viewAdminsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:viewAdminsResponse" name="viewAdminsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchMovie">
+
+         <wsdl:input message="impl:searchMovieRequest" name="searchMovieRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchMovieResponse" name="searchMovieResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteMovie">
+
+         <wsdl:input message="impl:deleteMovieRequest" name="deleteMovieRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deleteMovieResponse" name="deleteMovieResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchUser">
+
+         <wsdl:input message="impl:searchUserRequest" name="searchUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchUserResponse" name="searchUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewCart">
+
+         <wsdl:input message="impl:viewCartRequest" name="viewCartRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:viewCartResponse" name="viewCartResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generateMonthlyBillForPremiumMember">
+
+         <wsdl:input message="impl:generateMonthlyBillForPremiumMemberRequest" name="generateMonthlyBillForPremiumMemberRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:generateMonthlyBillForPremiumMemberResponse" name="generateMonthlyBillForPremiumMemberResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getMonthlyFeesForPremiumMember">
+
+         <wsdl:input message="impl:getMonthlyFeesForPremiumMemberRequest" name="getMonthlyFeesForPremiumMemberRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getMonthlyFeesForPremiumMemberResponse" name="getMonthlyFeesForPremiumMemberResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
    </wsdl:portType>
 
    <wsdl:binding name="ServiceSoapBinding" type="impl:Service">
@@ -1931,60 +1931,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="getStatesResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="addItemsToCart">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="addItemsToCartRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="addItemsToCartResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewCart">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="viewCartRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="viewCartResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="deleteMovieFromCart">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="deleteMovieFromCartRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="deleteMovieFromCartResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2010,17 +1956,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="returnMovie">
+      <wsdl:operation name="addItemsToCart">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="returnMovieRequest">
+         <wsdl:input name="addItemsToCartRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="returnMovieResponse">
+         <wsdl:output name="addItemsToCartResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2028,89 +1974,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="signUpUser">
+      <wsdl:operation name="deleteMovieFromCart">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="signUpUserRequest">
+         <wsdl:input name="deleteMovieFromCartRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="signUpUserResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signUpAdmin">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="signUpAdminRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="signUpAdminResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signInUser">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="signInUserRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="signInUserResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="signInAdmin">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="signInAdminRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="signInAdminResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewMembers">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="viewMembersRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="viewMembersResponse">
+         <wsdl:output name="deleteMovieFromCartResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2129,24 +2003,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="viewMembersByPageResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="viewAdmins">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="viewAdminsRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="viewAdminsResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2226,24 +2082,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="searchMovie">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchMovieRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchMovieResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="listMoviesByCategory">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2255,24 +2093,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="listMoviesByCategoryResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="deleteMovie">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="deleteMovieRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="deleteMovieResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2388,24 +2208,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="searchUser">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="searchUserRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="searchUserResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="updatePassword">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2478,24 +2280,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="generateMonthlyBillForPremiumMember">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="generateMonthlyBillForPremiumMemberRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="generateMonthlyBillForPremiumMemberResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
       <wsdl:operation name="getRentAmountforMovie">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2507,24 +2291,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="getRentAmountforMovieResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="getMonthlyFeesForPremiumMember">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="getMonthlyFeesForPremiumMemberRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="getMonthlyFeesForPremiumMemberResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2669,6 +2435,240 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="searchMovieByPageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="returnMovie">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="returnMovieRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="returnMovieResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signUpUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="signUpUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="signUpUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signUpAdmin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="signUpAdminRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="signUpAdminResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signInUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="signInUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="signInUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signInAdmin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="signInAdminRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="signInAdminResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewMembers">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="viewMembersRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="viewMembersResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewAdmins">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="viewAdminsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="viewAdminsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchMovie">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchMovieRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchMovieResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteMovie">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteMovieRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteMovieResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewCart">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="viewCartRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="viewCartResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generateMonthlyBillForPremiumMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="generateMonthlyBillForPremiumMemberRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="generateMonthlyBillForPremiumMemberResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getMonthlyFeesForPremiumMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getMonthlyFeesForPremiumMemberRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getMonthlyFeesForPremiumMemberResponse">
 
             <wsdlsoap:body use="literal"/>
 
