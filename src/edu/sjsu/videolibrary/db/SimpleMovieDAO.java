@@ -2,6 +2,9 @@ package edu.sjsu.videolibrary.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import edu.sjsu.videolibrary.exception.*;
 import edu.sjsu.videolibrary.model.Movie;
 
@@ -15,23 +18,23 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 		super(dao);
 	}
 
-	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId)  { 
-		String s =null;
+	public String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId) throws MovieAlreadyExistsException  { 
+		String s = "false";
 		try {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
 					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"',"+availableCopies+","+categoryId+")";
 			int rc = stmt.executeUpdate(sql);
 			System.out.println(sql);
 			if (rc > 0) {
-				return "true";		
+				s = "true";		
 			}
-			else{
-				return  "false";
-			}
-		} catch (SQLException e) 
-		{  
-			return "error";  
+			
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			s = "false";
+			throw new MovieAlreadyExistsException ("Movie Already exists. Cannot create new movie. Please update copy");
+		} catch (SQLException e) {  
 		} 
+		return s;
 	}	
 
 	public String deleteMovie (String movieId) {

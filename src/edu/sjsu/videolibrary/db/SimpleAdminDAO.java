@@ -416,7 +416,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			queryParameters.put("state", state);
 		}
 		if (zipCode != null) {
-			queryParameters.put("zipCode", zipCode);
+			queryParameters.put("zip", zipCode);
 		}
 
 		StringBuilder query = new StringBuilder("SELECT membershipId, userId, password, membershipType, startDate, firstName, lastName, address, city, state, zip, creditCardNumber, latestPaymentDate FROM videolibrary.user WHERE ");
@@ -465,7 +465,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		userArray = searchList.toArray(new User[searchList.size()]);
 		return userArray;

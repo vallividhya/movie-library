@@ -23,6 +23,7 @@ import edu.sjsu.videolibrary.db.VideoLibraryDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
 import edu.sjsu.videolibrary.exception.ItemAlreadyInCartException;
+import edu.sjsu.videolibrary.exception.MovieAlreadyExistsException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
@@ -451,9 +452,10 @@ public class Service {
 		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
-		} catch (Exception e) { 
+		} catch (MovieAlreadyExistsException e) {
+			System.out.println(e.getLocalizedMessage());
+		}catch (Exception e) { 
 			System.out.println(e.getMessage());
-			e.printStackTrace();			
 		}	
 		finally{
 			movieDAO.release();
@@ -744,8 +746,7 @@ public class Service {
 				users = adminDAO.searchUser(membershipId, userId, membershipType, startDate, firstName, lastName, address, city, state, zipCode, offset, count);
 				cache.put("searchUser"+membershipId+ userId+ membershipType+startDate+ firstName+ lastName+ address+ city+ state+ zipCode, users);
 			} catch (NoUserFoundException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+				System.out.println(e.getLocalizedMessage());
 			} finally {
 				adminDAO.release();
 			}

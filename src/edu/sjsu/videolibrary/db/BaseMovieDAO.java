@@ -1,6 +1,7 @@
 package edu.sjsu.videolibrary.db;
 
 import edu.sjsu.videolibrary.exception.InternalServerException;
+import edu.sjsu.videolibrary.exception.MovieAlreadyExistsException;
 import edu.sjsu.videolibrary.exception.NoCategoryFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieFoundException;
 import edu.sjsu.videolibrary.exception.NoMovieInCategoryException;
@@ -16,7 +17,7 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 		super(dao);
 	}
 
-	public abstract String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId);
+	public abstract String createNewMovie (String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId) throws MovieAlreadyExistsException;
 
 	public abstract String deleteMovie (String movieId) ;
 
