@@ -327,17 +327,20 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	public String deleteAdmin (String userId) {
 
 		//SuperAdmin should not be removed from the Database
-		if (!userId.equals("Admin")) {
+		if (!userId.equals("admin@admin.com")) {
 			//if (Integer.parseInt(userId) != 1) {	
 			try {
+				try {
+					Admin admin = displayAdminInformation(userId);
+				} catch (NoUserFoundException e) {
+					return "User does not exist";
+				}
 				String sql = "DELETE FROM admin WHERE userId = '" + userId + "'";
-				System.out.println(sql);
-				
 				int rowcount = stmt.executeUpdate(sql);
 				if (rowcount > 0) {
 					return "delete true";
-				}    
-			} catch (SQLException e) { e.printStackTrace(); } 
+				}  
+			} catch (SQLException e) { e.getMessage(); } 
 		} else { 
 			return "superadmin"; 
 		}
@@ -487,12 +490,14 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			return result;
 		}
 		
-		public Admin displayAdminInformation (String adminId) {
+		public Admin displayAdminInformation (String adminId) throws NoUserFoundException {
 			Admin admin = new Admin();
 			try {
 				String query = "SELECT admin.firstName, admin.lastName, admin.password FROM admin WHERE userId = '" + adminId + "'";
 				ResultSet rs = stmt.executeQuery(query);
-				
+				if(!rs.isBeforeFirst()) {
+					throw new NoUserFoundException("User does not exist");
+				}
 				if(rs.next()){
 					admin.setAdminId(adminId);
 					admin.setFirstName(rs.getString("firstName"));

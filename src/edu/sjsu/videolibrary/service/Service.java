@@ -334,7 +334,7 @@ public class Service {
 	{
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = null;
-		boolean isValidEmail = Utils.isValidEMailAddress(userId);
+		//boolean isValidEmail = Utils.isValidEMailAddress(userId);
 		try {
 			//if (isValidEmail) {
 				result = userDAO.signUpAdmin(userId, password, firstName, lastName);
@@ -453,7 +453,7 @@ public class Service {
 		BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 		try {
 			if (availableCopies < 0 || categoryId < 1) {
-				throw new InvalidUserInputException ("Invalid input from users");
+				throw new InvalidUserInputException ("Invalid input from user");
 			} 
 			isCreated = movieDAO.createNewMovie(movieName, movieBanner, releaseDate, availableCopies, categoryId);
 		} catch (MovieAlreadyExistsException e) {
@@ -585,9 +585,19 @@ public class Service {
 
 	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
 		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
-		adminDAO.release();
-		return result;
+		try {
+			if (availableCopies < 0 || categoryId < 0) {
+				throw new InvalidUserInputException ("Invalid user Input");
+			} 
+			String result = adminDAO.updateMovieInfo(movieId, movieName, movieBanner, releaseDate, availableCopies, categoryId);
+			adminDAO.release();
+			return result;
+		} 
+		
+		catch (InvalidUserInputException e) {
+			System.out.println(e.getLocalizedMessage());
+			return e.getMessage();
+		}
 	}
 
 	public String generateMonthlyStatement(int membershipId,int month,int year){
@@ -764,9 +774,10 @@ public class Service {
 		Admin admin = null;
 		try {
 			admin = adminDAO.displayAdminInformation(adminId);
+		} catch (NoUserFoundException e) {
+			System.out.println(e.getLocalizedMessage());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		finally{
 			adminDAO.release();

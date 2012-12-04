@@ -44,7 +44,7 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 			String lastName, String address, String city, String state,
 			String zipCode, int start, int stop) throws NoUserFoundException;
 	
-	abstract public Admin displayAdminInformation (String adminId) throws SQLException;
+	abstract public Admin displayAdminInformation (String adminId) throws SQLException, NoUserFoundException;
 	
 	abstract public String updateAdminInfo(String adminId,String firstName, String lastName, String password) throws SQLException;
 	

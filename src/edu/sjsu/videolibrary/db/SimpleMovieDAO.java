@@ -24,7 +24,6 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			String sql = "INSERT INTO VideoLibrary.Movie (MovieName,MovieBanner,ReleaseDate,AvailableCopies,categoryId)" + 
 					"VALUES ('"+movieName+"','"+movieBanner+"','"+releaseDate+"',"+availableCopies+","+categoryId+")";
 			int rc = stmt.executeUpdate(sql);
-			System.out.println(sql);
 			if (rc > 0) {
 				s = "true";		
 			}
@@ -33,7 +32,7 @@ public class SimpleMovieDAO extends BaseMovieDAO {
 			s = "false";
 			throw new MovieAlreadyExistsException ("Movie Already exists. Cannot create new movie. Please update copy");
 		} catch (SQLException e) {  
-			System.out.println("In sql exception block");
+			System.out.println("DB Error");
 		} 
 		return s;
 	}	
