@@ -112,12 +112,8 @@ amount DOUBLE NOT NULL
 ALTER TABLE videolibrary.user AUTO_INCREMENT = 111111111;
 ALTER TABLE `videolibrary`.`user` ADD COLUMN `rentedMovies` INT(1) UNSIGNED ZEROFILL AFTER `latestPaymentDate`;
 
-CREATE TABLE `videolibrary`.`rentMovietransaction` (
-  `movieId` INTEGER UNSIGNED NOT NULL,
-  `transactionId` INTEGER UNSIGNED NOT NULL,
-  `membershipId` INT(9) UNSIGNED NOT NULL,
-  `returnDate` DATE,
-  PRIMARY KEY (`transactionId`, `movieId`)
-)
+
+
+
 
 

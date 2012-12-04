@@ -22,22 +22,60 @@
       <parameter name="typeMappingVersion" value="1.2"/>
       <operation name="getStates" qname="operNS:getStates" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:getStatesReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
       </operation>
-      <operation name="checkOutMovieCart" qname="operNS:checkOutMovieCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:checkOutMovieCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:creditCardNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
       <operation name="addItemsToCart" qname="operNS:addItemsToCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:addItemsToCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="viewCart" qname="operNS:viewCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:ItemOnCart" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
       <operation name="deleteMovieFromCart" qname="operNS:deleteMovieFromCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:deleteMovieFromCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
+      <operation name="checkOutMovieCart" qname="operNS:checkOutMovieCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:checkOutMovieCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:creditCardNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="returnMovie" qname="operNS:returnMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:returnMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="signUpUser" qname="operNS:signUpUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:memType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:address" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:city" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:state" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:zipCode" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:ccNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="signUpAdmin" qname="operNS:signUpAdmin" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpAdminReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="signInUser" qname="operNS:signInUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signInUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="signInAdmin" qname="operNS:signInAdmin" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signInAdminReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Admin" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="viewMembers" qname="operNS:viewMembers" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewMembersReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:type" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="viewMembersByPage" qname="operNS:viewMembersByPage" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewMembersByPageReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:type" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:offset" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:count" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="viewAdmins" qname="operNS:viewAdmins" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewAdminsReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Admin" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
       </operation>
       <operation name="deleteUserAccount" qname="operNS:deleteUserAccount" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:deleteUserAccountReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -54,8 +92,16 @@
       </operation>
       <operation name="listAllMovies" qname="operNS:listAllMovies" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listAllMoviesReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
       </operation>
+      <operation name="searchMovie" qname="operNS:searchMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:searchMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:movieName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:movieBanner" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:releaseDate" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="listMoviesByCategory" qname="operNS:listMoviesByCategory" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listMoviesByCategoryReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:categoryName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="deleteMovie" qname="operNS:deleteMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:deleteMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
       <operation name="displayUserInformation" qname="operNS:displayUserInformation" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:displayUserInformationReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -84,6 +130,18 @@
         <parameter qname="pns:membershipType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:creditCardNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
+      <operation name="searchUser" qname="operNS:searchUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:searchUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:membershipType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:startDate" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:address" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:city" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:state" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:zipCode" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="updatePassword" qname="operNS:updatePassword" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:updatePasswordReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:oldPassword" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -107,7 +165,14 @@
         <parameter qname="pns:month" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:year" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
+      <operation name="generateMonthlyBillForPremiumMember" qname="operNS:generateMonthlyBillForPremiumMember" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:generateMonthlyBillForPremiumMemberReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:PaymentForPremiumMemInfo" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
+        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:month" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:year" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="getRentAmountforMovie" qname="operNS:getRentAmountforMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:getRentAmountforMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:double" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <operation name="getMonthlyFeesForPremiumMember" qname="operNS:getMonthlyFeesForPremiumMember" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:getMonthlyFeesForPremiumMemberReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:double" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
       </operation>
       <operation name="listCategories" qname="operNS:listCategories" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:listCategoriesReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
       </operation>
@@ -154,72 +219,7 @@
         <parameter qname="pns:start" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:stop" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="returnMovie" qname="operNS:returnMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:returnMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="signUpUser" qname="operNS:signUpUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:memType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:address" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:city" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:state" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:zipCode" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:ccNumber" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="signUpAdmin" qname="operNS:signUpAdmin" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signUpAdminReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="signInUser" qname="operNS:signInUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signInUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="signInAdmin" qname="operNS:signInAdmin" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:signInAdminReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Admin" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:password" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="viewMembers" qname="operNS:viewMembers" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewMembersReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:type" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="viewAdmins" qname="operNS:viewAdmins" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewAdminsReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Admin" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-      </operation>
-      <operation name="searchMovie" qname="operNS:searchMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:searchMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:Movie" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:movieName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:movieBanner" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:releaseDate" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="deleteMovie" qname="operNS:deleteMovie" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:deleteMovieReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:movieId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="searchUser" qname="operNS:searchUser" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:searchUserReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:User" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:userId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:membershipType" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:startDate" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:firstName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:lastName" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:address" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:city" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:state" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:zipCode" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="viewCart" qname="operNS:viewCart" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:viewCartReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:ItemOnCart" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="generateMonthlyBillForPremiumMember" qname="operNS:generateMonthlyBillForPremiumMember" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:generateMonthlyBillForPremiumMemberReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:PaymentForPremiumMemInfo" xmlns:rtns="http://model.videolibrary.sjsu.edu" soapAction="" >
-        <parameter qname="pns:membershipId" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:month" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:year" xmlns:pns="http://service.videolibrary.sjsu.edu" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-      </operation>
-      <operation name="getMonthlyFeesForPremiumMember" qname="operNS:getMonthlyFeesForPremiumMember" xmlns:operNS="http://service.videolibrary.sjsu.edu" returnQName="retNS:getMonthlyFeesForPremiumMemberReturn" xmlns:retNS="http://service.videolibrary.sjsu.edu" returnType="rtns:double" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-      </operation>
-      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories viewAdmins updateMovieInfo searchUserByPage listAllMoviesByPage searchMovie listAllMovies searchMovieByPage deleteMovieFromCart getRentAmountforMovie makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie viewMembersByPage getMonthlyFeesForPremiumMember listMoviesByCategoryByPage updateUserPassword signInUser generateMonthlyBillForPremiumMember moviesToReturn returnMovie signUpUser generateMonthlyStatement listMoviesByCategory viewStatement signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
+      <parameter name="allowedMethods" value="addItemsToCart updateAdminInfo listCategories updateMovieInfo viewAdmins searchUserByPage listAllMoviesByPage searchMovie listAllMovies searchMovieByPage getRentAmountforMovie deleteMovieFromCart makeMonthlyPayment signUpAdmin deleteAdminAccount displayUserInformation createNewMovie displayAdminInformation searchUser getStates viewAccountTransactions deleteUserAccount viewCart updateUserInfo deleteMovie viewMembersByPage listMoviesByCategoryByPage getMonthlyFeesForPremiumMember updateUserPassword signInUser generateMonthlyBillForPremiumMember moviesToReturn returnMovie signUpUser generateMonthlyStatement viewStatement listMoviesByCategory signInAdmin updatePassword displayMovieInformation viewMembers checkOutMovieCart"/>
 
       <typeMapping
         xmlns:ns="http://model.videolibrary.sjsu.edu"
