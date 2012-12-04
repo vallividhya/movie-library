@@ -178,6 +178,22 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="viewMembersByPage">
+    <complexType>
+     <sequence>
+      <element name="type" type="xsd:string"/>
+      <element name="offset" type="xsd:int"/>
+      <element name="count" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="viewMembersByPageResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="viewMembersByPageReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="viewAdmins">
     <complexType/>
    </element>
@@ -548,6 +564,31 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="searchUserByPage">
+    <complexType>
+     <sequence>
+      <element name="membershipId" type="xsd:string"/>
+      <element name="userId" type="xsd:string"/>
+      <element name="membershipType" type="xsd:string"/>
+      <element name="startDate" type="xsd:string"/>
+      <element name="firstName" type="xsd:string"/>
+      <element name="lastName" type="xsd:string"/>
+      <element name="address" type="xsd:string"/>
+      <element name="city" type="xsd:string"/>
+      <element name="state" type="xsd:string"/>
+      <element name="zipCode" type="xsd:string"/>
+      <element name="offset" type="xsd:int"/>
+      <element name="count" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchUserByPageResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchUserByPageReturn" type="tns1:User"/>
+     </sequence>
+    </complexType>
+   </element>
    <element name="displayAdminInformation">
     <complexType>
      <sequence>
@@ -591,6 +632,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType>
      <sequence>
       <element name="updateUserPasswordReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchMovieByPage">
+    <complexType>
+     <sequence>
+      <element name="movieName" type="xsd:string"/>
+      <element name="movieBanner" type="xsd:string"/>
+      <element name="releaseDate" type="xsd:string"/>
+      <element name="start" type="xsd:int"/>
+      <element name="stop" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchMovieByPageResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchMovieByPageReturn" type="tns1:Movie"/>
      </sequence>
     </complexType>
    </element>
@@ -685,6 +744,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="searchMovieByPageRequest">
+
+      <wsdl:part element="impl:searchMovieByPage" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="signInAdminResponse">
 
       <wsdl:part element="impl:signInAdminResponse" name="parameters">
@@ -704,6 +771,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="listMoviesByCategoryResponse">
 
       <wsdl:part element="impl:listMoviesByCategoryResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchMovieByPageResponse">
+
+      <wsdl:part element="impl:searchMovieByPageResponse" name="parameters">
 
       </wsdl:part>
 
@@ -773,6 +848,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="viewMembersByPageResponse">
+
+      <wsdl:part element="impl:viewMembersByPageResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="returnMovieRequest">
 
       <wsdl:part element="impl:returnMovie" name="parameters">
@@ -816,6 +899,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="deleteUserAccountResponse">
 
       <wsdl:part element="impl:deleteUserAccountResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchUserByPageRequest">
+
+      <wsdl:part element="impl:searchUserByPage" name="parameters">
 
       </wsdl:part>
 
@@ -1061,6 +1152,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="viewMembersByPageRequest">
+
+      <wsdl:part element="impl:viewMembersByPage" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="generateMonthlyBillForPremiumMemberResponse">
 
       <wsdl:part element="impl:generateMonthlyBillForPremiumMemberResponse" name="parameters">
@@ -1269,6 +1368,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="searchUserByPageResponse">
+
+      <wsdl:part element="impl:searchUserByPageResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="generateMonthlyBillForPremiumMemberRequest">
 
       <wsdl:part element="impl:generateMonthlyBillForPremiumMember" name="parameters">
@@ -1430,6 +1537,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:viewMembersResponse" name="viewMembersResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewMembersByPage">
+
+         <wsdl:input message="impl:viewMembersByPageRequest" name="viewMembersByPageRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:viewMembersByPageResponse" name="viewMembersByPageResponse">
 
        </wsdl:output>
 
@@ -1735,6 +1854,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="searchUserByPage">
+
+         <wsdl:input message="impl:searchUserByPageRequest" name="searchUserByPageRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchUserByPageResponse" name="searchUserByPageResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="displayAdminInformation">
 
          <wsdl:input message="impl:displayAdminInformationRequest" name="displayAdminInformationRequest">
@@ -1766,6 +1897,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
        </wsdl:input>
 
          <wsdl:output message="impl:updateUserPasswordResponse" name="updateUserPasswordResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchMovieByPage">
+
+         <wsdl:input message="impl:searchMovieByPageRequest" name="searchMovieByPageRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchMovieByPageResponse" name="searchMovieByPageResponse">
 
        </wsdl:output>
 
@@ -1968,6 +2111,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="viewMembersResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="viewMembersByPage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="viewMembersByPageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="viewMembersByPageResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -2425,6 +2586,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="searchUserByPage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchUserByPageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchUserByPageResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
       <wsdl:operation name="displayAdminInformation">
 
          <wsdlsoap:operation soapAction=""/>
@@ -2472,6 +2651,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="updateUserPasswordResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchMovieByPage">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchMovieByPageRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchMovieByPageResponse">
 
             <wsdlsoap:body use="literal"/>
 

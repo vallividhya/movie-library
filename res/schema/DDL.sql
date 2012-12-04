@@ -58,6 +58,7 @@ movieId INTEGER NOT NULL,
 transactionId INTEGER NOT NULL,
 returnDate DATE,
 membershipId INT(9) NOT NULL,
+FOREIGN KEY(membershipId) REFERENCES User(membershipId),
 FOREIGN KEY(movieId) REFERENCES Movie(movieId),
 FOREIGN KEY(transactionId) REFERENCES PaymentTransaction(transactionId),
 PRIMARY KEY (transactionId,movieId)

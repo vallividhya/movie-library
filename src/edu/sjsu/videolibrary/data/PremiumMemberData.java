@@ -25,7 +25,7 @@ public class PremiumMemberData {
 		for( int i = 1; i < 1001; i++) {
 			for(String[] user : userData) {
 								
-				userDAO.signUpUser(i+user[0].trim(),Utils.encryptPassword(user[1].trim()+i),user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),getCC());
+				userDAO.signUpUser(i+user[0].trim(),user[1].trim()+i,user[4].trim(),user[2].trim()+i,user[3].trim()+i,user[5].trim(),user[6].trim(),user[7].trim(),user[8].trim(),getCC());
 				
 			}
 			userDAO.release();

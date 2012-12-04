@@ -45,10 +45,6 @@ public abstract class BaseMovieDAO extends VideoLibraryDAO {
 	
 	public abstract int getAvailableCopies (int movieId);
 	
-	public Movie[] searchMovie(String movieName,String movieBanner, String releaseDate) throws Exception {
-		return searchMovie(movieName, movieBanner, releaseDate, 0 , DEFAULT_BATCH_SIZE );
-	}
-	
 	public abstract Movie[] searchMovie(String movieName,String movieBanner, String releaseDate, int start, int stop) throws Exception;
 }
 

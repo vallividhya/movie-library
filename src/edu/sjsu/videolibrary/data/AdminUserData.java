@@ -13,7 +13,7 @@ public class AdminUserData {
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		try {
 			for(String[] user : userData) {
-			userDAO.signUpAdmin(user[0], Utils.encryptPassword(user[1]), user[2], user[3]);
+				userDAO.signUpAdmin(user[0], user[1].trim(), user[2], user[3]);
 			}
 		} finally {
 			userDAO.release();

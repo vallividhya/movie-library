@@ -471,6 +471,9 @@ public class Service {
 			e.printStackTrace();			
 		}		
 		finally{
+			cache.invalidate("listAllMovies");
+			cache.invalidatePrefix("searchMovie");
+			cache.invalidatePrefix("listMoviesByCategory");
 			movieDAO.release();
 		}
 		return isDeleted; 
@@ -802,14 +805,14 @@ public class Service {
 		States states = new States();
 		return states.getStates();
 	}
-
-	public Movie[] searchMovie(String movieName, String movieBanner, String releaseDate){
+	
+	public Movie[] searchMovieByPage(String movieName, String movieBanner, String releaseDate, int start, int stop){
 		Movie[] array = null;
-		array = (Movie[])cache.get("searchMovie" + movieName + movieBanner + releaseDate);
+		array = (Movie[])cache.get("searchMovie" + movieName + movieBanner + releaseDate + start + stop);
 		if( array == null ) {
 			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
 			try {
-				array = movieDAO.searchMovie(movieName, movieBanner, releaseDate);
+				array = movieDAO.searchMovie(movieName, movieBanner, releaseDate, start, stop);
 				cache.put("searchMovie" + movieName + movieBanner + releaseDate, array);
 			} catch (Exception e) {			
 				e.printStackTrace();
@@ -819,6 +822,10 @@ public class Service {
 			}
 		}
 		return array;
+	}
+
+	public Movie[] searchMovie(String movieName, String movieBanner, String releaseDate){
+		return searchMovieByPage(movieName, movieBanner, releaseDate,0 , VideoLibraryDAO.DEFAULT_BATCH_SIZE);
 	}
 
 }

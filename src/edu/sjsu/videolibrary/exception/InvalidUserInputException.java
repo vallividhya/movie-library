@@ -13,7 +13,7 @@ public class InvalidUserInputException extends Exception {
 
 	public InvalidUserInputException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+		//super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 	public InvalidUserInputException(String message, Throwable cause) {
