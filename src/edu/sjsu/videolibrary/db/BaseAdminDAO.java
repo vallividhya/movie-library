@@ -26,7 +26,7 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 
 	public abstract String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId);
 
-	public abstract String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException;
+	public abstract String generateMonthlyStatement(int membershipId, int statementId,int month,int year) throws SQLException;
 	
 	public abstract String deleteUser (String userId);
 

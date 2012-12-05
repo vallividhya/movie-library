@@ -294,7 +294,7 @@ public class PreparedStatUserDAO extends BaseUserDAO {
 				result1.getInt("statementId");
 			} else {
 				SimpleAdminDAO admin = new SimpleAdminDAO();
-				admin.generateMonthlyStatement(membershipId, month, year);
+				admin.generateMonthlyStatement(membershipId, -1, month, year);
 			}
 
 			String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"

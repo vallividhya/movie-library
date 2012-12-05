@@ -210,9 +210,8 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 		return result;
 	}
 
-	public String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException{
+	public String generateMonthlyStatement(int membershipId, int statementId,int month,int year) throws SQLException{
 		String result = null;
-		int statementId = 0;
 		boolean processComplete = false;
 		// TODO: Need to check the month is not earlier than user join date
 		try {

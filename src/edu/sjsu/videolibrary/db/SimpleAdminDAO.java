@@ -209,8 +209,11 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				result = "false";
 			}
 		}
-		catch(SQLException e){
-			e.getMessage();
+		catch(SQLException e){			
+			if( e.getMessage().contains("Duplicate entry")) {
+				return "duplicate";
+			}
+			System.out.println(e.getMessage());
 			result = "false";
 		}
 		catch(Exception e){
@@ -220,9 +223,8 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		return result;
 	}
 
-	public String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException{
+	public String generateMonthlyStatement(int membershipId, int statementId, int month,int year) throws SQLException{
 		String result = null;
-		int statementId = 0;
 		boolean processComplete = false;
 		// TODO: Need to check the month is not earlier than user join date
 		try {
@@ -236,17 +238,25 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			while(result1.next()){
 				listOfTransId.add(result1.getInt("transactionId"));
 			}
-			String query2 = "insert into VideoLibrary.Statement(month,year,membershipId) "+
-					" value("+month+","+year+","+membershipId+")";
-			int rowCount = stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
-			if(rowCount>0){
-				ResultSet result2 = stmt.getGeneratedKeys();
-				result2.next();
-				statementId = result2.getInt(1);
-			}
-			else{
-				result = null;
-				return result;
+			if( statementId == -1 ) {
+				String query2 = "insert into VideoLibrary.Statement(month,year,membershipId) "+
+						" value("+month+","+year+","+membershipId+")";
+				int rowCount = stmt.executeUpdate(query2, Statement.RETURN_GENERATED_KEYS);
+				if(rowCount>0){
+					ResultSet result2 = stmt.getGeneratedKeys();
+					result2.next();
+					statementId = result2.getInt(1);
+				}
+				else{
+					result = null;
+					return result;
+				}
+			} else {
+				String query2 = "select transactionId from Videolibrary.statementtransactions where statementId = " + statementId;
+				ResultSet result2 = stmt.executeQuery(query2);
+				while(result2.next()){
+					listOfTransId.removeFirstOccurrence(result2.getInt("transactionId"));
+				}
 			}
 			for(Integer lst: listOfTransId){
 				String query = "insert into VideoLibrary.StatementTransactions(statementId,TransactionId)"+

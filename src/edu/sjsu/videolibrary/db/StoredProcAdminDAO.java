@@ -163,7 +163,7 @@ public class StoredProcAdminDAO extends BaseAdminDAO {
 	}
 
 	@Override
-	public String generateMonthlyStatement(int membershipId,int month,int year) throws SQLException{
+	public String generateMonthlyStatement(int membershipId, int statementId,int month,int year) throws SQLException{
 		return null;
 	}
 	

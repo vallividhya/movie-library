@@ -225,7 +225,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 		String result = null;
 
 		String query1 = "update VideoLibrary.User set userId = '" + userId
-				+ "' ,membershipType = '" + membershipType + " ',firstName = '"
+				+ "' ,membershipType = '" + membershipType + "',firstName = '"
 				+ firstName + "' ,lastName = '" + lastName + "',address = '"
 				+ address + "',city = '" + city + "',state = '" + state
 				+ "',zip = '" + 98567 + "' ,creditCardNumber = '"
@@ -280,12 +280,12 @@ public class SimpleUserDAO extends BaseUserDAO {
 				+ year
 				+ " AND statement.membershipId = " + membershipId;
 		ResultSet result1 = stmt.executeQuery(query1);
+		int statementId = -1;
 		if (result1.next()) {
-			result1.getInt("statementId");
-		} else {
-			SimpleAdminDAO admin = new SimpleAdminDAO();
-			admin.generateMonthlyStatement(membershipId, month, year);
+			statementId = result1.getInt("statementId");
 		}
+		SimpleAdminDAO admin = new SimpleAdminDAO();
+		admin.generateMonthlyStatement(membershipId, statementId, month, year);
 
 		String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"
 				+ " FROM VideoLibrary.RentMovieTransaction rnt,VideoLibrary.PaymentTransaction pymnt,VideoLibrary.Movie,"

@@ -268,6 +268,9 @@ public class Service {
 			if( movieDAO != null ) {
 				movieDAO.release();
 			}
+			cache.invalidate("listAllMovies");
+			cache.invalidatePrefix("searchMovie");
+			cache.invalidatePrefix("listMoviesByCategory");
 		}
 		return processComplete;
 	}
@@ -281,8 +284,8 @@ public class Service {
 		BaseCartDAO cartDAO = DAOFactory.getCartDAO();
 		try {
 			cartDAO.startTransaction();
-			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO();
-			BaseUserDAO userDAO = DAOFactory.getUserDAO();
+			BaseMovieDAO movieDAO = DAOFactory.getMovieDAO(cartDAO);
+			BaseUserDAO userDAO = DAOFactory.getUserDAO(cartDAO);
 			cartDAO.updateReturnDate(movieId, membershipId);
 			numOfCopies = movieDAO.getAvailableCopies(movieId) + 1;
 			movieDAO.updateCopiesCount(movieId, numOfCopies);
@@ -290,7 +293,7 @@ public class Service {
 			rentedMovies = user.getRentedMovies() - 1;
 			userDAO.updateRentedMoviesForUser(membershipId, rentedMovies);
 			isMovieReturned = true;
-			cartDAO.commitTransaction();	
+			cartDAO.commitTransaction();
 		} catch (InternalServerException e) {
 			e.printStackTrace();
 			try {
@@ -298,6 +301,10 @@ public class Service {
 			} catch (InternalServerException e1) {
 				e.printStackTrace();
 			}
+		} finally {
+			cache.invalidate("listAllMovies");
+			cache.invalidatePrefix("searchMovie");
+			cache.invalidatePrefix("listMoviesByCategory");
 		}
 		return isMovieReturned;
 	}
@@ -555,9 +562,13 @@ public class Service {
 		String result =  null;
 		try {
 			result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
+		} catch (SQLException e) {
+			if( e.getMessage().contains("Duplicate entry")) {
+				return "duplicate";
+			}
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		finally{
 			cache.invalidatePrefix("signInUser"+userId);
@@ -598,23 +609,27 @@ public class Service {
 		catch (InvalidUserInputException e) {
 			System.out.println(e.getLocalizedMessage());
 			return e.getMessage();
+		} finally {
+			cache.invalidate("listAllMovies");
+			cache.invalidatePrefix("searchMovie");
+			cache.invalidatePrefix("listMoviesByCategory");
 		}
 	}
 
-	public String generateMonthlyStatement(int membershipId,int month,int year){
-		String result = null;
-		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
-		try {
-			result = adminDAO.generateMonthlyStatement(membershipId, month, year);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally{
-			adminDAO.release();
-		}
-		return result;
-	}
+//	public String generateMonthlyStatement(int membershipId,int month,int year){
+//		String result = null;
+//		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO();
+//		try {
+//			result = adminDAO.generateMonthlyStatement(membershipId, -1, month, year);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		finally{
+//			adminDAO.release();
+//		}
+//		return result;
+//	}
 
 	public StatementInfo[] viewStatement(int membershipId,int month,int year){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
