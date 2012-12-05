@@ -13,7 +13,7 @@ import edu.sjsu.videolibrary.model.User;
 public abstract class BaseAdminDAO extends VideoLibraryDAO {
 
 	public BaseAdminDAO() {
-		super();
+		super();	
 	}
 
 	public abstract User displayUserInformation(int membershipId);

@@ -28,14 +28,17 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	public User displayUserInformation (int membershipId){
 		try{
 
-			String query1 = "select user.FirstName,user.LastName,user.StartDate,"+
-					"user.MembershipType,user.MembershipId,user.userId,user.Password,user.Address,user.City,"+
-					"user.State,user.Zip,user.CreditCardNumber,user.latestPaymentDate from VideoLibrary.user"+
+			String query1 = " select user.FirstName,user.LastName,user.StartDate, "+
+					" user.MembershipType,user.MembershipId,user.userId,user.Password,user.Address,user.City, "+
+					" user.State,user.Zip,user.CreditCardNumber,user.latestPaymentDate from VideoLibrary.user "+
 					" where user.MembershipId = "+ membershipId;
-
+			
 			rs = stmt.executeQuery(query1);
 			User user = new User();
 			
+			if(rs == null) {
+				return null;
+			}
 			if(rs.next()){
 				user.setFirstName(rs.getString("FirstName"));
 				user.setLastName(rs.getString("LastName"));
@@ -77,11 +80,11 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 
 		}
 		catch(SQLException e){
-			e.getMessage();
+			e.printStackTrace();
 			return null;
 		}
 		catch(Exception e){
-			e.getMessage();
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -179,6 +182,8 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			if(result1.next()){
 				monthlyFees = result1.getDouble("amount");
 			}
+			else
+				monthlyFees = 0.0;
 		}
 		catch(SQLException e){
 			e.getMessage();
@@ -193,7 +198,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	}
 
 	public String updateMovieInfo(int movieId,String movieName, String movieBanner, String releaseDate, int availableCopies, int categoryId){
-		String result = null;
+		String result = "false";
 		try{
 			String query1 = "update VideoLibrary.Movie set movieName = '"+movieName+"',movieBanner = '"+movieBanner+"',releaseDate = '"+releaseDate+
 					"', availableCopies = "+availableCopies+",categoryId = "+categoryId+ " where movieId = "+movieId;
@@ -565,9 +570,17 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		
 		public List <Admin> listAdmins () {
 			List <Admin> admins = new ArrayList<Admin>();
-			String query = "SELECT admin.userId, admin.firstName, admin.lastName FROM admin ORDER BY userId";
+			String query = "SELECT admin.userId, admin.firstName, admin.lastName FROM videolibrary.admin ORDER BY userId";
 			try {
+				if(stmt == null) {
+					return null;
+				}
+				
 				ResultSet rs = stmt.executeQuery(query);
+				
+				if(rs == null) {
+					return null;
+				}
 				while (rs.next()) {
 					Admin admin = new Admin();
 					admin.setAdminId(rs.getString("userId"));
