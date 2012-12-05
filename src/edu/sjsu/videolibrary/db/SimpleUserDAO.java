@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import edu.sjsu.videolibrary.model.Transaction;
-import edu.sjsu.videolibrary.db.SimpleAdminDAO;
 import edu.sjsu.videolibrary.exception.InternalServerException;
 import edu.sjsu.videolibrary.exception.InvalidCreditCardException;
 import edu.sjsu.videolibrary.exception.UserAlreadyExistsException;
@@ -199,7 +198,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 			return result;
 		}
 
-		SimpleAdminDAO adminDAO = new SimpleAdminDAO();
+		BaseAdminDAO adminDAO = DAOFactory.getAdminDAO(this);
 		double monthlyFees = adminDAO.getMonthlyFeesForPremiumMember();
 
 		String query2 = "INSERT INTO VideoLibrary.PaymentTransaction(rentDate,totalDueAmount,membershipId)"
@@ -284,7 +283,7 @@ public class SimpleUserDAO extends BaseUserDAO {
 		if (result1.next()) {
 			statementId = result1.getInt("statementId");
 		}
-		SimpleAdminDAO admin = new SimpleAdminDAO();
+		BaseAdminDAO admin = DAOFactory.getAdminDAO(this);
 		admin.generateMonthlyStatement(membershipId, statementId, month, year);
 
 		String query2 = "SELECT pymnt.rentDate,pymnt.totaldueAmount,movie.movieName,rnt.returnDate"

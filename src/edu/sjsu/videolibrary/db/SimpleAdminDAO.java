@@ -24,6 +24,10 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 	public SimpleAdminDAO() {
 		super();
 	}
+	
+	public SimpleAdminDAO(VideoLibraryDAO dao) {
+		super(dao);
+	}
 
 	public User displayUserInformation (int membershipId){
 		try{

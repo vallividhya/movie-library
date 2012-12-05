@@ -15,6 +15,10 @@ public abstract class BaseAdminDAO extends VideoLibraryDAO {
 	public BaseAdminDAO() {
 		super();
 	}
+	
+	public BaseAdminDAO(VideoLibraryDAO dao) {
+		super(dao);
+	}
 
 	public abstract User displayUserInformation(int membershipId);
 

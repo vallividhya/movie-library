@@ -24,6 +24,16 @@ public class DAOFactory {
 			return new StoredProcAdminDAO();
 		}
 	}
+	
+	public static BaseAdminDAO getAdminDAO(VideoLibraryDAO dao) {
+		if( currentObj.equals(DAOObjectType.Simple)) {
+			return new SimpleAdminDAO(dao);
+		} else if( currentObj.equals(DAOObjectType.Prepared)) {
+			return new PreparedStatAdminDAO(dao);
+		} else {
+			return new StoredProcAdminDAO(dao);
+		}
+	}
 
 	public static BaseCartDAO getCartDAO() {
 		if(currentObj.equals(DAOObjectType.Simple)) {

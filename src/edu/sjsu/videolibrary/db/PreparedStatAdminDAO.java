@@ -24,6 +24,10 @@ public class PreparedStatAdminDAO extends BaseAdminDAO {
 	public PreparedStatAdminDAO() {
 		super();
 	}
+	
+	public PreparedStatAdminDAO(VideoLibraryDAO dao) {
+		super(dao);
+	}
 
 	public User displayUserInformation (int membershipId){
 		try{

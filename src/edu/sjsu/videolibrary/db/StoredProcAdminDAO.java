@@ -14,6 +14,15 @@ import edu.sjsu.videolibrary.model.PaymentForPremiumMemInfo;
 import edu.sjsu.videolibrary.model.User;
 
 public class StoredProcAdminDAO extends BaseAdminDAO {
+	
+	public StoredProcAdminDAO() {
+		super();
+	}
+	
+	public StoredProcAdminDAO(VideoLibraryDAO dao) {
+		super(dao);
+	}
+	
 	@Override
 	public User[] searchUser(String membershipId, String userId,
 			String membershipType, String startDate, String firstName,
