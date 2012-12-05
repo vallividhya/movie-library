@@ -56,14 +56,14 @@ public class Service {
 			try {
 				cartDAO.commitTransaction();
 			} catch (InternalServerException e1) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		} catch (InternalServerException e) {
-			e.printStackTrace();
+			e.getMessage();
 			try {
 				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		finally{
@@ -85,11 +85,11 @@ public class Service {
 
 			isDeletedFromCart = true;
 		} catch (InternalServerException e) {
-			e.printStackTrace();
+			e.getMessage();
 			try {
 				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		finally{
@@ -113,7 +113,7 @@ public class Service {
 				}	
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		return cartItems;
@@ -155,12 +155,12 @@ public class Service {
 				}	
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} finally {
 				try {
 					commitTransaction(dbTransaction);
 				} catch (InternalServerException e) {
-					e.printStackTrace();
+					e.getMessage();
 				}
 			}
 		}
@@ -253,14 +253,14 @@ public class Service {
 			cache.invalidate("viewCart"+membershipId);
 			processComplete = true;
 		} catch (InternalServerException e) {
-			e.printStackTrace();
+			e.getMessage();
 			try {
 				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		} catch (InvalidCreditCardException e) {
-			e.printStackTrace();
+			e.getMessage();
 			System.out.println("Invalid credit card number");
 		}
 		finally{
@@ -295,11 +295,11 @@ public class Service {
 			isMovieReturned = true;
 			cartDAO.commitTransaction();
 		} catch (InternalServerException e) {
-			e.printStackTrace();
+			e.getMessage();
 			try {
 				cartDAO.rollbackTransaction();
 			} catch (InternalServerException e1) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		} finally {
 			cache.invalidate("listAllMovies");
@@ -427,7 +427,7 @@ public class Service {
 			isDeleted = adminDAO.deleteUser(userId);
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
-			e.printStackTrace();			
+			e.getMessage();			
 		}
 		finally{
 			adminDAO.release();
@@ -442,7 +442,7 @@ public class Service {
 			isDeleted = adminDAO.deleteAdmin(userId);
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
-			e.printStackTrace();			
+			e.getMessage();			
 		}
 		finally{
 			adminDAO.release();
@@ -514,7 +514,7 @@ public class Service {
 			ac = userDAO.viewAccountTransactions(membershipId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.getMessage();
 		}
 		finally{
 			userDAO.release();
@@ -532,7 +532,7 @@ public class Service {
 			ac = userDAO.viewMoviesToReturn(membershipId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.getMessage();
 		}
 		finally{
 			userDAO.release();
@@ -560,6 +560,10 @@ public class Service {
 	public String updateUserInfo(int membershipId,String userId,String firstName, String lastName, String address, String city, String state, String zipCode, String membershipType,String creditCardNumber){
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result =  null;
+		if (userId == null || firstName == null || lastName == null || address == null || city == null || zipCode == null || creditCardNumber == null) {
+			System.out.println("Incomplete user information. Missing details");
+			return "Incomplete form";
+		}
 		try {
 			result = userDAO.updateUserInfo(membershipId, userId, firstName, lastName, address, city, state, zipCode, membershipType, creditCardNumber);
 		} catch (SQLException e) {
@@ -579,6 +583,10 @@ public class Service {
 	}
 
 	public String updatePassword(int membershipId,String oldPassword,String newPassword){
+		if (oldPassword == null || newPassword == null) {
+			System.out.println("Incomplete user information. Missing details");
+			return "Incomplete form";
+		}
 		BaseUserDAO userDAO  = DAOFactory.getUserDAO();
 		String result = null;
 		try {
