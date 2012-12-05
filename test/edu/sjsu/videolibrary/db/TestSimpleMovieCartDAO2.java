@@ -27,7 +27,7 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 
-public class TestSimpleCartDAO extends BaseTestCase {
+public class TestSimpleMovieCartDAO2 extends BaseTestCase {
 
 	SimpleCartDAO dao = null;
 	
@@ -42,8 +42,6 @@ public class TestSimpleCartDAO extends BaseTestCase {
 		super.tearDown();
 	}
 
-
-	
 	@Test
 	public void testListCartItemsThrowException() throws SQLException {
 		setupConnection(dao);
@@ -59,7 +57,27 @@ public class TestSimpleCartDAO extends BaseTestCase {
 		}
 	}
 
-
+	
+	
+//	@Test
+//	public void testRecordPaymentTransactionThrowException() throws SQLException,InternalServerException {
+//		setupConnection(dao);
+//		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());
+//		stub(rs.next()).toReturn(true).toReturn(false);
+//
+//		try {
+//			 dao.recordPaymentTransaction(-1.0, 1);
+//			 fail("Exception  not thrown");
+//		
+//		}
+//		catch(InternalServerException e){
+//			
+//		}
+//		catch(Exception e) {
+//			
+//		}
+//	}
+//	
 	@Test
 	public void testRecordMovieTransactionThrowException() throws SQLException {
 		setupConnection(dao);
