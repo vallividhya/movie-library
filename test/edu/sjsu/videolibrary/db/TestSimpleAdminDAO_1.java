@@ -62,22 +62,6 @@ public class TestSimpleAdminDAO_1 extends BaseTestCase {
 		}		
 	}
 	
-	@Test
-	public final void testUpdateMovieInfoSQLException() throws Exception{
-		SimpleAdminDAO dao = new SimpleAdminDAO();
-		setupConnection(dao);
-		
-		stub(stmt.executeUpdate(anyString())).toThrow(new SQLException());
-		
-		try{
-			String result = dao.updateMovieInfo(1,"movieName","movieBanner","releaseDate",10,10);
-			assertEquals("false",result);
-		}catch(Exception e){
-			fail(e.getMessage());
-		}		
-	}
-	
-
 
 	@Test
 	public void testGenerateMonthlyBillForPremiumMemberIncorrectInput() throws Exception{

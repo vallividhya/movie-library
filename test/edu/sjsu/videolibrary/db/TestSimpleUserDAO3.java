@@ -1,5 +1,6 @@
 package edu.sjsu.videolibrary.db;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import org.apache.naming.java.javaURLContextFactory;
@@ -57,4 +58,6 @@ public class TestSimpleUserDAO3 extends BaseTestCase {
 			} catch(SQLException e) {
 			}
 		}
+		
+		
 	}
