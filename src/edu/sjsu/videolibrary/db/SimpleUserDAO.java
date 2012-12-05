@@ -64,8 +64,10 @@ public class SimpleUserDAO extends BaseUserDAO {
 			} 
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			throw new UserAlreadyExistsException("User already exists");
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
+			if( e.getMessage().contains("Duplicate entry")) {
+				throw new UserAlreadyExistsException("User already exists");
+			}
 			System.out.println(e.getMessage());
 		}
 		return result;

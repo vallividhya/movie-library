@@ -355,9 +355,9 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 		String query = ""; 
 
 		if (type.equalsIgnoreCase("all")) {
-			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user limit " + offset + "," + count;
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName, user.startDate FROM user limit " + offset + "," + count;
 		} else { 
-			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName FROM user WHERE user.membershipType = '" + type + "' limit " + offset + "," + count; 
+			query = "SELECT user.membershipId, user.userId, user.firstName, user.lastName, user.startDate FROM user WHERE user.membershipType = '" + type + "' limit " + offset + "," + count; 
 		}
 
 		try {
@@ -370,6 +370,7 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 				member.setUserId(rs.getString("userId"));
 				member.setFirstName(rs.getString("firstName"));
 				member.setLastName(rs.getString("lastName"));
+				member.setStartDate(rs.getString("startDate"));
 				members.add(member);
 			}
 		} catch (SQLException e) {

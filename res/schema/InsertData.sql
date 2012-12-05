@@ -25,5 +25,11 @@ VALUES ('Funny','ABC',NOW(),5,3);
 INSERT INTO VideoLibrary.Movie(movieName,movieBanner,releaseDate,availableCopies,categoryId)
 VALUES ('Space','NASA',NOW(),5,5);
 
+INSERT INTO VideoLibrary.Movie(movieName,movieBanner,releaseDate,availableCopies,categoryId)
+VALUES ('Space','NASA',NOW(),5,5);
 
+INSERT INTO VideoLibrary.amountDetails(membershipType,feesUpdateDate,amount)
+VALUES ('simple',now(),1.5);
 
+INSERT INTO VideoLibrary.amountDetails(membershipType,feesUpdateDate,amount)
+VALUES ('premium',now(),25.0);

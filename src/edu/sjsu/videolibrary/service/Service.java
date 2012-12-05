@@ -316,7 +316,8 @@ public class Service {
 			
 		}
 		catch(UserAlreadyExistsException e){
-			System.out.println(e.getLocalizedMessage());		
+			System.out.println(e.getLocalizedMessage());
+			return "duplicate";
 		} /*catch(InvalidUserInputException e) {
 			System.out.println(e.getLocalizedMessage());
 		}*/
