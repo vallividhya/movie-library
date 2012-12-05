@@ -14,7 +14,8 @@ public class MovieAlreadyExistsException extends Exception {
 
 	public MovieAlreadyExistsException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+		//super(message, cause, enableSuppression, writableStackTrace);
+		super(message);
 		// TODO Auto-generated constructor stub
 	}
 

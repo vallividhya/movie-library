@@ -99,6 +99,7 @@ public class Service {
 		return isDeletedFromCart;
 	}
 
+	/*
 	private ItemOnCart[] viewCartInternal(int membershipId, BaseCartDAO cartDAO){
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
@@ -117,7 +118,7 @@ public class Service {
 			}
 		}
 		return cartItems;
-	}
+	}*/
 
 	// View Cart 
 	public ItemOnCart[] viewCart(int membershipId) {
@@ -128,21 +129,19 @@ public class Service {
 			cartDAO.release();
 		}
 	}
-	/* OLD CODE FOR VIEW CART (With rent amount for membershiptype handled)
-	 public ItemOnCart[] viewCart(int membershipId) {
+	/* OLD CODE FOR VIEW CART (With rent amount for membershiptype handled)*/
+	 public ItemOnCart[] viewCartInternal(int membershipId, BaseCartDAO cartDAO) {
 		List<ItemOnCart> cartItemsList;
 		ItemOnCart[] cartItems = null;
 		double rentAmount = 0;
 		cartItems = (ItemOnCart[])cache.get("viewCart" + membershipId);
 		if(cartItems == null){
-			String dbTransaction = null;
 			try {
-				dbTransaction = startTransaction();
-				BaseCartDAO cartDAO = DAOFactory.getCartDAO(dbTransaction);
+				// cartDAO.startTransaction(); // This is a view function so no transaction required
 				cartItemsList	= cartDAO.listCartItems(membershipId);
 				cartItems = new ItemOnCart[cartItemsList.size()];
 				System.out.println("I've got " + cartItems.length + " items with me!");
-				BaseUserDAO userDAO = DAOFactory.getUserDAO(dbTransaction);
+				BaseUserDAO userDAO = DAOFactory.getUserDAO(cartDAO);
 				User user =	userDAO.queryMembershipType(membershipId);
 				for (int i = 0; i < cartItemsList.size(); i++) {
 					cartItems[i] = cartItemsList.get(i);
@@ -156,18 +155,19 @@ public class Service {
 				cache.put("viewCart" + membershipId, cartItems);
 			} catch (InternalServerException e) {
 				e.getMessage();
-			} finally {
+			} /*finally {
+				// This is a view function, so no commit required
 				try {
-					commitTransaction(dbTransaction);
+					cartDAO.commitTransaction();
 				} catch (InternalServerException e) {
 					e.getMessage();
 				}
-			}
+			}*/
 		}
 		System.out.println("I'm done");
 		return cartItems;
 	}
-	 */
+
 	private boolean validateCreditCard (String cc) {
 		boolean isValid = false;
 		if (cc != null && cc.length() == 16) {
