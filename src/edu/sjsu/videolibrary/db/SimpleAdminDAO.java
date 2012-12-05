@@ -112,10 +112,10 @@ public class SimpleAdminDAO extends BaseAdminDAO {
 			
 
 				String query2 = "select User.FirstName,User.LastName from VideoLibrary.User,VideoLibrary.PaymentTransaction,"+
-						" VideoLibrary.RentMovieTransaction where RentMovieTransaction.MovieId = 1 and  RentMovieTransaction.ReturnDate "+
+						" VideoLibrary.RentMovieTransaction where RentMovieTransaction.MovieId = " + movieId + " and  RentMovieTransaction.ReturnDate "+
 						"is null and  RentMovieTransaction.TransactionId = PaymentTransaction.TransactionId"+
 						" and PaymentTransaction.MembershipId = User.MembershipId";
-	
+				
 				ResultSet result2 = stmt.executeQuery(query2);
 				LinkedList<String> buyerList = new LinkedList<String>();
 	
